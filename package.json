@@ -19,10 +19,12 @@
     "@types/ref": "^0.0.28",
     "@types/ref-struct": "^0.0.28",
     "@types/ref-union": "^0.0.28",
+    "@types/request": "^2.47.0",
     "@types/typescript": "^2.0.0",
     "typescript": "2.6.2"
   },
   "dependencies": {
+    "request": "^2.85.0",
     "string-template": "^1.0.0"
   }
 }
