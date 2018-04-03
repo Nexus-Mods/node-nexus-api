@@ -43,6 +43,13 @@ export class TimeoutError extends Error {
   }
 }
 
+export class RateLimitError extends Error {
+  constructor() {
+    super('Rate Limit Exceeded');
+    this.name = this.constructor.name;
+  }
+}
+
 export class HTTPError extends Error {
   private mBody: string;
   constructor(statusCode: number, message: string, body: string) {
@@ -65,9 +72,15 @@ function handleRestResult(resolve, reject, url: string, error: any,
   }
 
   try {
-    if (response.statusCode === 521) {
+    if ((response.statusCode === 521)
+        || (body === 'Bad Gateway')) {
       // in this case the body isn't something the api sent so it probably can't be parsed
       return reject(new NexusError('API currently offline', response.statusCode, url));
+    }
+
+    if (response.statusCode === 429) {
+      // server asks us to slow down because rate limit was exceeded or high server load
+      return reject(new RateLimitError());
     }
 
     const data = JSON.parse(body || '{}');
@@ -127,6 +140,11 @@ class Quota {
     this.mMSPerIncrement = msPerIncrement;
   }
 
+  public reset() {
+    this.mCount = 0;
+    this.mLastCheck = Date.now();
+  }
+
   public wait(): Promise<void> {
     return new Promise((resolve, reject) => {
       const now = Date.now();
@@ -156,7 +174,7 @@ class Nexus {
   private mBaseData: IRequestArgs;
 
   private mBaseURL = param.API_URL;
-  private mQuota;
+  private mQuota: Quota;
 
   constructor(game: string, apiKey: string, timeout?: number) {
     this.mBaseData = {
@@ -203,14 +221,14 @@ class Nexus {
 
   public async validateKey(key?: string): Promise<types.IValidateKeyResponse> {
     await this.mQuota.wait();
-    return rest(this.mBaseURL + '/users/validate',
+    return this.request(this.mBaseURL + '/users/validate',
                 this.args({ headers: this.filter({ APIKEY: key }) }));
   }
 
   public async endorseMod(modId: number, modVersion: string,
                           endorseStatus: string, gameId?: string): Promise<any> {
     await this.mQuota.wait();
-    return rest(this.mBaseURL + '/games/{gameId}/mods/{modId}/{endorseStatus}', this.args({
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/{endorseStatus}', this.args({
       path: this.filter({ gameId, modId, endorseStatus }),
       data: this.filter({ Version: modVersion }),
     }));
@@ -218,26 +236,26 @@ class Nexus {
 
   public async getGames(): Promise<types.IGameListEntry[]> {
     await this.mQuota.wait();
-    return rest(this.mBaseURL + '/games', this.args({}));
+    return this.request(this.mBaseURL + '/games', this.args({}));
   }
 
   public async getGameInfo(gameId?: string): Promise<types.IGameInfo> {
     await this.mQuota.wait();
-    return rest(this.mBaseURL + '/games/{gameId}', this.args({
+    return this.request(this.mBaseURL + '/games/{gameId}', this.args({
       path: this.filter({ gameId }),
     }));
   }
 
   public async getModInfo(modId: number, gameId?: string): Promise<types.IModInfo> {
     await this.mQuota.wait();
-    return rest(this.mBaseURL + '/games/{gameId}/mods/{modId}', this.args({
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}', this.args({
       path: this.filter({ modId, gameId }),
     }));
   }
 
   public async getModFiles(modId: number, gameId?: string): Promise<types.IModFiles> {
     await this.mQuota.wait();
-    return rest(this.mBaseURL + '/games/{gameId}/mods/{modId}/files', this.args({
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files', this.args({
       path: this.filter({ modId, gameId }),
     }));
   }
@@ -246,7 +264,7 @@ class Nexus {
                            fileId: number,
                            gameId?: string): Promise<types.IFileInfo> {
     await this.mQuota.wait();
-    return rest(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}', this.args({
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}', this.args({
       path: this.filter({ modId, fileId, gameId }),
     }));
   }
@@ -255,7 +273,7 @@ class Nexus {
                                fileId: number,
                                gameId?: string): Promise<types.IDownloadURL[]> {
     await this.mQuota.wait();
-    return rest(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}/download_link',
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}/download_link',
                 this.args({ path: this.filter({ modId, fileId, gameId }) }));
   }
 
@@ -303,6 +321,23 @@ class Nexus {
         }
       });
     });
+  }
+
+  private async request(url: string, args: IRequestArgs): Promise<any> {
+    try {
+      return await rest(url, args);
+    } catch (err) {
+      if (err instanceof RateLimitError) {
+        this.mQuota.reset();
+        await new Promise((resolve) => {
+          setTimeout(resolve, param.DELAY_AFTER_429_MS);
+        });
+        await this.mQuota.wait();
+        return await this.request(url, args);
+      } else {
+        throw err;
+      }
+    }
   }
 
   private filter(obj: any): any {

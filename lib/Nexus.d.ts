@@ -9,6 +9,9 @@ export declare class NexusError extends Error {
 export declare class TimeoutError extends Error {
     constructor(message: any);
 }
+export declare class RateLimitError extends Error {
+    constructor();
+}
 export declare class HTTPError extends Error {
     private mBody;
     constructor(statusCode: number, message: string, body: string);
@@ -30,6 +33,7 @@ declare class Nexus {
     getFileInfo(modId: number, fileId: number, gameId?: string): Promise<types.IFileInfo>;
     getDownloadURLs(modId: number, fileId: number, gameId?: string): Promise<types.IDownloadURL[]>;
     sendFeedback(message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<void>;
+    private request(url, args);
     private filter(obj);
     private args(customArgs);
 }

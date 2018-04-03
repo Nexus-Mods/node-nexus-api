@@ -10,4 +10,7 @@ export const QUOTA_MAX_PREMIUM: number = 600;
 
 export const DEFAULT_TIMEOUT_MS: number = 5000;
 
+// time to wait before retrying a request that failed with a 429 (too many requests) error
+export const DELAY_AFTER_429_MS: number = 1000;
+
 export const API_URL: string = 'https://api.nexusmods.com/v1';
