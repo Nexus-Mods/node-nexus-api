@@ -60,13 +60,15 @@ export interface IGameInfo extends IGameListEntry {
 }
 export interface IGameListEntry {
     id: number;
+    domain_name: string;
     name: string;
     forum_url: string;
     nexusmods_url: string;
     genre: string;
-    mod_count: number;
+    mods: number;
     file_count: number;
     downloads: number;
+    approved_date: number;
 }
 export interface IDownloadURL {
     URI: string;
