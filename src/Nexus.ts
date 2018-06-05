@@ -1,9 +1,11 @@
 import * as param from './parameters';
 import * as types from './types';
+import Quota from './Quota';
 
 import * as fs from 'fs';
 import request = require('request');
 import format = require('string-template');
+import { HTTPError, NexusError, RateLimitError, TimeoutError } from './customErrors';
 
 interface IRequestArgs {
   headers?: any;
@@ -16,50 +18,6 @@ interface IRequestArgs {
   responseConfig?: {
     timeout: number,
   };
-}
-
-export class NexusError extends Error {
-  private mStatusCode: number;
-  private mRequest: string;
-  constructor(message: string, statusCode: number, url: string) {
-    super(message);
-    this.mStatusCode = statusCode;
-    this.mRequest = url;
-  }
-
-  public get statusCode() {
-    return this.mStatusCode;
-  }
-
-  public get request() {
-    return this.mRequest;
-  }
-}
-
-export class TimeoutError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = this.constructor.name;
-  }
-}
-
-export class RateLimitError extends Error {
-  constructor() {
-    super('Rate Limit Exceeded');
-    this.name = this.constructor.name;
-  }
-}
-
-export class HTTPError extends Error {
-  private mBody: string;
-  constructor(statusCode: number, message: string, body: string) {
-    super(`HTTP (${statusCode}) - ${message}`);
-    this.name = this.constructor.name;
-    this.mBody = body;
-  }
-  public get body(): string {
-    return this.mBody;
-  }
 }
 
 function handleRestResult(resolve, reject, url: string, error: any,
@@ -92,23 +50,32 @@ function handleRestResult(resolve, reject, url: string, error: any,
 
     resolve(data);
   } catch (err) {
-    reject(new Error('failed to parse server response: ' + err.message));
+    reject(new Error(`failed to parse server response for request "${url}": ${err.message}`));
   }
 }
 
 function restGet(url: string, args: IRequestArgs): Promise<any> {
+  const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     request.get(format(url, args.path || {}), {
       headers: args.headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
     }, (error, response, body) => {
+      if (error) {
+        // if this error remains uncaught the error message won't be particularly
+        // enlightening so we enhance it a bit
+        error.message += ` (request: ${url})`;
+        error.stack += '\n' + stackErr.stack;
+      }
+
       handleRestResult(resolve, reject, url, error, response, body);
     });
   });
 }
 
 function restPost(url: string, args: IRequestArgs): Promise<any> {
+  const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     request.post({
       url: format(url, args.path),
@@ -117,6 +84,12 @@ function restPost(url: string, args: IRequestArgs): Promise<any> {
       timeout: args.requestConfig.timeout,
       body: JSON.stringify(args.data),
     }, (error, response, body) => {
+      if (error) {
+        // if this error remains uncaught the error message won't be particularly
+        // enlightening so we enhance it a bit
+        error.message += ` (request: ${url})`;
+        error.stack += '\n' + stackErr.stack;
+      }
       handleRestResult(resolve, reject, url, error, response, body);
     });
   });
@@ -126,43 +99,6 @@ function rest(url: string, args: IRequestArgs): Promise<any> {
   return args.data !== undefined
     ? restPost(url, args)
     : restGet(url, args);
-}
-
-class Quota {
-  private mCount: number;
-  private mMaximum: number;
-  private mMSPerIncrement: number;
-  private mLastCheck: number = Date.now();
-
-  constructor(init: number, max: number, msPerIncrement: number) {
-    this.mCount = init;
-    this.mMaximum = max;
-    this.mMSPerIncrement = msPerIncrement;
-  }
-
-  public reset() {
-    this.mCount = 0;
-    this.mLastCheck = Date.now();
-  }
-
-  public wait(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const now = Date.now();
-      const recovered = Math.floor((now - this.mLastCheck) / this.mMSPerIncrement);
-      this.mCount = Math.min(this.mCount + recovered, this.mMaximum);
-      this.mLastCheck = now;
-      --this.mCount;
-      if (this.mCount >= 0) {
-        return resolve();
-      } else {
-        setTimeout(resolve, this.mCount * this.mMSPerIncrement * -1);
-      }
-    });
-  }
-
-  public setMax(newMax: number) {
-    this.mMaximum = newMax;
-  }
 }
 
 /**
@@ -176,11 +112,13 @@ class Nexus {
   private mBaseURL = param.API_URL;
   private mQuota: Quota;
 
-  constructor(game: string, apiKey: string, timeout?: number) {
+  constructor(game: string, apiKey: string, appVersion: string, timeout?: number) {
     this.mBaseData = {
       headers: {
         'Content-Type': 'application/json',
         APIKEY: undefined,
+        'Protocol-Version': param.PROTOCOL_VERSION,
+        'Application-Version': appVersion,
       },
       path: {
         gameId: game,
@@ -202,18 +140,18 @@ class Nexus {
     this.mBaseData.path.gameId = gameId;
   }
 
-  public setKey(apiKey: string): void {
+  public async setKey(apiKey: string): Promise<void> {
     this.mBaseData.headers.APIKEY = apiKey;
     if (apiKey !== undefined) {
-      this.validateKey(apiKey)
-        .then(res => {
-          if (this.mBaseData.headers.APIKEY === apiKey) {
-            this.mQuota.setMax(res['is_premium?'] ? param.QUOTA_MAX_PREMIUM : param.QUOTA_MAX);
-          }
-        })
-        .catch(err => {
-          this.mQuota.setMax(param.QUOTA_MAX);
-        });
+      try {
+        const res = await this.validateKey(apiKey);
+        if (this.mBaseData.headers.APIKEY === apiKey) {
+          this.mQuota.setMax(res['is_premium?'] ? param.QUOTA_MAX_PREMIUM : param.QUOTA_MAX);
+        }
+      }
+      catch (err) {
+        this.mQuota.setMax(param.QUOTA_MAX);
+      }
     } else {
       this.mQuota.setMax(param.QUOTA_MAX);
     }

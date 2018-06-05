@@ -14,3 +14,7 @@ export const DEFAULT_TIMEOUT_MS: number = 5000;
 export const DELAY_AFTER_429_MS: number = 1000;
 
 export const API_URL: string = 'https://api.nexusmods.com/v1';
+
+// used so the server can provide compatibility behaviour with older protocols.
+// Please don't mess with this unless you're in contact with NexusMods
+export const PROTOCOL_VERSION: string = '0.2.0';
