@@ -215,7 +215,8 @@ class Nexus {
                 this.args({ path: this.filter({ modId, fileId, gameId }) }));
   }
 
-  public async sendFeedback(message: string,
+  public async sendFeedback(title: string,
+                            message: string,
                             fileBundle: string,
                             anonymous: boolean,
                             groupingKey?: string,
@@ -224,6 +225,7 @@ class Nexus {
     return new Promise<void>((resolve, reject) => {
       const formData = {
         feedback_text: message,
+        feedback_title: title,
       };
       if (fileBundle !== undefined) {
         formData['feedback_file'] = fs.createReadStream(fileBundle);
@@ -234,10 +236,11 @@ class Nexus {
       if (id !== undefined) {
         formData['reference'] = id;
       }
-      const headers = {};
+      const headers = { ...this.mBaseData.headers };
 
-      if (!anonymous) {
-        headers['APIKEY'] = this.mBaseData.headers['APIKEY'];
+      if (anonymous) {
+        delete headers['APIKEY'];
+        console.log('anon headers', headers);
       }
 
       const url = anonymous
