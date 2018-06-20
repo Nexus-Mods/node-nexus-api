@@ -75,3 +75,9 @@ export interface IDownloadURL {
     name: string;
     short_name: string;
 }
+export interface IIssue {
+    id: number;
+    issue_number: number;
+    issue_state: string;
+    issue_title: string;
+}

@@ -215,6 +215,12 @@ class Nexus {
                 this.args({ path: this.filter({ modId, fileId, gameId }) }));
   }
 
+  public async getOwnIssues(): Promise<types.IIssue[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/feedbacks/list_user_issues/', this.args({}))
+      .then(obj => obj.issues);
+  }
+
   public async sendFeedback(title: string,
                             message: string,
                             fileBundle: string,
