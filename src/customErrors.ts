@@ -41,3 +41,10 @@ export class NexusError extends Error {
     return this.mRequest;
   }
 }
+
+export class ParameterInvalid extends Error {
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}

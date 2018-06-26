@@ -5,7 +5,7 @@ import Quota from './Quota';
 import * as fs from 'fs';
 import request = require('request');
 import format = require('string-template');
-import { HTTPError, NexusError, RateLimitError, TimeoutError } from './customErrors';
+import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid } from './customErrors';
 
 interface IRequestArgs {
   headers?: any;
@@ -228,44 +228,67 @@ class Nexus {
                             groupingKey?: string,
                             id?: string) {
     await this.mQuota.wait();
-    return new Promise<void>((resolve, reject) => {
-      const formData = {
-        feedback_text: message,
-        feedback_title: title,
-      };
-      if (fileBundle !== undefined) {
-        formData['feedback_file'] = fs.createReadStream(fileBundle);
-      }
-      if (groupingKey !== undefined) {
-        formData['grouping_key'] = groupingKey;
-      }
-      if (id !== undefined) {
-        formData['reference'] = id;
-      }
-      const headers = { ...this.mBaseData.headers };
-
-      if (anonymous) {
-        delete headers['APIKEY'];
-        console.log('anon headers', headers);
-      }
-
-      const url = anonymous
-        ? `${param.API_URL}/feedbacks/anonymous`
-        : `${param.API_URL}/feedbacks`;
-
-      request.post({
-        headers,
-        url,
-        formData,
-        timeout: 30000,
-      }, (error, response, body) => {
-        if (error !== null) {
-          return reject(error);
-        } else if (response.statusCode >= 400) {
-          return reject(new HTTPError(response.statusCode, response.statusMessage, body));
-        } else {
-          return resolve();
+    if (message.length === 0) {
+      return Promise.reject(new Error('Feedback message can\'t be empty'));
+    }
+    return this.checkFileSize(fileBundle)
+      .then(() => new Promise<void>((resolve, reject) => {
+        const formData = {
+          feedback_text: message,
+          feedback_title: title,
+        };
+        if (fileBundle !== undefined) {
+          formData['feedback_file'] = fs.createReadStream(fileBundle);
         }
+        if (groupingKey !== undefined) {
+          formData['grouping_key'] = groupingKey;
+        }
+        if (id !== undefined) {
+          formData['reference'] = id;
+        }
+        const headers = { ...this.mBaseData.headers };
+
+        if (anonymous) {
+          delete headers['APIKEY'];
+          console.log('anon headers', headers);
+        }
+
+        const url = anonymous
+          ? `${param.API_URL}/feedbacks/anonymous`
+          : `${param.API_URL}/feedbacks`;
+
+        request.post({
+          headers,
+          url,
+          formData,
+          timeout: 30000,
+        }, (error, response, body) => {
+          if (error !== null) {
+            return reject(error);
+          } else if (response.statusCode >= 400) {
+            return reject(new HTTPError(response.statusCode, response.statusMessage, body));
+          } else {
+            return resolve(JSON.parse(body));
+          }
+        });
+      }));
+  }
+
+  private checkFileSize(filePath: string): Promise<void> {
+    if (filePath === undefined) {
+      return Promise.resolve();
+    }
+    return new Promise((resolve, reject) => {
+      fs.stat(filePath, (err: Error, stats: fs.Stats) => {
+        if (err !== null) {
+          return reject(err);
+        }
+
+        if (stats.size > param.MAX_FILE_SIZE) {
+          return reject(new ParameterInvalid('The attachment is too large'));
+        }
+
+        resolve();
       });
     });
   }

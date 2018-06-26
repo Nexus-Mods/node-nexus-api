@@ -16,6 +16,7 @@ declare class Nexus {
     getDownloadURLs(modId: number, fileId: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<void>;
+    private checkFileSize(filePath);
     private request(url, args);
     private filter(obj);
     private args(customArgs);

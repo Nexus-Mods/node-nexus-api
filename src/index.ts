@@ -1,5 +1,5 @@
 export * from './types';
-export { NexusError, TimeoutError } from './customErrors';
+export { NexusError, ParameterInvalid, TimeoutError } from './customErrors';
 import Nexus from './Nexus';
 
 export default Nexus;

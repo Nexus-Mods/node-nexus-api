@@ -81,3 +81,23 @@ export interface IIssue {
     issue_state: string;
     issue_title: string;
 }
+export interface IGithubIssue {
+    id: number;
+    issue_number: number;
+    issue_title: string;
+    issue_state: string;
+    grouping_key: string;
+    created_at: string;
+    updated_at: string;
+}
+export interface IFeedbackResponse {
+    id: number;
+    status: number;
+    created_at: string;
+    updated_at: string;
+    reference: string;
+    grouping_key: string;
+    github_issue: IGithubIssue[];
+    user_blacklisted: boolean;
+    count: number;
+}

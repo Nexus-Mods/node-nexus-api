@@ -16,3 +16,6 @@ export declare class NexusError extends Error {
     readonly statusCode: number;
     readonly request: string;
 }
+export declare class ParameterInvalid extends Error {
+    constructor(message: any);
+}
