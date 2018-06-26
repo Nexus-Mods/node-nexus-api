@@ -226,13 +226,13 @@ class Nexus {
                             fileBundle: string,
                             anonymous: boolean,
                             groupingKey?: string,
-                            id?: string) {
+                            id?: string): Promise<types.IFeedbackResponse> {
     await this.mQuota.wait();
     if (message.length === 0) {
       return Promise.reject(new Error('Feedback message can\'t be empty'));
     }
     return this.checkFileSize(fileBundle)
-      .then(() => new Promise<void>((resolve, reject) => {
+      .then(() => new Promise<types.IFeedbackResponse>((resolve, reject) => {
         const formData = {
           feedback_text: message,
           feedback_title: title,
