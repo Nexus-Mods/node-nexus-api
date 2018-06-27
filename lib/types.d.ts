@@ -97,7 +97,7 @@ export interface IFeedbackResponse {
     updated_at: string;
     reference: string;
     grouping_key: string;
-    github_issue: IGithubIssue[];
+    github_issue: IGithubIssue;
     user_blacklisted: boolean;
     count: number;
 }
