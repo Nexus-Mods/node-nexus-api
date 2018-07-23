@@ -165,6 +165,9 @@ class Nexus {
 
   public async endorseMod(modId: number, modVersion: string,
                           endorseStatus: string, gameId?: string): Promise<any> {
+    if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
+      return Promise.reject('invalid endorse status, should be "endorse" or "abstain"');
+    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/{endorseStatus}', this.args({
       path: this.filter({ gameId, modId, endorseStatus }),
