@@ -238,7 +238,7 @@ class Nexus {
       .then(() => new Promise<types.IFeedbackResponse>((resolve, reject) => {
         const formData = {
           feedback_text: message,
-          feedback_title: title,
+          feedback_title: title.substr(0, 255),
         };
         if (fileBundle !== undefined) {
           formData['feedback_file'] = fs.createReadStream(fileBundle);
