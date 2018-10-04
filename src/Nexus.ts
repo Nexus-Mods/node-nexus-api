@@ -41,6 +41,14 @@ function handleRestResult(resolve, reject, url: string, error: any,
       return reject(new RateLimitError());
     }
 
+    if (response.statusCode === 202) {
+      // server accepted our request but didn't produce a result in time (for an internal timeout).
+      // As a result we simply don't know if the request was processed or not.
+      // If it was a simple data query, this is the same as a timeout. If it was a query that
+      // has a side effect (e.g. endorsing a mod) we don't know if it succeeded
+      return reject(new TimeoutError('Not processed in time'));
+    }
+
     const data = JSON.parse(body || '{}');
 
     if ((response.statusCode < 200) || (response.statusCode >= 300)) {
