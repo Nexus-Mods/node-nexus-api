@@ -220,10 +220,12 @@ class Nexus {
 
   public async getDownloadURLs(modId: number,
                                fileId: number,
+                               key: string,
+                               expires: number,
                                gameId?: string): Promise<types.IDownloadURL[]> {
     await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}/download_link',
-                this.args({ path: this.filter({ modId, fileId, gameId }) }));
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}/download_link?key={key}&expires={expires}',
+                this.args({ path: this.filter({ modId, fileId, gameId, key, expires }) }));
   }
 
   public async getOwnIssues(): Promise<types.IIssue[]> {
