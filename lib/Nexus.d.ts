@@ -13,7 +13,7 @@ declare class Nexus {
     getModInfo(modId: number, gameId?: string): Promise<types.IModInfo>;
     getModFiles(modId: number, gameId?: string): Promise<types.IModFiles>;
     getFileInfo(modId: number, fileId: number, gameId?: string): Promise<types.IFileInfo>;
-    getDownloadURLs(modId: number, fileId: number, key: string, expires: number, gameId?: string): Promise<types.IDownloadURL[]>;
+    getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
     private checkFileSize(filePath);
