@@ -25,11 +25,11 @@ Main class of the api
 * [getModFiles](_nexus_.nexus.md#getmodfiles)
 * [getModInfo](_nexus_.nexus.md#getmodinfo)
 * [getOwnIssues](_nexus_.nexus.md#getownissues)
+* [getValidationResult](_nexus_.nexus.md#getvalidationresult)
 * [sendFeedback](_nexus_.nexus.md#sendfeedback)
 * [setGame](_nexus_.nexus.md#setgame)
 * [setKey](_nexus_.nexus.md#setkey)
 * [validateKey](_nexus_.nexus.md#validatekey)
-* [validationResult](_nexus_.nexus.md#validationresult)
 * [create](_nexus_.nexus.md#create)
 
 ---
@@ -194,6 +194,17 @@ get list of issues reported by this user FOR INTERNAL USE ONLY
 **Returns:** `Promise`<[IIssue](../interfaces/_types_.iissue.md)[]>
 
 ___
+<a id="getvalidationresult"></a>
+
+###  getValidationResult
+
+▸ **getValidationResult**(): [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
+
+retrieve the result of the last key validation. This is useful primarily after creating the object with Nexus.create
+
+**Returns:** [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
+
+___
 <a id="sendfeedback"></a>
 
 ###  sendFeedback
@@ -268,17 +279,6 @@ validate a specific API key This does not update the request quota or the cached
 **Returns:** `Promise`<[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)>
 
 ___
-<a id="validationresult"></a>
-
-###  validationResult
-
-▸ **validationResult**(): [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
-
-retrieve the result of the last key validation. This is useful primarily after creating the object with Nexus.create
-
-**Returns:** [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
-
-___
 <a id="create"></a>
 
 ### `<Static>` create
@@ -286,7 +286,6 @@ ___
 ▸ **create**(apiKey: *`string`*, appVersion: *`string`*, defaultGame: *`string`*, timeout?: *`number`*): `Promise`<[Nexus](_nexus_.nexus.md)>
 
 create a Nexus instance and immediately verify the API Key
-*__throws__*: TimeoutError, NexusError, HTTPError, ParameterInvalid
 
 **Parameters:**
 

@@ -53,7 +53,9 @@ As described above, an APIKEY can be generated using a websocket-based protocol.
 API Reference
 -------------
 
-All relevant functionality is accessible through the [Nexus class](./docs/classes/_nexus_.nexus.md)
+All relevant functionality is accessible through the [Nexus class](./docs/classes/_nexus_.nexus.md).
+
+The API may throw a bunch of [Custom Errors](./docs/modules/_customerrors_.md).
 
 ### Throttling
 
