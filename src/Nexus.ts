@@ -323,6 +323,32 @@ class Nexus {
   }
 
   /**
+   * find information about a file based on its md5 hash
+   * This can be used to find info about a file when you don't have its modid and fileid
+   * Note that technically there may be multiple results for the same md5 hash, either the same
+   * file uploaded in different places or (less likely) different files that just happen to have
+   * the same hash.
+   * This function will return all of them, you will have to sort out from the result which file
+   * you were actually looking for (e.g. by comparing size)
+   * @param hash the md5 hash of the file
+   * @param gameId the game to search in
+   */
+  public async getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]> {
+    await this.mQuota.wait();
+    const urlPath = '/games/{gameId}/mods/md5_search/{hash}';
+    try {
+    return this.request(this.mBaseURL + urlPath,
+                this.args({path: this.filter({ gameId, hash })}));
+    } catch (err) {
+      if (err.code === '422') {
+        throw new ParameterInvalid(err.message);
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  /**
    * get list of issues reported by this user
    * FOR INTERNAL USE ONLY
    */

@@ -1,32 +1,31 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileInfo](../interfaces/_types_.ifileinfo.md)
+[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileInfoEx](../interfaces/_types_.ifileinfoex.md)
 
-# Interface: IFileInfo
-
-Information about a specific mod file
+# Interface: IFileInfoEx
 
 ## Hierarchy
 
-**IFileInfo**
+ [IFileInfo](_types_.ifileinfo.md)
 
-↳  [IFileInfoEx](_types_.ifileinfoex.md)
+**↳ IFileInfoEx**
 
 ## Index
 
 ### Properties
 
-* [category_id](_types_.ifileinfo.md#category_id)
-* [category_name](_types_.ifileinfo.md#category_name)
-* [changelog_html](_types_.ifileinfo.md#changelog_html)
-* [external_virus_scan_url](_types_.ifileinfo.md#external_virus_scan_url)
-* [file_id](_types_.ifileinfo.md#file_id)
-* [file_name](_types_.ifileinfo.md#file_name)
-* [is_primary](_types_.ifileinfo.md#is_primary)
-* [mod_version](_types_.ifileinfo.md#mod_version)
-* [name](_types_.ifileinfo.md#name)
-* [size](_types_.ifileinfo.md#size)
-* [uploaded_time](_types_.ifileinfo.md#uploaded_time)
-* [uploaded_timestamp](_types_.ifileinfo.md#uploaded_timestamp)
-* [version](_types_.ifileinfo.md#version)
+* [category_id](_types_.ifileinfoex.md#category_id)
+* [category_name](_types_.ifileinfoex.md#category_name)
+* [changelog_html](_types_.ifileinfoex.md#changelog_html)
+* [external_virus_scan_url](_types_.ifileinfoex.md#external_virus_scan_url)
+* [file_id](_types_.ifileinfoex.md#file_id)
+* [file_name](_types_.ifileinfoex.md#file_name)
+* [is_primary](_types_.ifileinfoex.md#is_primary)
+* [md5](_types_.ifileinfoex.md#md5)
+* [mod_version](_types_.ifileinfoex.md#mod_version)
+* [name](_types_.ifileinfoex.md#name)
+* [size](_types_.ifileinfoex.md#size)
+* [uploaded_time](_types_.ifileinfoex.md#uploaded_time)
+* [uploaded_timestamp](_types_.ifileinfoex.md#uploaded_timestamp)
+* [version](_types_.ifileinfoex.md#version)
 
 ---
 
@@ -74,8 +73,6 @@ ___
 
 **● file_id**: *`number`*
 
-file id
-
 ___
 <a id="file_name"></a>
 
@@ -93,6 +90,13 @@ ___
 **● is_primary**: *`boolean`*
 
 whether this is the primary download for the mod (the one that users download through the link in the top right of the mod page)
+
+___
+<a id="md5"></a>
+
+###  md5
+
+**● md5**: *`string`*
 
 ___
 <a id="mod_version"></a>

@@ -6,6 +6,9 @@ export interface IValidateKeyResponse {
    * nexus user id
    */
   user_id: number;
+  /**
+   * the api key
+   */
   key: string;
   /**
    * User Name
@@ -36,17 +39,13 @@ export type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
  */
 export interface IModInfo {
   /**
-   * the mod id
-   */
-  id: number;
-  /**
    * id of the category
    */
   category_id: number;
   /**
    * whether this mod is tagged as adult (1 = true, 0 = false)
    */
-  adult: number;
+  contains_adult_content: number;
   /**
    * mod type
    */
@@ -72,14 +71,44 @@ export interface IModInfo {
    */
   author: string;
   /**
+   * name of the user who uploaded this mod
+   */
+  uploaded_by: string;
+  /**
+   * url of the profile image of the uploader
+   */
+  uploaded_users_profile_url: string;
+  /**
    * url of the primary screenshot
    */
   picture_url: string;
   /**
+   * unix timestamp of when the mod was created
+   */
+  created_timestamp: number;
+  /**
+   * readable time of when the mod was created
+   */
+  created_time: string;
+  /**
+   * unix timestamp of when the mod was updated
+   */
+  updated_timestamp: number;
+  /**
+   * readable time of when the mod was updated
+   */
+  updated_time: string;
+  /**
+   * the primary file for this mod
+   */
+  primary_file?: IFileInfo;
+  /**
    * obsolete - will be removed in the near future
    */
-  endorsement: {
+  endorsement?: {
     endorse_status: EndorsedStatus,
+    timestamp: number,
+    version: number,
   };
 }
 
@@ -101,6 +130,7 @@ export interface IFileInfo {
   category_name: string;
   /**
    * html encoded changelog (matched via file version)
+   * null if there is none
    */
   changelog_html: string;
   /**
@@ -133,6 +163,7 @@ export interface IFileInfo {
   mod_version: string;
   /**
    * link to the virus scan results
+   * null if there is none
    */
   external_virus_scan_url: string;
   /**
@@ -285,6 +316,24 @@ export interface IDownloadURL {
    * short name (id?) of the download server
    */
   short_name: string;
+}
+
+export interface IModInfoEx extends IModInfo {
+  mod_id: number;
+  game_id: number;
+}
+
+export interface IFileInfoEx extends IFileInfo {
+  file_id: number;
+  md5: string;
+}
+
+/**
+ * Result from a md5 lookup
+ */
+export interface IMD5Result {
+  mod: IModInfoEx,
+  file_details: IFileInfoEx,
 }
 
 /**

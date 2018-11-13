@@ -1,36 +1,36 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IModInfo](../interfaces/_types_.imodinfo.md)
+[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IModInfoEx](../interfaces/_types_.imodinfoex.md)
 
-# Interface: IModInfo
-
-Details about a mod
+# Interface: IModInfoEx
 
 ## Hierarchy
 
-**IModInfo**
+ [IModInfo](_types_.imodinfo.md)
 
-↳  [IModInfoEx](_types_.imodinfoex.md)
+**↳ IModInfoEx**
 
 ## Index
 
 ### Properties
 
-* [author](_types_.imodinfo.md#author)
-* [category_id](_types_.imodinfo.md#category_id)
-* [contains_adult_content](_types_.imodinfo.md#contains_adult_content)
-* [created_time](_types_.imodinfo.md#created_time)
-* [created_timestamp](_types_.imodinfo.md#created_timestamp)
-* [description](_types_.imodinfo.md#description)
-* [endorsement](_types_.imodinfo.md#endorsement)
-* [name](_types_.imodinfo.md#name)
-* [picture_url](_types_.imodinfo.md#picture_url)
-* [primary_file](_types_.imodinfo.md#primary_file)
-* [summary](_types_.imodinfo.md#summary)
-* [type](_types_.imodinfo.md#type)
-* [updated_time](_types_.imodinfo.md#updated_time)
-* [updated_timestamp](_types_.imodinfo.md#updated_timestamp)
-* [uploaded_by](_types_.imodinfo.md#uploaded_by)
-* [uploaded_users_profile_url](_types_.imodinfo.md#uploaded_users_profile_url)
-* [version](_types_.imodinfo.md#version-1)
+* [author](_types_.imodinfoex.md#author)
+* [category_id](_types_.imodinfoex.md#category_id)
+* [contains_adult_content](_types_.imodinfoex.md#contains_adult_content)
+* [created_time](_types_.imodinfoex.md#created_time)
+* [created_timestamp](_types_.imodinfoex.md#created_timestamp)
+* [description](_types_.imodinfoex.md#description)
+* [endorsement](_types_.imodinfoex.md#endorsement)
+* [game_id](_types_.imodinfoex.md#game_id)
+* [mod_id](_types_.imodinfoex.md#mod_id)
+* [name](_types_.imodinfoex.md#name)
+* [picture_url](_types_.imodinfoex.md#picture_url)
+* [primary_file](_types_.imodinfoex.md#primary_file)
+* [summary](_types_.imodinfoex.md#summary)
+* [type](_types_.imodinfoex.md#type)
+* [updated_time](_types_.imodinfoex.md#updated_time)
+* [updated_timestamp](_types_.imodinfoex.md#updated_timestamp)
+* [uploaded_by](_types_.imodinfoex.md#uploaded_by)
+* [uploaded_users_profile_url](_types_.imodinfoex.md#uploaded_users_profile_url)
+* [version](_types_.imodinfoex.md#version-1)
 
 ---
 
@@ -105,6 +105,20 @@ obsolete - will be removed in the near future
  timestamp: `number`
 
  version: `number`
+
+___
+<a id="game_id"></a>
+
+###  game_id
+
+**● game_id**: *`number`*
+
+___
+<a id="mod_id"></a>
+
+###  mod_id
+
+**● mod_id**: *`number`*
 
 ___
 <a id="name"></a>

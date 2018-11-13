@@ -19,6 +19,7 @@ Main class of the api
 
 * [endorseMod](_nexus_.nexus.md#endorsemod)
 * [getDownloadURLs](_nexus_.nexus.md#getdownloadurls)
+* [getFileByMD5](_nexus_.nexus.md#getfilebymd5)
 * [getFileInfo](_nexus_.nexus.md#getfileinfo)
 * [getGameInfo](_nexus_.nexus.md#getgameinfo)
 * [getGames](_nexus_.nexus.md#getgames)
@@ -97,6 +98,24 @@ generate download links for a file If the user isn't premium on Nexus Mods, this
 | `Optional` gameId | `string` |  id of the game |
 
 **Returns:** `Promise`<[IDownloadURL](../interfaces/_types_.idownloadurl.md)[]>
+
+___
+<a id="getfilebymd5"></a>
+
+###  getFileByMD5
+
+▸ **getFileByMD5**(hash: *`string`*, gameId?: *`string`*): `Promise`<[IMD5Result](../interfaces/_types_.imd5result.md)[]>
+
+find information about a file based on its md5 hash This can be used to find info about a file when you don't have its modid and fileid Note that technically there may be multiple results for the same md5 hash, either the same file uploaded in different places or (less likely) different files that just happen to have the same hash. This function will return all of them, you will have to sort out from the result which file you were actually looking for (e.g. by comparing size)
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| hash | `string` |  the md5 hash of the file |
+| `Optional` gameId | `string` |  the game to search in |
+
+**Returns:** `Promise`<[IMD5Result](../interfaces/_types_.imd5result.md)[]>
 
 ___
 <a id="getfileinfo"></a>

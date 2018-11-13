@@ -57,6 +57,8 @@ ___
 
 **● key**: *`string`*
 
+the api key
+
 ___
 <a id="name"></a>
 

@@ -9,18 +9,26 @@ export interface IValidateKeyResponse {
 }
 export declare type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
 export interface IModInfo {
-    id: number;
     category_id: number;
-    adult: number;
+    contains_adult_content: number;
     type: number;
     name: string;
     summary: string;
     description: string;
     version: string;
     author: string;
+    uploaded_by: string;
+    uploaded_users_profile_url: string;
     picture_url: string;
-    endorsement: {
+    created_timestamp: number;
+    created_time: string;
+    updated_timestamp: number;
+    updated_time: string;
+    primary_file?: IFileInfo;
+    endorsement?: {
         endorse_status: EndorsedStatus;
+        timestamp: number;
+        version: number;
     };
 }
 export interface IFileInfo {
@@ -55,9 +63,6 @@ export interface ICategory {
     name: string;
     parent_category: number | false;
 }
-export interface IGameInfo extends IGameListEntry {
-    categories: ICategory[];
-}
 export interface IGameListEntry {
     id: number;
     domain_name: string;
@@ -70,10 +75,25 @@ export interface IGameListEntry {
     downloads: number;
     approved_date: number;
 }
+export interface IGameInfo extends IGameListEntry {
+    categories: ICategory[];
+}
 export interface IDownloadURL {
     URI: string;
     name: string;
     short_name: string;
+}
+export interface IModInfoEx extends IModInfo {
+    mod_id: number;
+    game_id: number;
+}
+export interface IFileInfoEx extends IFileInfo {
+    file_id: number;
+    md5: string;
+}
+export interface IMD5Result {
+    mod: IModInfoEx;
+    file_details: IFileInfoEx;
 }
 export interface IIssue {
     id: number;
