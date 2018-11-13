@@ -110,7 +110,7 @@ function rest(url: string, args: IRequestArgs): Promise<any> {
 }
 
 /**
- * implements the Nexus API
+ * Main class of the api
  *
  * @class Nexus
  */
@@ -121,6 +121,13 @@ class Nexus {
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
 
+  /**
+   * Constructor
+   * please don't use this directly, use Nexus.create
+   * @param appVersion {string} Version number of the client application (Needs to be semantic format)
+   * @param defaultGame {string} (nexus) id of the game requests are made for. Can be overridden per request
+   * @param timeout {number} Request timeout in milliseconds. Defaults to 5000ms
+   */
   constructor(appVersion: string, defaultGame: string, timeout?: number) {
     this.mBaseData = {
       headers: {
@@ -142,22 +149,43 @@ class Nexus {
     };
 
     this.mQuota = new Quota(param.QUOTA_MAX, param.QUOTA_MAX, param.QUOTA_RATE_MS);
-    this.setKey(apiKey);
   }
 
+  /**
+   * create a Nexus instance and immediately verify the API Key
+   * 
+   * @param apiKey the api key to use for connections
+   * @param appVersion {string} Version number of the client application (Needs to be semantic format)
+   * @param defaultGame {string} (nexus) id of the game requests are made for. Can be overridden per request
+   * @param timeout {number} Request timeout in milliseconds. Defaults to 5000ms
+   */
   public static async create(apiKey: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
     const res = new Nexus(appVersion, defaultGame, timeout);
     res.mValidationResult = await res.setKey(apiKey);
     return res;
   }
 
+  /**
+   * change the default game id
+   * @param gameId {string} game id
+   */
   public setGame(gameId: string): void {
     this.mBaseData.path.gameId = gameId;
   }
 
+  /**
+   * retrieve the result of the last key validation.
+   * This is useful primarily after creating the object with Nexus.create
+   */
   public getValidationResult(): types.IValidateKeyResponse {
     return this.mValidationResult;
   }
+
+  /**
+   * change the API Key and validate it This can also be used to unset the key
+   * @param apiKey the new api key to set
+   * @returns A promise that resolves to the user info on success or null if the apikey was undefined
+   */
   public async setKey(apiKey: string): Promise<types.IValidateKeyResponse> {
     this.mBaseData.headers.APIKEY = apiKey;
     if (apiKey !== undefined) {
@@ -180,14 +208,27 @@ class Nexus {
     }
   }
 
+  /**
+   * validate a specific API key
+   * This does not update the request quota or the cached validation result so it's
+   * not useful for re-checking the key after a validation error.
+   * @param key the API key to validate. Tests the current one if left undefined
+   */
   public async validateKey(key?: string): Promise<types.IValidateKeyResponse> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/users/validate',
                 this.args({ headers: this.filter({ APIKEY: key }) }));
   }
 
+  /**
+   * Endorse/Unendorse a mod
+   * @param modId {number} (nexus) id of the mod to endorse
+   * @param modVersion {string} version of the mod the user has installed (has to correspond to a version that actually exists)
+   * @param endorseStatus {'endorse' | 'abstain'} the new endorsement state
+   * @param gameId {string} (nexus) id of the game to endorse
+   */
   public async endorseMod(modId: number, modVersion: string,
-                          endorseStatus: string, gameId?: string): Promise<any> {
+                          endorseStatus: 'endorse' | 'abstain', gameId?: string): Promise<any> {
     if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
       return Promise.reject('invalid endorse status, should be "endorse" or "abstain"');
     }
@@ -198,11 +239,19 @@ class Nexus {
     }));
   }
 
+  /**
+   * retrieve a list of all games currently supported by Nexus Mods
+   * @returns list of games
+   */
   public async getGames(): Promise<types.IGameListEntry[]> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games', this.args({}));
   }
 
+  /**
+   * retrieve details about a specific game
+   * @param gameId {string} (nexus) game id to request
+   */
   public async getGameInfo(gameId?: string): Promise<types.IGameInfo> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}', this.args({
@@ -210,6 +259,11 @@ class Nexus {
     }));
   }
 
+  /**
+   * retrieve details about a mod
+   * @param modId {number} (nexus) id of the mod
+   * @param gameId {string} (nexus) game id
+   */
   public async getModInfo(modId: number, gameId?: string): Promise<types.IModInfo> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}', this.args({
@@ -217,6 +271,11 @@ class Nexus {
     }));
   }
 
+  /**
+   * get list of all files uploaded for a mod
+   * @param modId {number} (nexus) id of the mod
+   * @param gameId {string} (nexus) game id
+   */
   public async getModFiles(modId: number, gameId?: string): Promise<types.IModFiles> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files', this.args({
@@ -224,6 +283,12 @@ class Nexus {
     }));
   }
 
+  /**
+   * get details about a file
+   * @param modId (nexus) id of the mod
+   * @param fileId (nexus) id of the file
+   * @param gameId (nexus) id of the game
+   */
   public async getFileInfo(modId: number,
                            fileId: number,
                            gameId?: string): Promise<types.IFileInfo> {
@@ -233,6 +298,16 @@ class Nexus {
     }));
   }
 
+  /**
+   * generate download links for a file
+   * If the user isn't premium on Nexus Mods, this requires a key that can only
+   * be generated on the website. The key is part of the nxm links that are generated by the "Download with Manager" buttons.
+   * @param modId id of the mod
+   * @param fileId id of the file
+   * @param key a download key
+   * @param expires expiry time of the key
+   * @param gameId id of the game
+   */
   public async getDownloadURLs(modId: number,
                                fileId: number,
                                key?: string,
@@ -247,12 +322,27 @@ class Nexus {
                 this.args({ path: this.filter({ modId, fileId, gameId, key, expires }) }));
   }
 
+  /**
+   * get list of issues reported by this user
+   * FOR INTERNAL USE ONLY
+   */
   public async getOwnIssues(): Promise<types.IIssue[]> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/feedbacks/list_user_issues/', this.args({}))
       .then(obj => obj.issues);
   }
 
+  /**
+   * send a feedback message
+   * FOR INTERNAL USE ONLY
+   *
+   * @param title title of the message
+   * @param message content
+   * @param fileBundle path to an archive that is sent along
+   * @param anonymous whether the report should be made anonymously
+   * @param groupingKey a key that is used to group identical reports
+   * @param id reference id
+   */
   public async sendFeedback(title: string,
                             message: string,
                             fileBundle: string,
