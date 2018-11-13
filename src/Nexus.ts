@@ -119,8 +119,9 @@ class Nexus {
 
   private mBaseURL = param.API_URL;
   private mQuota: Quota;
+  private mValidationResult: types.IValidateKeyResponse;
 
-  constructor(game: string, apiKey: string, appVersion: string, timeout?: number) {
+  constructor(appVersion: string, defaultGame: string, timeout?: number) {
     this.mBaseData = {
       headers: {
         'Content-Type': 'application/json',
@@ -129,7 +130,7 @@ class Nexus {
         'Application-Version': appVersion,
       },
       path: {
-        gameId: game,
+        gameId: defaultGame,
       },
       requestConfig: {
         timeout: timeout || param.DEFAULT_TIMEOUT_MS,
@@ -144,24 +145,38 @@ class Nexus {
     this.setKey(apiKey);
   }
 
+  public static async create(apiKey: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
+    const res = new Nexus(appVersion, defaultGame, timeout);
+    res.mValidationResult = await res.setKey(apiKey);
+    return res;
+  }
+
   public setGame(gameId: string): void {
     this.mBaseData.path.gameId = gameId;
   }
 
-  public async setKey(apiKey: string): Promise<void> {
+  public getValidationResult(): types.IValidateKeyResponse {
+    return this.mValidationResult;
+  }
+  public async setKey(apiKey: string): Promise<types.IValidateKeyResponse> {
     this.mBaseData.headers.APIKEY = apiKey;
     if (apiKey !== undefined) {
       try {
-        const res = await this.validateKey(apiKey);
+        this.mValidationResult = await this.validateKey(apiKey);
         if (this.mBaseData.headers.APIKEY === apiKey) {
-          this.mQuota.setMax(res['is_premium?'] ? param.QUOTA_MAX_PREMIUM : param.QUOTA_MAX);
+          this.mQuota.setMax(this.mValidationResult['is_premium?'] ? param.QUOTA_MAX_PREMIUM : param.QUOTA_MAX);
         }
+        return this.mValidationResult;
       }
       catch (err) {
         this.mQuota.setMax(param.QUOTA_MAX);
+        this.mValidationResult = null;
+        throw err;
       }
     } else {
       this.mQuota.setMax(param.QUOTA_MAX);
+      this.mValidationResult = null;
+      return null;
     }
   }
 
