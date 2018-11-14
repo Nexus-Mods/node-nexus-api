@@ -14,6 +14,7 @@ interface IRequestArgs {
   requestConfig?: {
     timeout: number,
     noDelay: boolean,
+    securityProtocol: string,
   };
   responseConfig?: {
     timeout: number,
@@ -29,7 +30,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
       const message = error.message.indexOf('wrong version number') !== -1 
         ? 'protocol version mismatch between client and server (if using a proxy/vpn, please ensure it supports TLS 1.2 and above)'
         : error.message;
-      return reject(new ProtocolError('SSL protocol error: ' + message));
+      return reject(new ProtocolError('Security protocol error: ' + message));
     }
     return reject(error);
   }
@@ -75,9 +76,7 @@ function restGet(url: string, args: IRequestArgs): Promise<any> {
       followRedirect: true,
       timeout: args.requestConfig.timeout,
       agentOptions: {
-        // Force Vortex to use TLS 1.2 as it is the widely accepted standard.
-        //  (The API will refuse any other protocols except for TLS 1.2 and TLS 1.3)
-        secureProtocol: 'TLSv1_2_method'
+        secureProtocol: args.requestConfig.securityProtocol
       },
     }, (error, response, body) => {
       if (error) {
@@ -100,6 +99,9 @@ function restPost(url: string, args: IRequestArgs): Promise<any> {
       headers: args.headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
+      agentOptions: {
+        secureProtocol: args.requestConfig.securityProtocol
+      },
       body: JSON.stringify(args.data),
     }, (error, response, body) => {
       if (error) {
@@ -150,6 +152,7 @@ class Nexus {
         gameId: defaultGame,
       },
       requestConfig: {
+        securityProtocol: param.SECURITY_PROTOCOL_VERSION,
         timeout: timeout || param.DEFAULT_TIMEOUT_MS,
         noDelay: true,
       },
