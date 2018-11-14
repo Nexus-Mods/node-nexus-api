@@ -9,6 +9,16 @@ export class TimeoutError extends Error {
 }
 
 /**
+ * Error thrown when a protocol error is reported.
+ */
+export class ProtocolError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+/**
  * Error thrown when too many requests were made to the api
  * You should not see this error in your application as it is handled internally
  */

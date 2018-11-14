@@ -5,7 +5,7 @@ import Quota from './Quota';
 import * as fs from 'fs';
 import request = require('request');
 import format = require('string-template');
-import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid } from './customErrors';
+import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError } from './customErrors';
 
 interface IRequestArgs {
   headers?: any;
@@ -25,6 +25,11 @@ function handleRestResult(resolve, reject, url: string, error: any,
   if (error !== null) {
     if ((error.code === 'ETIMEDOUT') || (error.code === 'ESOCKETTIMEOUT')) {
       return reject(new TimeoutError('request timed out: ' + url));
+    } else if (error.code === 'EPROTO') {
+      const message = error.message.indexOf('wrong version number') !== -1 
+        ? 'protocol version mismatch between client and server (if using a proxy/vpn, please ensure it supports TLS 1.2 and above)'
+        : error.message;
+      return reject(new ProtocolError('SSL protocol error: ' + message));
     }
     return reject(error);
   }
@@ -69,6 +74,11 @@ function restGet(url: string, args: IRequestArgs): Promise<any> {
       headers: args.headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
+      agentOptions: {
+        // Force Vortex to use TLS 1.2 as it is the widely accepted standard.
+        //  (The API will refuse any other protocols except for TLS 1.2 and TLS 1.3)
+        secureProtocol: 'TLSv1_2_method'
+      },
     }, (error, response, body) => {
       if (error) {
         // if this error remains uncaught the error message won't be particularly
