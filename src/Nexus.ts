@@ -3,6 +3,8 @@ import * as types from './types';
 import Quota from './Quota';
 
 import * as fs from 'fs';
+import * as os from 'os';
+import * as process from 'process';
 import request = require('request');
 import format = require('string-template');
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError } from './customErrors';
@@ -147,6 +149,8 @@ class Nexus {
         APIKEY: undefined,
         'Protocol-Version': param.PROTOCOL_VERSION,
         'Application-Version': appVersion,
+        'User-Agent': `NexusApiClient/${param.PROTOCOL_VERSION} (${os.type()} ${os.release()}; ${process.arch})`
+                    + ` Node/${process.versions.node}`,
       },
       path: {
         gameId: defaultGame,

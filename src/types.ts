@@ -323,17 +323,12 @@ export interface IModInfoEx extends IModInfo {
   game_id: number;
 }
 
-export interface IFileInfoEx extends IFileInfo {
-  file_id: number;
-  md5: string;
-}
-
 /**
  * Result from a md5 lookup
  */
 export interface IMD5Result {
   mod: IModInfoEx,
-  file_details: IFileInfoEx,
+  file_details: IFileInfo,
 }
 
 /**

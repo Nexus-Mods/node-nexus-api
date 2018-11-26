@@ -29,7 +29,7 @@ The application version - which has to follow semantic versioning guidelines - i
 
 E.g. if one version of your application has a bug that leads to it spamming a certain request, we might block that request for that application version without affecting other versions which don't have the problem.
 
-Therefore it's in your, and your users best interest to provide a sensible version format and keeping it up-to-date.
+Therefore it's in your, and your users best interest to provide a version in the right format and keeping it up-to-date.
 
 ## Single Sign-On
 
