@@ -165,7 +165,7 @@ class Nexus {
       },
     };
 
-    this.mQuota = new Quota(param.QUOTA_MAX, param.QUOTA_MAX, param.QUOTA_RATE_MS);
+    this.mQuota = new Quota();
   }
 
   /**
@@ -208,18 +208,13 @@ class Nexus {
     if (apiKey !== undefined) {
       try {
         this.mValidationResult = await this.validateKey(apiKey);
-        if (this.mBaseData.headers.APIKEY === apiKey) {
-          this.mQuota.setMax(this.mValidationResult['is_premium?'] ? param.QUOTA_MAX_PREMIUM : param.QUOTA_MAX);
-        }
         return this.mValidationResult;
       }
       catch (err) {
-        this.mQuota.setMax(param.QUOTA_MAX);
         this.mValidationResult = null;
         throw err;
       }
     } else {
-      this.mQuota.setMax(param.QUOTA_MAX);
       this.mValidationResult = null;
       return null;
     }
@@ -463,15 +458,9 @@ class Nexus {
       return await rest(url, args);
     } catch (err) {
       if (err instanceof RateLimitError) {
-        this.mQuota.reset();
-        await new Promise((resolve) => {
-          setTimeout(resolve, param.DELAY_AFTER_429_MS);
-        });
-        await this.mQuota.wait();
-        return await this.request(url, args);
-      } else {
-        throw err;
+        this.mQuota.block();
       }
+      throw err;
     }
   }
 
