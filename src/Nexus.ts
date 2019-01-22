@@ -24,7 +24,7 @@ interface IRequestArgs {
 }
 
 function handleRestResult(resolve, reject, url: string, error: any,
-                          response: request.RequestResponse, body: any) {
+                          response: request.RequestResponse, body: any, onUpdateLimit: (limit: number) => void) {
   if (error !== null) {
     if ((error.code === 'ETIMEDOUT') || (error.code === 'ESOCKETTIMEOUT')) {
       return reject(new TimeoutError('request timed out: ' + url));
@@ -38,6 +38,14 @@ function handleRestResult(resolve, reject, url: string, error: any,
   }
 
   try {
+
+    let hourlyLimit = response.headers['x-rl-hourly-remaining'];
+    let dailyLimit = response.headers['x-rl-daily-remaining'];
+
+    if (hourlyLimit !== undefined) {
+      onUpdateLimit(Math.max(parseInt(dailyLimit.toString(), 10), parseInt(hourlyLimit.toString(), 10)));
+    }
+
     if ((response.statusCode === 521)
         || (body === 'Bad Gateway')) {
       // in this case the body isn't something the api sent so it probably can't be parsed
@@ -70,7 +78,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
   }
 }
 
-function restGet(url: string, args: IRequestArgs): Promise<any> {
+function restGet(url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void): Promise<any> {
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     request.get(format(url, args.path || {}), {
@@ -88,12 +96,12 @@ function restGet(url: string, args: IRequestArgs): Promise<any> {
         error.stack += '\n' + stackErr.stack;
       }
 
-      handleRestResult(resolve, reject, url, error, response, body);
+      handleRestResult(resolve, reject, url, error, response, body, onUpdateLimit);
     });
   });
 }
 
-function restPost(url: string, args: IRequestArgs): Promise<any> {
+function restPost(url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void): Promise<any> {
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     request.post({
@@ -112,15 +120,15 @@ function restPost(url: string, args: IRequestArgs): Promise<any> {
         error.message += ` (request: ${url})`;
         error.stack += '\n' + stackErr.stack;
       }
-      handleRestResult(resolve, reject, url, error, response, body);
+      handleRestResult(resolve, reject, url, error, response, body, onUpdateLimit);
     });
   });
 }
 
-function rest(url: string, args: IRequestArgs): Promise<any> {
+function rest(url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void): Promise<any> {
   return args.data !== undefined
-    ? restPost(url, args)
-    : restGet(url, args);
+    ? restPost(url, args, onUpdateLimit)
+    : restGet(url, args, onUpdateLimit);
 }
 
 /**
@@ -165,7 +173,7 @@ class Nexus {
       },
     };
 
-    this.mQuota = new Quota();
+    this.mQuota = new Quota(param.QUOTA_MAX, param.QUOTA_MAX, param.QUOTA_RATE_MS);
   }
 
   /**
@@ -455,7 +463,9 @@ class Nexus {
 
   private async request(url: string, args: IRequestArgs): Promise<any> {
     try {
-      return await rest(url, args);
+      return await rest(url, args, (limit: number) => {
+        this.mQuota.updateLimit(limit);
+      });
     } catch (err) {
       if (err instanceof RateLimitError) {
         this.mQuota.block();
