@@ -1,3 +1,6 @@
+/**
+ * Error thrown if a request timed out
+ */
 export class TimeoutError extends Error {
   constructor(message) {
     super(message);
@@ -5,6 +8,20 @@ export class TimeoutError extends Error {
   }
 }
 
+/**
+ * Error thrown when a protocol error is reported.
+ */
+export class ProtocolError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+/**
+ * Error thrown when too many requests were made to the api
+ * You should not see this error in your application as it is handled internally
+ */
 export class RateLimitError extends Error {
   constructor() {
     super('Rate Limit Exceeded');
@@ -12,6 +29,9 @@ export class RateLimitError extends Error {
   }
 }
 
+/**
+ * Error thrown if an HTTP error is reported (HTTP code 4xx or 5xx)
+ */
 export class HTTPError extends Error {
   private mBody: string;
   constructor(statusCode: number, message: string, body: string) {
@@ -24,6 +44,9 @@ export class HTTPError extends Error {
   }
 }
 
+/**
+ * Error reported by the nexus api
+ */
 export class NexusError extends Error {
   private mStatusCode: number;
   private mRequest: string;
@@ -42,6 +65,9 @@ export class NexusError extends Error {
   }
 }
 
+/**
+ * API called with an invalid parameter
+ */
 export class ParameterInvalid extends Error {
   constructor(message) {
     super(message);

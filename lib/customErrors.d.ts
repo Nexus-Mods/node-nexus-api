@@ -1,6 +1,9 @@
 export declare class TimeoutError extends Error {
     constructor(message: any);
 }
+export declare class ProtocolError extends Error {
+    constructor(message: string);
+}
 export declare class RateLimitError extends Error {
     constructor();
 }

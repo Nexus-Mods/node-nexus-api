@@ -3,9 +3,11 @@ declare class Quota {
     private mMaximum;
     private mMSPerIncrement;
     private mLastCheck;
+    private mBlockHour;
+    private mLimit;
     constructor(init: number, max: number, msPerIncrement: number);
-    reset(): void;
+    updateLimit(limit: number): void;
+    block(): void;
     wait(): Promise<void>;
-    setMax(newMax: number): void;
 }
 export default Quota;
