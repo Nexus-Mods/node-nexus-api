@@ -32,36 +32,52 @@ export interface IValidateKeyResponse {
   profile_url: string;
 }
 
+export interface IUser {
+  member_id: number;
+  member_group_id: number;
+  name: string;
+}
+
 export type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
+
+/**
+ * possible states the mod can be in
+ */
+export type ModStatus = 'under_moderation' | 'published' | 'not_published' | 'publish_with_game' | 'removed' | 'wastebinned' | 'hidden';
 
 /**
  * Details about a mod
  */
 export interface IModInfo {
   /**
+   * id of this mod (should be the same you queried for)
+   */
+  mod_id: number;
+  /**
+   * internal id of the game this mod belongs to
+   */
+  game_id: number;
+  /**
    * id of the category
    */
   category_id: number;
   /**
-   * whether this mod is tagged as adult (1 = true, 0 = false)
+   * whether this mod is tagged as adult
    */
-  contains_adult_content: number;
-  /**
-   * mod type
-   */
-  type: number;
+  contains_adult_content: boolean;
   /**
    * Name of the mod
+   * (not present if the file is under moderation)
    */
-  name: string;
+  name?: string;
   /**
    * short description
    */
-  summary: string;
+  summary?: string;
   /**
    * long description
    */
-  description: string;
+  description?: string;
   /**
    * mod version
    */
@@ -71,6 +87,10 @@ export interface IModInfo {
    */
   author: string;
   /**
+   * more detailed info about the author
+   */
+  user: IUser;
+  /**
    * name of the user who uploaded this mod
    */
   uploaded_by: string;
@@ -79,9 +99,20 @@ export interface IModInfo {
    */
   uploaded_users_profile_url: string;
   /**
+   * current status of the mod
+   */
+  status: ModStatus;
+  /**
+   * whether the mod is currently available/visible to users
+   * If a mod isn't available the api returns very limited information, essentially
+   * hiding all textual info that could contain offensive content but certain "maintenance" info
+   * is still provided.
+   */
+  available: boolean;
+  /**
    * url of the primary screenshot
    */
-  picture_url: string;
+  picture_url?: string;
   /**
    * unix timestamp of when the mod was created
    */
@@ -98,10 +129,6 @@ export interface IModInfo {
    * readable time of when the mod was updated
    */
   updated_time: string;
-  /**
-   * the primary file for this mod
-   */
-  primary_file?: IFileInfo;
   /**
    * obsolete - will be removed in the near future
    */
@@ -138,11 +165,15 @@ export interface IFileInfo {
    */
   name: string;
   /**
+   * file description
+   */
+  description: string;
+  /**
    * File version (doesn't actually have to match any mod version)
    */
   version: string;
   /**
-   * File size in bytes
+   * File size in kilobytes
    */
   size: number;
   /**
@@ -370,4 +401,38 @@ export interface IFeedbackResponse {
   github_issue: IGithubIssue;
   user_blacklisted: boolean;
   count: number;
+}
+
+export interface IChangelogs {
+  [versionNumber: string]: string[],
+}
+
+export interface ITrackedMod {
+  mod_id: number;
+  game_id: number;
+}
+
+export interface IEndorsement {
+  mod_id: number;
+  game_id: number;
+  date: number;
+  version: string;
+  status: 'Endorse' | 'Abstain';
+}
+
+export interface IEndorseResponse {
+  message: string;
+  status: EndorsedStatus;
+}
+
+export interface ITrackResponse {
+  message: string;
+}
+
+export interface IColourScheme {
+  id: number;
+  name: string;
+  primary_colour: string;
+  secondary_colour: string;
+  darker_colour: string;
 }

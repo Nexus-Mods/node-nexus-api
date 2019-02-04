@@ -9,10 +9,14 @@ import request = require('request');
 import format = require('string-template');
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError } from './customErrors';
 
+type REST_METHOD = 'DELETE' | 'POST';
+
+//#region REST
 interface IRequestArgs {
   headers?: any;
   path?: any;
   data?: any;
+  method?: REST_METHOD;
   requestConfig?: {
     timeout: number,
     noDelay: boolean,
@@ -38,7 +42,6 @@ function handleRestResult(resolve, reject, url: string, error: any,
   }
 
   try {
-
     let hourlyLimit = response.headers['x-rl-hourly-remaining'];
     let dailyLimit = response.headers['x-rl-daily-remaining'];
 
@@ -101,10 +104,11 @@ function restGet(url: string, args: IRequestArgs, onUpdateLimit: (limit: number)
   });
 }
 
-function restPost(url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void): Promise<any> {
+function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void): Promise<any> {
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
-    request.post({
+    request({
+      method,
       url: format(url, args.path),
       headers: args.headers,
       followRedirect: true,
@@ -125,11 +129,13 @@ function restPost(url: string, args: IRequestArgs, onUpdateLimit: (limit: number
   });
 }
 
-function rest(url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void): Promise<any> {
+function rest(url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void, method?: REST_METHOD): Promise<any> {
   return args.data !== undefined
-    ? restPost(url, args, onUpdateLimit)
+    ? restPost(method || 'POST', url, args, onUpdateLimit)
     : restGet(url, args, onUpdateLimit);
 }
+
+//#endregion
 
 /**
  * Main class of the api
@@ -142,6 +148,8 @@ class Nexus {
   private mBaseURL = param.API_URL;
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
+
+  //#region Constructor and maintenance
 
   /**
    * Constructor
@@ -228,6 +236,10 @@ class Nexus {
     }
   }
 
+  //#endregion
+
+  //#region Account
+
   /**
    * validate a specific API key
    * This does not update the request quota or the cached validation result so it's
@@ -241,23 +253,52 @@ class Nexus {
   }
 
   /**
-   * Endorse/Unendorse a mod
-   * @param modId {number} (nexus) id of the mod to endorse
-   * @param modVersion {string} version of the mod the user has installed (has to correspond to a version that actually exists)
-   * @param endorseStatus {'endorse' | 'abstain'} the new endorsement state
-   * @param gameId {string} (nexus) id of the game to endorse
+   * Get list of all mods being tracked by the user
    */
-  public async endorseMod(modId: number, modVersion: string,
-                          endorseStatus: 'endorse' | 'abstain', gameId?: string): Promise<any> {
-    if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
-      return Promise.reject('invalid endorse status, should be "endorse" or "abstain"');
-    }
+  public async getTrackedMods(): Promise<types.ITrackedMod[]> {
     await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/{endorseStatus}', this.args({
-      path: this.filter({ gameId, modId, endorseStatus }),
-      data: this.filter({ Version: modVersion }),
-    }));
+    return this.request(this.mBaseURL + '/user/tracked_mods',
+                this.args({}));
   }
+
+  /**
+   * start tracking a mod
+   * @param modId id of the mod
+   * @param gameId id of the game
+   */
+  public async trackMod(modId: string, gameId?: string): Promise<types.ITrackResponse> {
+    await this.mQuota.wait();
+      return this.request(this.mBaseURL + '/user/tracked_mods', this.args({
+        data: {
+          domain_name: gameId || this.mBaseData.path.gameId,
+          mod_id: modId,
+        },
+      }))
+      .catch(err => (err.statusCode === 422)
+        // 422 means already tracked, don't feel like this is an error
+        ? Promise.resolve({ message: err.message })
+        : Promise.reject(err));
+  }
+
+  /**
+   * stop tracking a mod
+   * @param modId id of the mod
+   * @param gameId id of the game
+   */
+  public async untrackMod(modId: string, gameId?: string): Promise<types.ITrackResponse> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/user/tracked_mods', this.args({
+      data: {
+        domain_name: gameId || this.mBaseData.path.gameId,
+        mod_id: modId,
+      },
+    }), 'DELETE');
+  }
+
+
+  //#endregion
+
+  //#region Lists
 
   /**
    * retrieve a list of all games currently supported by Nexus Mods
@@ -269,6 +310,66 @@ class Nexus {
   }
 
   /**
+   * get list of the latest added mods
+   * @param gameId id of the game to query
+   */
+  public async getLatestAdded(gameId?: string): Promise<types.IModInfo[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/latest_added', this.args({
+      path: this.filter({ gameId }),
+    }));
+  }
+
+  /**
+   * get list of the latest updated mods
+   * @param gameId id of the game to query
+   */
+  public async getLatestUpdated(gameId?: string): Promise<types.IModInfo[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/latest_updated', this.args({
+      path: this.filter({ gameId }),
+    }));
+  }
+
+  /**
+   * get list of trending mods
+   * @param gameId id of the game to query
+   */
+  public async getTrending(gameId?: string): Promise<types.IModInfo[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/trending', this.args({
+      path: this.filter({ gameId }),
+    }));
+  }
+
+  /**
+   * get list of endorsements the user has given
+   */
+  public async getEndorsements(): Promise<types.IEndorsement[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/user/endorsements', this.args({}));
+  }
+
+  /**
+   * get list of colourschemes
+   */
+  public async getColourschemes(): Promise<types.IColourScheme[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/colourschemes', this.args({}));
+  }
+
+  /**
+   * get list of colorschemes
+   */
+  public async getColorschemes() {
+    return this.getColourschemes();
+  }
+
+  //#endregion
+
+  //#region Game info
+
+  /**
    * retrieve details about a specific game
    * @param gameId {string} (nexus) game id to request
    */
@@ -276,6 +377,29 @@ class Nexus {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}', this.args({
       path: this.filter({ gameId }),
+    }));
+  }
+
+  //#endregion
+
+  //#region Mod info/management
+
+  /**
+   * Endorse/Unendorse a mod
+   * @param modId {number} (nexus) id of the mod to endorse
+   * @param modVersion {string} version of the mod the user has installed (has to correspond to a version that actually exists)
+   * @param endorseStatus {'endorse' | 'abstain'} the new endorsement state
+   * @param gameId {string} (nexus) id of the game to endorse
+   */
+  public async endorseMod(modId: number, modVersion: string,
+                          endorseStatus: 'endorse' | 'abstain', gameId?: string): Promise<types.IEndorseResponse> {
+    if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
+      return Promise.reject('invalid endorse status, should be "endorse" or "abstain"');
+    }
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/{endorseStatus}', this.args({
+      path: this.filter({ gameId, modId, endorseStatus }),
+      data: this.filter({ Version: modVersion }),
     }));
   }
 
@@ -292,6 +416,18 @@ class Nexus {
   }
 
   /**
+   * retrieve all changelogs for a mod
+   * @param modId {number} (nexus) id of the mod
+   * @param gameId {string} (nexus) game id
+   */
+  public async getChangelogs(modId: number, gameId?: string): Promise<types.IChangelogs> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/changelogs', this.args({
+      path: this.filter({ modId, gameId }),
+    }));
+  }
+
+  /**
    * get list of all files uploaded for a mod
    * @param modId {number} (nexus) id of the mod
    * @param gameId {string} (nexus) game id
@@ -303,6 +439,9 @@ class Nexus {
     }));
   }
 
+  //#endregion
+
+  //#region File info
   /**
    * get details about a file
    * @param modId (nexus) id of the mod
@@ -367,6 +506,13 @@ class Nexus {
       }
     }
   }
+
+  //#endregion
+
+  //#region Feedback
+
+  // these apis are only intended for the use in Vortex and don't make sense
+  // for third party applications
 
   /**
    * get list of issues reported by this user
@@ -442,6 +588,10 @@ class Nexus {
       }));
   }
 
+  //#endregion
+
+  //#region Implementation
+
   private checkFileSize(filePath: string): Promise<void> {
     if (filePath === undefined) {
       return Promise.resolve();
@@ -461,11 +611,11 @@ class Nexus {
     });
   }
 
-  private async request(url: string, args: IRequestArgs): Promise<any> {
+  private async request(url: string, args: IRequestArgs, method?: REST_METHOD): Promise<any> {
     try {
       return await rest(url, args, (limit: number) => {
         this.mQuota.updateLimit(limit);
-      });
+      }, method);
     } catch (err) {
       if (err instanceof RateLimitError) {
         this.mQuota.block();
@@ -494,6 +644,7 @@ class Nexus {
     }
     return result;
   }
+  //#endregion
 }
 
 export default Nexus;

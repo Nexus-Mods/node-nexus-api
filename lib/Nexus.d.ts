@@ -10,10 +10,20 @@ declare class Nexus {
     getValidationResult(): types.IValidateKeyResponse;
     setKey(apiKey: string): Promise<types.IValidateKeyResponse>;
     validateKey(key?: string): Promise<types.IValidateKeyResponse>;
-    endorseMod(modId: number, modVersion: string, endorseStatus: 'endorse' | 'abstain', gameId?: string): Promise<any>;
+    getTrackedMods(): Promise<types.ITrackedMod[]>;
+    trackMod(modId: string, gameId?: string): Promise<types.ITrackResponse>;
+    untrackMod(modId: string, gameId?: string): Promise<types.ITrackResponse>;
     getGames(): Promise<types.IGameListEntry[]>;
+    getLatestAdded(gameId?: string): Promise<types.IModInfo[]>;
+    getLatestUpdated(gameId?: string): Promise<types.IModInfo[]>;
+    getTrending(gameId?: string): Promise<types.IModInfo[]>;
+    getEndorsements(): Promise<types.IEndorsement[]>;
+    getColourschemes(): Promise<types.IColourScheme[]>;
+    getColorschemes(): Promise<types.IColourScheme[]>;
     getGameInfo(gameId?: string): Promise<types.IGameInfo>;
+    endorseMod(modId: number, modVersion: string, endorseStatus: 'endorse' | 'abstain', gameId?: string): Promise<types.IEndorseResponse>;
     getModInfo(modId: number, gameId?: string): Promise<types.IModInfo>;
+    getChangelogs(modId: number, gameId?: string): Promise<types.IChangelogs>;
     getModFiles(modId: number, gameId?: string): Promise<types.IModFiles>;
     getFileInfo(modId: number, fileId: number, gameId?: string): Promise<types.IFileInfo>;
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
@@ -21,7 +31,7 @@ declare class Nexus {
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
     private checkFileSize(filePath);
-    private request(url, args);
+    private request(url, args, method?);
     private filter(obj);
     private args(customArgs);
 }

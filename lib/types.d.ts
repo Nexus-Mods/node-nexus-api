@@ -7,24 +7,33 @@ export interface IValidateKeyResponse {
     email: string;
     profile_url: string;
 }
-export declare type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
-export interface IModInfo {
-    category_id: number;
-    contains_adult_content: number;
-    type: number;
+export interface IUser {
+    member_id: number;
+    member_group_id: number;
     name: string;
-    summary: string;
-    description: string;
+}
+export declare type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
+export declare type ModStatus = 'under_moderation' | 'published' | 'not_published' | 'publish_with_game' | 'removed' | 'wastebinned' | 'hidden';
+export interface IModInfo {
+    mod_id: number;
+    game_id: number;
+    category_id: number;
+    contains_adult_content: boolean;
+    name?: string;
+    summary?: string;
+    description?: string;
     version: string;
     author: string;
+    user: IUser;
     uploaded_by: string;
     uploaded_users_profile_url: string;
-    picture_url: string;
+    status: ModStatus;
+    available: boolean;
+    picture_url?: string;
     created_timestamp: number;
     created_time: string;
     updated_timestamp: number;
     updated_time: string;
-    primary_file?: IFileInfo;
     endorsement?: {
         endorse_status: EndorsedStatus;
         timestamp: number;
@@ -37,6 +46,7 @@ export interface IFileInfo {
     category_name: string;
     changelog_html: string;
     name: string;
+    description: string;
     version: string;
     size: number;
     file_name: string;
@@ -116,4 +126,32 @@ export interface IFeedbackResponse {
     github_issue: IGithubIssue;
     user_blacklisted: boolean;
     count: number;
+}
+export interface IChangelogs {
+    [versionNumber: string]: string[];
+}
+export interface ITrackedMod {
+    mod_id: number;
+    game_id: number;
+}
+export interface IEndorsement {
+    mod_id: number;
+    game_id: number;
+    date: number;
+    version: string;
+    status: 'Endorse' | 'Abstain';
+}
+export interface IEndorseResponse {
+    message: string;
+    status: EndorsedStatus;
+}
+export interface ITrackResponse {
+    message: string;
+}
+export interface IColourScheme {
+    id: number;
+    name: string;
+    primary_colour: string;
+    secondary_colour: string;
+    darker_colour: string;
 }
