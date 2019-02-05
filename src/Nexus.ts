@@ -28,7 +28,7 @@ interface IRequestArgs {
 }
 
 function handleRestResult(resolve, reject, url: string, error: any,
-                          response: request.RequestResponse, body: any, onUpdateLimit: (limit: number) => void) {
+                          response: request.RequestResponse, body: any, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
     if ((error.code === 'ETIMEDOUT') || (error.code === 'ESOCKETTIMEOUT')) {
       return reject(new TimeoutError('request timed out: ' + url));
@@ -46,7 +46,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
     let dailyLimit = response.headers['x-rl-daily-remaining'];
 
     if (hourlyLimit !== undefined) {
-      onUpdateLimit(Math.max(parseInt(dailyLimit.toString(), 10), parseInt(hourlyLimit.toString(), 10)));
+      onUpdateLimit(parseInt(dailyLimit.toString(), 10), parseInt(hourlyLimit.toString(), 10));
     }
 
     if ((response.statusCode === 521)
@@ -81,7 +81,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
   }
 }
 
-function restGet(url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void): Promise<any> {
+function restGet(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     request.get(format(url, args.path || {}), {
@@ -104,7 +104,7 @@ function restGet(url: string, args: IRequestArgs, onUpdateLimit: (limit: number)
   });
 }
 
-function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void): Promise<any> {
+function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     request({
@@ -129,7 +129,7 @@ function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdate
   });
 }
 
-function rest(url: string, args: IRequestArgs, onUpdateLimit: (limit: number) => void, method?: REST_METHOD): Promise<any> {
+function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void, method?: REST_METHOD): Promise<any> {
   return args.data !== undefined
     ? restPost(method || 'POST', url, args, onUpdateLimit)
     : restGet(url, args, onUpdateLimit);
@@ -148,22 +148,25 @@ class Nexus {
   private mBaseURL = param.API_URL;
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
+  private mRateLimit: { daily: number, hourly: number } = { daily: 1000, hourly: 100 };
 
   //#region Constructor and maintenance
 
   /**
    * Constructor
    * please don't use this directly, use Nexus.create
+   * @param appName {string} Name of the client application
    * @param appVersion {string} Version number of the client application (Needs to be semantic format)
    * @param defaultGame {string} (nexus) id of the game requests are made for. Can be overridden per request
    * @param timeout {number} Request timeout in milliseconds. Defaults to 5000ms
    */
-  constructor(appVersion: string, defaultGame: string, timeout?: number) {
+  constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number) {
     this.mBaseData = {
       headers: {
         'Content-Type': 'application/json',
         APIKEY: undefined,
         'Protocol-Version': param.PROTOCOL_VERSION,
+        'Application-Name': appName,
         'Application-Version': appVersion,
         'User-Agent': `NexusApiClient/${param.PROTOCOL_VERSION} (${os.type()} ${os.release()}; ${process.arch})`
                     + ` Node/${process.versions.node}`,
@@ -187,13 +190,14 @@ class Nexus {
   /**
    * create a Nexus instance and immediately verify the API Key
    * 
-   * @param apiKey the api key to use for connections
+   * @param apiKey {string} the api key to use for connections
+   * @param appName {string} name of the client application
    * @param appVersion {string} Version number of the client application (Needs to be semantic format)
    * @param defaultGame {string} (nexus) id of the game requests are made for. Can be overridden per request
    * @param timeout {number} Request timeout in milliseconds. Defaults to 5000ms
    */
-  public static async create(apiKey: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
-    const res = new Nexus(appVersion, defaultGame, timeout);
+  public static async create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
+    const res = new Nexus(appName, appVersion, defaultGame, timeout);
     res.mValidationResult = await res.setKey(apiKey);
     return res;
   }
@@ -234,6 +238,10 @@ class Nexus {
       this.mValidationResult = null;
       return null;
     }
+  }
+
+  public getRateLimits(): { daily: number, hourly: number } {
+    return this.mRateLimit;
   }
 
   //#endregion
@@ -294,7 +302,6 @@ class Nexus {
       },
     }), 'DELETE');
   }
-
 
   //#endregion
 
@@ -613,8 +620,9 @@ class Nexus {
 
   private async request(url: string, args: IRequestArgs, method?: REST_METHOD): Promise<any> {
     try {
-      return await rest(url, args, (limit: number) => {
-        this.mQuota.updateLimit(limit);
+      return await rest(url, args, (daily: number, hourly: number) => {
+        this.mRateLimit = { daily, hourly };
+        this.mQuota.updateLimit(Math.max(daily, hourly));
       }, method);
     } catch (err) {
       if (err instanceof RateLimitError) {

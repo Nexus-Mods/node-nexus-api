@@ -4,11 +4,16 @@ declare class Nexus {
     private mBaseURL;
     private mQuota;
     private mValidationResult;
-    constructor(appVersion: string, defaultGame: string, timeout?: number);
-    static create(apiKey: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
+    private mRateLimit;
+    constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
+    static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setGame(gameId: string): void;
     getValidationResult(): types.IValidateKeyResponse;
     setKey(apiKey: string): Promise<types.IValidateKeyResponse>;
+    getRateLimits(): {
+        daily: number;
+        hourly: number;
+    };
     validateKey(key?: string): Promise<types.IValidateKeyResponse>;
     getTrackedMods(): Promise<types.ITrackedMod[]>;
     trackMod(modId: string, gameId?: string): Promise<types.ITrackResponse>;

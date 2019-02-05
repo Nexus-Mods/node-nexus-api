@@ -403,15 +403,24 @@ export interface IFeedbackResponse {
   count: number;
 }
 
+/**
+ * response to a request for changelogs
+ */
 export interface IChangelogs {
   [versionNumber: string]: string[],
 }
 
+/**
+ * response to a request for tracked mods
+ */
 export interface ITrackedMod {
   mod_id: number;
-  game_id: number;
+  domain_name: string;
 }
 
+/**
+ * response to a request for endorsements
+ */
 export interface IEndorsement {
   mod_id: number;
   game_id: number;
@@ -420,15 +429,30 @@ export interface IEndorsement {
   status: 'Endorse' | 'Abstain';
 }
 
+/**
+ * (success) response to a endorse/abstain request
+ */
 export interface IEndorseResponse {
+  /**
+   * textual reply to the request, something like "Updated to: Endorsed"
+   */
   message: string;
   status: EndorsedStatus;
 }
 
+/**
+ * (success) response to a track/untrack request
+ */
 export interface ITrackResponse {
+  /**
+   * textual result of the action, something like "User 123 is now Tracking Mod: 456"
+   */
   message: string;
 }
 
+/**
+ * colourscheme entry as returned by getColourSchemes
+ */
 export interface IColourScheme {
   id: number;
   name: string;

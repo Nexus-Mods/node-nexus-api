@@ -132,7 +132,7 @@ export interface IChangelogs {
 }
 export interface ITrackedMod {
     mod_id: number;
-    game_id: number;
+    domain_name: string;
 }
 export interface IEndorsement {
     mod_id: number;
