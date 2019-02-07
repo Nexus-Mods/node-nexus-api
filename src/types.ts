@@ -460,3 +460,17 @@ export interface IColourScheme {
   secondary_colour: string;
   darker_colour: string;
 }
+
+/**
+ * range of updates to query
+ */
+export type UpdatePeriod = '1d' | '1w' | '1m';
+
+/**
+ * an entry in the update list
+ */
+export interface IUpdateEntry {
+  mod_id: number,
+  last_file_update: number,
+  last_mod_activity: number,
+}

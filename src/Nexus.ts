@@ -387,6 +387,19 @@ class Nexus {
     }));
   }
 
+  /**
+   * retrieve list of mods for a game that has recently been updated
+   * @param period {string} rough time range to retrieve. This is limited to specific periods
+   *                        (1d, 1w, 1m) because the list is cached on the server
+   * @param gameId {string} (nexus) game id to request
+   */
+  public async getRecentlyUpdatedMods(period: types.UpdatePeriod, gameId?: string): Promise<types.IUpdateEntry[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/games/{gameId}/mods/updated?period={period}', this.args({
+      path: this.filter({ gameId, period }),
+    }));
+  }
+
   //#endregion
 
   //#region Mod info/management
@@ -571,7 +584,6 @@ class Nexus {
 
         if (anonymous) {
           delete headers['APIKEY'];
-          console.log('anon headers', headers);
         }
 
         const url = anonymous

@@ -26,6 +26,7 @@ declare class Nexus {
     getColourschemes(): Promise<types.IColourScheme[]>;
     getColorschemes(): Promise<types.IColourScheme[]>;
     getGameInfo(gameId?: string): Promise<types.IGameInfo>;
+    getRecentlyUpdatedMods(period: types.UpdatePeriod, gameId?: string): Promise<types.IUpdateEntry[]>;
     endorseMod(modId: number, modVersion: string, endorseStatus: 'endorse' | 'abstain', gameId?: string): Promise<types.IEndorseResponse>;
     getModInfo(modId: number, gameId?: string): Promise<types.IModInfo>;
     getChangelogs(modId: number, gameId?: string): Promise<types.IChangelogs>;

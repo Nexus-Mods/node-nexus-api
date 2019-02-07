@@ -155,3 +155,9 @@ export interface IColourScheme {
     secondary_colour: string;
     darker_colour: string;
 }
+export declare type UpdatePeriod = '1d' | '1w' | '1m';
+export interface IUpdateEntry {
+    mod_id: number;
+    last_file_update: number;
+    last_mod_activity: number;
+}
