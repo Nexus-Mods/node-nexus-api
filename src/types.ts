@@ -423,10 +423,10 @@ export interface ITrackedMod {
  */
 export interface IEndorsement {
   mod_id: number;
-  game_id: number;
+  domain_name: number;
   date: number;
   version: string;
-  status: 'Endorse' | 'Abstain';
+  status: EndorsedStatus;
 }
 
 /**

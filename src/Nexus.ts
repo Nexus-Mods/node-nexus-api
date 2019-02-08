@@ -77,6 +77,12 @@ function handleRestResult(resolve, reject, url: string, error: any,
 
     resolve(data);
   } catch (err) {
+    if ((body.length > 0) && (body[0] === '<')) {
+      // if the body starts with a < it's probably an html page (which is always the case in previous cases)
+      // if it is an html page, it has to be coming from a load balancer or firewall or something that apparently doesn't
+      // give a shit about the content type we asked for, so the API is apparently not reachable atm.
+      return reject(new NexusError('API currently not reachable', response.statusCode, url));
+    }
     reject(new Error(`failed to parse server response for request "${url}": ${err.message}`));
   }
 }
