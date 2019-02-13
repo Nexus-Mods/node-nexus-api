@@ -7,7 +7,7 @@ declare class Quota {
     private mLimit;
     constructor(init: number, max: number, msPerIncrement: number);
     updateLimit(limit: number): void;
-    block(): void;
+    block(): boolean;
     wait(): Promise<void>;
 }
 export default Quota;

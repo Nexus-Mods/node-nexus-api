@@ -26,14 +26,22 @@ class Quota {
     this.mLimit = limit;
   }
 
-  public block() {
+  /**
+   * signal that the request was blocked by the server with an error code that
+   * indicates client is sending too many requests
+   * returns true if the rate limit is actually used up so we won't be able to
+   * make requests for a while, false if it's likely a temporary problem.
+   */
+  public block(): boolean {
     this.mCount = 0;
     this.mLastCheck = Date.now();
 
-    if (--this.mLimit <= 0) {
+    if (this.mLimit <= 0) {
       // rate limit exceeded, block until the next full hour
       this.mBlockHour = (new Date()).getHours();
+      return true;
     }
+    return false;
   }
 
   public wait(): Promise<void> {

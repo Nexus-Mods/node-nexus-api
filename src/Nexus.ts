@@ -644,7 +644,10 @@ class Nexus {
       }, method);
     } catch (err) {
       if (err instanceof RateLimitError) {
-        this.mQuota.block();
+        if (!this.mQuota.block()) {
+          await this.mQuota.wait();
+          return this.request(url, args, method);
+        }
       }
       throw err;
     }
