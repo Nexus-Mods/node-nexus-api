@@ -58,6 +58,10 @@ export interface IModInfo {
    */
   game_id: number;
   /**
+   * domain name (as used in urls and as the game id in all other requests)
+   */
+  domain_name: string;
+  /**
    * id of the category
    */
   category_id: number;
@@ -471,6 +475,6 @@ export type UpdatePeriod = '1d' | '1w' | '1m';
  */
 export interface IUpdateEntry {
   mod_id: number,
-  last_file_update: number,
-  last_mod_activity: number,
+  latest_file_update: number,
+  latest_mod_activity: number,
 }
