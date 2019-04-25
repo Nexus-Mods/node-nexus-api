@@ -17,6 +17,7 @@ export declare type ModStatus = 'under_moderation' | 'published' | 'not_publishe
 export interface IModInfo {
     mod_id: number;
     game_id: number;
+    domain_name: string;
     category_id: number;
     contains_adult_content: boolean;
     name?: string;
@@ -136,7 +137,7 @@ export interface ITrackedMod {
 }
 export interface IEndorsement {
     mod_id: number;
-    domain_name: number;
+    domain_name: string;
     date: number;
     version: string;
     status: EndorsedStatus;
@@ -158,6 +159,6 @@ export interface IColourScheme {
 export declare type UpdatePeriod = '1d' | '1w' | '1m';
 export interface IUpdateEntry {
     mod_id: number;
-    last_file_update: number;
-    last_mod_activity: number;
+    latest_file_update: number;
+    latest_mod_activity: number;
 }
