@@ -427,7 +427,7 @@ export interface ITrackedMod {
  */
 export interface IEndorsement {
   mod_id: number;
-  domain_name: number;
+  domain_name: string;
   date: number;
   version: string;
   status: EndorsedStatus;
