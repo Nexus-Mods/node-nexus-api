@@ -81,7 +81,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
       // if the body starts with a < it's probably an html page (which is always the case in previous cases)
       // if it is an html page, it has to be coming from a load balancer or firewall or something that apparently doesn't
       // give a shit about the content type we asked for, so the API is apparently not reachable atm.
-      return reject(new NexusError('API currently not reachable', response.statusCode, url));
+      return reject(new NexusError('API currently not reachable, please try again later.', response.statusCode, url));
     }
     reject(new Error(`failed to parse server response for request "${url}": ${err.message}`));
   }
@@ -164,7 +164,7 @@ class Nexus {
    * @param appName {string} Name of the client application
    * @param appVersion {string} Version number of the client application (Needs to be semantic format)
    * @param defaultGame {string} (nexus) id of the game requests are made for. Can be overridden per request
-   * @param timeout {number} Request timeout in milliseconds. Defaults to 5000ms
+   * @param timeout {number} Request timeout in milliseconds. Defaults to 30 seconds
    */
   constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number) {
     this.mBaseData = {
