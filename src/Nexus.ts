@@ -261,7 +261,7 @@ class Nexus {
    * @param key the API key to validate. Tests the current one if left undefined
    */
   public async validateKey(key?: string): Promise<types.IValidateKeyResponse> {
-    await this.mQuota.wait();
+    // key validation doesn't have to check quota because it doesn't require/consume tickets
     return this.request(this.mBaseURL + '/users/validate',
                 this.args({ headers: this.filter({ APIKEY: key }) }));
   }
