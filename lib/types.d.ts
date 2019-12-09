@@ -117,6 +117,40 @@ export interface IGithubIssue {
     created_at: string;
     updated_at: string;
 }
+export interface ICollectionInfo {
+    author: string;
+    author_url: string;
+    name: string;
+    version: string;
+    description: string;
+    game_id: string;
+}
+export declare type UpdatePolicy = 'exact' | 'latest';
+export declare type SourceType = 'browse' | 'manual' | 'direct' | 'nexus';
+export interface ICollectionSource {
+    type: SourceType;
+    md5?: string;
+    url?: string;
+    instructions?: string;
+    mod_id?: string;
+    file_id?: string;
+    update_policy?: UpdatePolicy;
+    file_size?: number;
+    logical_filename?: string;
+    file_expression?: string;
+}
+export interface ICollectionMod {
+    name: string;
+    version: string;
+    optional: boolean;
+    game_id: string;
+    source: ICollectionSource;
+    author?: string;
+}
+export interface ICollectionManifest {
+    info: ICollectionInfo;
+    mods: ICollectionMod[];
+}
 export interface IFeedbackResponse {
     id: number;
     status: number;

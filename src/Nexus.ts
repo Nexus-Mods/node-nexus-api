@@ -535,6 +535,49 @@ class Nexus {
 
   //#endregion
 
+  //#region Collection
+
+  public async sendCollection(manifest: types.ICollectionManifest, assetFilePath: string, gameId?: string): Promise<any> {
+    await this.mQuota.wait();
+
+    return new Promise<any>((resolve, reject) => {
+      const formData = {
+        collection_schema_id: 1,
+        name: manifest.info.name,
+        description: manifest.info.description,
+        summary: manifest.info.description,
+        collection_manifest: JSON.stringify(manifest),
+        collection_data: fs.createReadStream(assetFilePath),
+      };
+
+      const baseUrl = param.API_DEV_URL || param.API_URL;
+
+      const url = `${baseUrl}/games/${gameId || this.mBaseData.path.gameId}/collections`;
+      const headers = {
+        ...this.mBaseData.headers,
+      };
+      if (!!param.APIKEY_DEV) {
+        headers.APIKEY = param.APIKEY_DEV;
+      }
+      request.post({
+        headers,
+        url,
+        formData,
+        timeout: this.mBaseData.requestConfig.timeout,
+      }, (error, response, body) => {
+        if (error !== null) {
+          return reject(error);
+        } else if (response.statusCode >= 400) {
+          return reject(new HTTPError(response.statusCode, response.statusMessage, body));
+        } else {
+          return resolve(JSON.parse(body));
+        }
+      });
+    });
+  }
+
+  //#endregion
+
   //#region Feedback
 
   // these apis are only intended for the use in Vortex and don't make sense

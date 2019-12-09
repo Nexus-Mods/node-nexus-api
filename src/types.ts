@@ -391,6 +391,46 @@ export interface IGithubIssue {
   updated_at: string;
 }
 
+export interface ICollectionInfo {
+  author: string;
+  author_url: string;
+  name: string;
+  version: string;
+  description: string;
+  game_id: string
+}
+
+export type UpdatePolicy = 'exact' | 'latest';
+export type SourceType = 'browse' | 'manual' | 'direct' | 'nexus';
+
+export interface ICollectionSource {
+  type: SourceType;
+  md5?: string;
+  url?: string;
+  instructions?: string;
+  mod_id?: string;
+  file_id?: string;
+  // determines which file to get if there is an update compared to what's in the mod pack
+  update_policy?: UpdatePolicy;
+  file_size?: number;
+  logical_filename?: string;
+  file_expression?: string;
+}
+
+export interface ICollectionMod {
+  name: string;
+  version: string;
+  optional: boolean;
+  game_id: string;
+  source: ICollectionSource;
+  author?: string;
+}
+
+export interface ICollectionManifest {
+  info: ICollectionInfo;
+  mods: ICollectionMod[];
+}
+
 /**
  * response to a feedback request
  * INTERNAL USE ONLY

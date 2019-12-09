@@ -16,6 +16,11 @@ export const DELAY_AFTER_429_MS: number = 1000;
 
 export const API_URL: string = 'https://api.nexusmods.com/v1';
 
+// can be used to redirect requests for in-development requests to a different server and separate
+// api key
+export const API_DEV_URL: string = '';
+export const APIKEY_DEV: string = '';
+
 // used so the server can provide compatibility behaviour with older protocols.
 // Please don't mess with this unless you're in contact with NexusMods
 export const PROTOCOL_VERSION: string = require('../package.json').version.split('-')[0];
