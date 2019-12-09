@@ -35,6 +35,8 @@ export interface IModInfo {
     created_time: string;
     updated_timestamp: number;
     updated_time: string;
+    allow_rating: boolean;
+    endorsement_count: number;
     endorsement?: {
         endorse_status: EndorsedStatus;
         timestamp: number;
@@ -46,10 +48,12 @@ export interface IFileInfo {
     category_id: number;
     category_name: string;
     changelog_html: string;
+    content_preview_link: string;
     name: string;
     description: string;
     version: string;
     size: number;
+    size_kb: number;
     file_name: string;
     uploaded_timestamp: number;
     uploaded_time: string;
