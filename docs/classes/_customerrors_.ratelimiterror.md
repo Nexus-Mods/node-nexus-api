@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [RateLimitError](../classes/_customerrors_.ratelimiterror.md)
+[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [RateLimitError](../classes/_customerrors_.ratelimiterror.md)
 
 # Class: RateLimitError
 

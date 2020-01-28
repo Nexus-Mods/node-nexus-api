@@ -1,8 +1,9 @@
-[nexus-api](../README.md) > ["Nexus"](../modules/_nexus_.md) > [Nexus](../classes/_nexus_.nexus.md)
+[@nexusmods/nexus-api](../README.md) > ["Nexus"](../modules/_nexus_.md) > [Nexus](../classes/_nexus_.nexus.md)
 
 # Class: Nexus
 
 Main class of the api
+
 *__class__*: Nexus
 
 ## Hierarchy
@@ -18,18 +19,30 @@ Main class of the api
 ### Methods
 
 * [endorseMod](_nexus_.nexus.md#endorsemod)
+* [getChangelogs](_nexus_.nexus.md#getchangelogs)
+* [getColorschemes](_nexus_.nexus.md#getcolorschemes)
+* [getColourschemes](_nexus_.nexus.md#getcolourschemes)
 * [getDownloadURLs](_nexus_.nexus.md#getdownloadurls)
+* [getEndorsements](_nexus_.nexus.md#getendorsements)
 * [getFileByMD5](_nexus_.nexus.md#getfilebymd5)
 * [getFileInfo](_nexus_.nexus.md#getfileinfo)
 * [getGameInfo](_nexus_.nexus.md#getgameinfo)
 * [getGames](_nexus_.nexus.md#getgames)
+* [getLatestAdded](_nexus_.nexus.md#getlatestadded)
+* [getLatestUpdated](_nexus_.nexus.md#getlatestupdated)
 * [getModFiles](_nexus_.nexus.md#getmodfiles)
 * [getModInfo](_nexus_.nexus.md#getmodinfo)
 * [getOwnIssues](_nexus_.nexus.md#getownissues)
+* [getRateLimits](_nexus_.nexus.md#getratelimits)
+* [getRecentlyUpdatedMods](_nexus_.nexus.md#getrecentlyupdatedmods)
+* [getTrackedMods](_nexus_.nexus.md#gettrackedmods)
+* [getTrending](_nexus_.nexus.md#gettrending)
 * [getValidationResult](_nexus_.nexus.md#getvalidationresult)
 * [sendFeedback](_nexus_.nexus.md#sendfeedback)
 * [setGame](_nexus_.nexus.md#setgame)
 * [setKey](_nexus_.nexus.md#setkey)
+* [trackMod](_nexus_.nexus.md#trackmod)
+* [untrackMod](_nexus_.nexus.md#untrackmod)
 * [validateKey](_nexus_.nexus.md#validatekey)
 * [create](_nexus_.nexus.md#create)
 
@@ -41,7 +54,7 @@ Main class of the api
 
 ###  constructor
 
-⊕ **new Nexus**(appVersion: *`string`*, defaultGame: *`string`*, timeout?: *`number`*): [Nexus](_nexus_.nexus.md)
+⊕ **new Nexus**(appName: *`string`*, appVersion: *`string`*, defaultGame: *`string`*, timeout?: *`number`*): [Nexus](_nexus_.nexus.md)
 
 Constructor please don't use this directly, use Nexus.create
 
@@ -49,9 +62,10 @@ Constructor please don't use this directly, use Nexus.create
 
 | Name | Type | Description |
 | ------ | ------ | ------ |
+| appName | `string` |  Name of the client application |
 | appVersion | `string` |  Version number of the client application (Needs to be semantic format) |
 | defaultGame | `string` |  (nexus) id of the game requests are made for. Can be overridden per request |
-| `Optional` timeout | `number` |  Request timeout in milliseconds. Defaults to 5000ms |
+| `Optional` timeout | `number` |  Request timeout in milliseconds. Defaults to 30 seconds |
 
 **Returns:** [Nexus](_nexus_.nexus.md)
 
@@ -63,7 +77,7 @@ ___
 
 ###  endorseMod
 
-▸ **endorseMod**(modId: *`number`*, modVersion: *`string`*, endorseStatus: * "endorse" &#124; "abstain"*, gameId?: *`string`*): `Promise`<`any`>
+▸ **endorseMod**(modId: *`number`*, modVersion: *`string`*, endorseStatus: *"endorse" \| "abstain"*, gameId?: *`string`*): `Promise`<[IEndorseResponse](../interfaces/_types_.iendorseresponse.md)>
 
 Endorse/Unendorse a mod
 
@@ -73,10 +87,50 @@ Endorse/Unendorse a mod
 | ------ | ------ | ------ |
 | modId | `number` |  (nexus) id of the mod to endorse |
 | modVersion | `string` |  version of the mod the user has installed (has to correspond to a version that actually exists) |
-| endorseStatus |  "endorse" &#124; "abstain"|  the new endorsement state |
+| endorseStatus | "endorse" \| "abstain" |  the new endorsement state |
 | `Optional` gameId | `string` |  (nexus) id of the game to endorse |
 
-**Returns:** `Promise`<`any`>
+**Returns:** `Promise`<[IEndorseResponse](../interfaces/_types_.iendorseresponse.md)>
+
+___
+<a id="getchangelogs"></a>
+
+###  getChangelogs
+
+▸ **getChangelogs**(modId: *`number`*, gameId?: *`string`*): `Promise`<[IChangelogs](../interfaces/_types_.ichangelogs.md)>
+
+retrieve all changelogs for a mod
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| modId | `number` |  (nexus) id of the mod |
+| `Optional` gameId | `string` |  (nexus) game id |
+
+**Returns:** `Promise`<[IChangelogs](../interfaces/_types_.ichangelogs.md)>
+
+___
+<a id="getcolorschemes"></a>
+
+###  getColorschemes
+
+▸ **getColorschemes**(): `Promise`<[IColourScheme](../interfaces/_types_.icolourscheme.md)[]>
+
+get list of colorschemes
+
+**Returns:** `Promise`<[IColourScheme](../interfaces/_types_.icolourscheme.md)[]>
+
+___
+<a id="getcolourschemes"></a>
+
+###  getColourschemes
+
+▸ **getColourschemes**(): `Promise`<[IColourScheme](../interfaces/_types_.icolourscheme.md)[]>
+
+get list of colourschemes
+
+**Returns:** `Promise`<[IColourScheme](../interfaces/_types_.icolourscheme.md)[]>
 
 ___
 <a id="getdownloadurls"></a>
@@ -98,6 +152,17 @@ generate download links for a file If the user isn't premium on Nexus Mods, this
 | `Optional` gameId | `string` |  id of the game |
 
 **Returns:** `Promise`<[IDownloadURL](../interfaces/_types_.idownloadurl.md)[]>
+
+___
+<a id="getendorsements"></a>
+
+###  getEndorsements
+
+▸ **getEndorsements**(): `Promise`<[IEndorsement](../interfaces/_types_.iendorsement.md)[]>
+
+get list of endorsements the user has given
+
+**Returns:** `Promise`<[IEndorsement](../interfaces/_types_.iendorsement.md)[]>
 
 ___
 <a id="getfilebymd5"></a>
@@ -166,6 +231,40 @@ retrieve a list of all games currently supported by Nexus Mods
 list of games
 
 ___
+<a id="getlatestadded"></a>
+
+###  getLatestAdded
+
+▸ **getLatestAdded**(gameId?: *`string`*): `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+
+get list of the latest added mods
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| `Optional` gameId | `string` |  id of the game to query |
+
+**Returns:** `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+
+___
+<a id="getlatestupdated"></a>
+
+###  getLatestUpdated
+
+▸ **getLatestUpdated**(gameId?: *`string`*): `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+
+get list of the latest updated mods
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| `Optional` gameId | `string` |  id of the game to query |
+
+**Returns:** `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+
+___
 <a id="getmodfiles"></a>
 
 ###  getModFiles
@@ -211,6 +310,61 @@ ___
 get list of issues reported by this user FOR INTERNAL USE ONLY
 
 **Returns:** `Promise`<[IIssue](../interfaces/_types_.iissue.md)[]>
+
+___
+<a id="getratelimits"></a>
+
+###  getRateLimits
+
+▸ **getRateLimits**(): `object`
+
+**Returns:** `object`
+
+___
+<a id="getrecentlyupdatedmods"></a>
+
+###  getRecentlyUpdatedMods
+
+▸ **getRecentlyUpdatedMods**(period: *`types.UpdatePeriod`*, gameId?: *`string`*): `Promise`<[IUpdateEntry](../interfaces/_types_.iupdateentry.md)[]>
+
+retrieve list of mods for a game that has recently been updated
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| period | `types.UpdatePeriod` |  rough time range to retrieve. This is limited to specific periods (1d, 1w, 1m) because the list is cached on the server |
+| `Optional` gameId | `string` |  (nexus) game id to request |
+
+**Returns:** `Promise`<[IUpdateEntry](../interfaces/_types_.iupdateentry.md)[]>
+
+___
+<a id="gettrackedmods"></a>
+
+###  getTrackedMods
+
+▸ **getTrackedMods**(): `Promise`<[ITrackedMod](../interfaces/_types_.itrackedmod.md)[]>
+
+Get list of all mods being tracked by the user
+
+**Returns:** `Promise`<[ITrackedMod](../interfaces/_types_.itrackedmod.md)[]>
+
+___
+<a id="gettrending"></a>
+
+###  getTrending
+
+▸ **getTrending**(gameId?: *`string`*): `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+
+get list of trending mods
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| `Optional` gameId | `string` |  id of the game to query |
+
+**Returns:** `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
 
 ___
 <a id="getvalidationresult"></a>
@@ -281,6 +435,42 @@ change the API Key and validate it This can also be used to unset the key
 A promise that resolves to the user info on success or null if the apikey was undefined
 
 ___
+<a id="trackmod"></a>
+
+###  trackMod
+
+▸ **trackMod**(modId: *`string`*, gameId?: *`string`*): `Promise`<[ITrackResponse](../interfaces/_types_.itrackresponse.md)>
+
+start tracking a mod
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| modId | `string` |  id of the mod |
+| `Optional` gameId | `string` |  id of the game |
+
+**Returns:** `Promise`<[ITrackResponse](../interfaces/_types_.itrackresponse.md)>
+
+___
+<a id="untrackmod"></a>
+
+###  untrackMod
+
+▸ **untrackMod**(modId: *`string`*, gameId?: *`string`*): `Promise`<[ITrackResponse](../interfaces/_types_.itrackresponse.md)>
+
+stop tracking a mod
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| modId | `string` |  id of the mod |
+| `Optional` gameId | `string` |  id of the game |
+
+**Returns:** `Promise`<[ITrackResponse](../interfaces/_types_.itrackresponse.md)>
+
+___
 <a id="validatekey"></a>
 
 ###  validateKey
@@ -302,7 +492,7 @@ ___
 
 ### `<Static>` create
 
-▸ **create**(apiKey: *`string`*, appVersion: *`string`*, defaultGame: *`string`*, timeout?: *`number`*): `Promise`<[Nexus](_nexus_.nexus.md)>
+▸ **create**(apiKey: *`string`*, appName: *`string`*, appVersion: *`string`*, defaultGame: *`string`*, timeout?: *`number`*): `Promise`<[Nexus](_nexus_.nexus.md)>
 
 create a Nexus instance and immediately verify the API Key
 
@@ -311,6 +501,7 @@ create a Nexus instance and immediately verify the API Key
 | Name | Type | Description |
 | ------ | ------ | ------ |
 | apiKey | `string` |  the api key to use for connections |
+| appName | `string` |  name of the client application |
 | appVersion | `string` |  Version number of the client application (Needs to be semantic format) |
 | defaultGame | `string` |  (nexus) id of the game requests are made for. Can be overridden per request |
 | `Optional` timeout | `number` |  Request timeout in milliseconds. Defaults to 5000ms |

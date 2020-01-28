@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGameListEntry](../interfaces/_types_.igamelistentry.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGameListEntry](../interfaces/_types_.igamelistentry.md)
 
 # Interface: IGameListEntry
 

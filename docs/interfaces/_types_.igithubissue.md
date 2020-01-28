@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGithubIssue](../interfaces/_types_.igithubissue.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGithubIssue](../interfaces/_types_.igithubissue.md)
 
 # Interface: IGithubIssue
 

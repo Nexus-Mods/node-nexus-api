@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["Nexus"](../modules/_nexus_.md)
+[@nexusmods/nexus-api](../README.md) > ["Nexus"](../modules/_nexus_.md)
 
 # External module: "Nexus"
 
@@ -12,6 +12,10 @@
 
 * [IRequestArgs](../interfaces/_nexus_.irequestargs.md)
 
+### Type aliases
+
+* [REST_METHOD](_nexus_.md#rest_method)
+
 ### Functions
 
 * [handleRestResult](_nexus_.md#handlerestresult)
@@ -21,13 +25,23 @@
 
 ---
 
+## Type aliases
+
+<a id="rest_method"></a>
+
+###  REST_METHOD
+
+**Ƭ REST_METHOD**: *"DELETE" \| "POST"*
+
+___
+
 ## Functions
 
 <a id="handlerestresult"></a>
 
 ###  handleRestResult
 
-▸ **handleRestResult**(resolve: *`any`*, reject: *`any`*, url: *`string`*, error: *`any`*, response: *`request.RequestResponse`*, body: *`any`*): `any`
+▸ **handleRestResult**(resolve: *`any`*, reject: *`any`*, url: *`string`*, error: *`any`*, response: *`request.RequestResponse`*, body: *`any`*, onUpdateLimit: *`function`*): `any`
 
 **Parameters:**
 
@@ -39,6 +53,7 @@
 | error | `any` |
 | response | `request.RequestResponse` |
 | body | `any` |
+| onUpdateLimit | `function` |
 
 **Returns:** `any`
 
@@ -47,7 +62,7 @@ ___
 
 ###  rest
 
-▸ **rest**(url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*): `Promise`<`any`>
+▸ **rest**(url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*, onUpdateLimit: *`function`*, method?: *[REST_METHOD](_nexus_.md#rest_method)*): `Promise`<`any`>
 
 **Parameters:**
 
@@ -55,6 +70,8 @@ ___
 | ------ | ------ |
 | url | `string` |
 | args | [IRequestArgs](../interfaces/_nexus_.irequestargs.md) |
+| onUpdateLimit | `function` |
+| `Optional` method | [REST_METHOD](_nexus_.md#rest_method) |
 
 **Returns:** `Promise`<`any`>
 
@@ -63,7 +80,7 @@ ___
 
 ###  restGet
 
-▸ **restGet**(url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*): `Promise`<`any`>
+▸ **restGet**(url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*, onUpdateLimit: *`function`*): `Promise`<`any`>
 
 **Parameters:**
 
@@ -71,6 +88,7 @@ ___
 | ------ | ------ |
 | url | `string` |
 | args | [IRequestArgs](../interfaces/_nexus_.irequestargs.md) |
+| onUpdateLimit | `function` |
 
 **Returns:** `Promise`<`any`>
 
@@ -79,14 +97,16 @@ ___
 
 ###  restPost
 
-▸ **restPost**(url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*): `Promise`<`any`>
+▸ **restPost**(method: *[REST_METHOD](_nexus_.md#rest_method)*, url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*, onUpdateLimit: *`function`*): `Promise`<`any`>
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
+| method | [REST_METHOD](_nexus_.md#rest_method) |
 | url | `string` |
 | args | [IRequestArgs](../interfaces/_nexus_.irequestargs.md) |
+| onUpdateLimit | `function` |
 
 **Returns:** `Promise`<`any`>
 

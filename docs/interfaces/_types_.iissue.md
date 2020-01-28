@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IIssue](../interfaces/_types_.iissue.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IIssue](../interfaces/_types_.iissue.md)
 
 # Interface: IIssue
 

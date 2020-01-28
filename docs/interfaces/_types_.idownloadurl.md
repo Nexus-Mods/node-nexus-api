@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IDownloadURL](../interfaces/_types_.idownloadurl.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IDownloadURL](../interfaces/_types_.idownloadurl.md)
 
 # Interface: IDownloadURL
 

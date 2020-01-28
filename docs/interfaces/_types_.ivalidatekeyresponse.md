@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
 
 # Interface: IValidateKeyResponse
 

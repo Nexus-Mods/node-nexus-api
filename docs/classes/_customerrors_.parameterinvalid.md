@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [ParameterInvalid](../classes/_customerrors_.parameterinvalid.md)
+[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [ParameterInvalid](../classes/_customerrors_.parameterinvalid.md)
 
 # Class: ParameterInvalid
 

@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [HTTPError](../classes/_customerrors_.httperror.md)
+[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [HTTPError](../classes/_customerrors_.httperror.md)
 
 # Class: HTTPError
 
@@ -86,7 +86,7 @@ ___
 
 ###  body
 
-getbody(): `string`
+**get body**(): `string`
 
 **Returns:** `string`
 

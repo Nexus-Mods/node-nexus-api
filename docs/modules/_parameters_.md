@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["parameters"](../modules/_parameters_.md)
+[@nexusmods/nexus-api](../README.md) > ["parameters"](../modules/_parameters_.md)
 
 # External module: "parameters"
 
@@ -14,6 +14,7 @@
 * [QUOTA_MAX](_parameters_.md#quota_max)
 * [QUOTA_MAX_PREMIUM](_parameters_.md#quota_max_premium)
 * [QUOTA_RATE_MS](_parameters_.md#quota_rate_ms)
+* [SECURITY_PROTOCOL_VERSION](_parameters_.md#security_protocol_version)
 
 ---
 
@@ -30,7 +31,7 @@ ___
 
 ### `<Const>` DEFAULT_TIMEOUT_MS
 
-**● DEFAULT_TIMEOUT_MS**: *`number`* = 5000
+**● DEFAULT_TIMEOUT_MS**: *`number`* = 30000
 
 ___
 <a id="delay_after_429_ms"></a>
@@ -51,21 +52,21 @@ ___
 
 ### `<Const>` PROTOCOL_VERSION
 
-**● PROTOCOL_VERSION**: *`string`* =  require('../package.json').version
+**● PROTOCOL_VERSION**: *`string`* =  require('../package.json').version.split('-')[0]
 
 ___
 <a id="quota_max"></a>
 
 ### `<Const>` QUOTA_MAX
 
-**● QUOTA_MAX**: *`number`* = 300
+**● QUOTA_MAX**: *`number`* = 50
 
 ___
 <a id="quota_max_premium"></a>
 
 ### `<Const>` QUOTA_MAX_PREMIUM
 
-**● QUOTA_MAX_PREMIUM**: *`number`* = 600
+**● QUOTA_MAX_PREMIUM**: *`number`* = 50
 
 ___
 <a id="quota_rate_ms"></a>
@@ -73,6 +74,13 @@ ___
 ### `<Const>` QUOTA_RATE_MS
 
 **● QUOTA_RATE_MS**: *`number`* = 1000
+
+___
+<a id="security_protocol_version"></a>
+
+### `<Const>` SECURITY_PROTOCOL_VERSION
+
+**● SECURITY_PROTOCOL_VERSION**: *`string`* = "TLSv1_2_method"
 
 ___
 

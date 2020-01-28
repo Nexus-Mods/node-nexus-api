@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["Quota"](../modules/_quota_.md) > [Quota](../classes/_quota_.quota.md)
+[@nexusmods/nexus-api](../README.md) > ["Quota"](../modules/_quota_.md) > [Quota](../classes/_quota_.quota.md)
 
 # Class: Quota
 
@@ -14,8 +14,8 @@
 
 ### Methods
 
-* [reset](_quota_.quota.md#reset)
-* [setMax](_quota_.quota.md#setmax)
+* [block](_quota_.quota.md#block)
+* [updateLimit](_quota_.quota.md#updatelimit)
 * [wait](_quota_.quota.md#wait)
 
 ---
@@ -42,26 +42,28 @@ ___
 
 ## Methods
 
-<a id="reset"></a>
+<a id="block"></a>
 
-###  reset
+###  block
 
-▸ **reset**(): `void`
+▸ **block**(): `boolean`
 
-**Returns:** `void`
+signal that the request was blocked by the server with an error code that indicates client is sending too many requests returns true if the rate limit is actually used up so we won't be able to make requests for a while, false if it's likely a temporary problem.
+
+**Returns:** `boolean`
 
 ___
-<a id="setmax"></a>
+<a id="updatelimit"></a>
 
-###  setMax
+###  updateLimit
 
-▸ **setMax**(newMax: *`number`*): `void`
+▸ **updateLimit**(limit: *`number`*): `void`
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| newMax | `number` |
+| limit | `number` |
 
 **Returns:** `void`
 

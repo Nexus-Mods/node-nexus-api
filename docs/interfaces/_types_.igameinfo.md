@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGameInfo](../interfaces/_types_.igameinfo.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGameInfo](../interfaces/_types_.igameinfo.md)
 
 # Interface: IGameInfo
 

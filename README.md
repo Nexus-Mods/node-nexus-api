@@ -49,9 +49,9 @@ Example: { "id": "4c694264-1fdb-48c6-a5a0-8edd9e53c7a6", "appid": "your_fancy_ap
 
 ## API Reference
 
-All relevant functionality is accessible through the [Nexus class](./docs/classes/_nexus_.nexus.md).
+All relevant functionality is accessible through the [Nexus class](https://github.com/Nexus-Mods/node-nexus-api/blob/master/docs/classes/_nexus_.nexus.md).
 
-The API may throw a bunch of [Custom Errors](./docs/modules/_customerrors_.md).
+The API may throw a bunch of [Custom Errors](https://github.com/Nexus-Mods/node-nexus-api/blob/master/docs/modules/_customerrors_.md).
 
 ### Throttling
 

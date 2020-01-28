@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [ICategory](../interfaces/_types_.icategory.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [ICategory](../interfaces/_types_.icategory.md)
 
 # Interface: ICategory
 
@@ -42,8 +42,7 @@ ___
 
 ###  parent_category
 
-**● parent_category**: * `number` &#124; `false`
-*
+**● parent_category**: *`number` \| `false`*
 
 id of the parent category or false if it's a top-level category. Note: often there is only a single root category named after the game. But in some cases there are additional roots, e.g. the game 'skyrim' has the roots 'Skyrim' and 'Sure AI: Enderal'
 

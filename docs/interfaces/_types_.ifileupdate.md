@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileUpdate](../interfaces/_types_.ifileupdate.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileUpdate](../interfaces/_types_.ifileupdate.md)
 
 # Interface: IFileUpdate
 

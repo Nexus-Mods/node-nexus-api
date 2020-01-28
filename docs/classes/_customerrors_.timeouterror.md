@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [TimeoutError](../classes/_customerrors_.timeouterror.md)
+[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [TimeoutError](../classes/_customerrors_.timeouterror.md)
 
 # Class: TimeoutError
 

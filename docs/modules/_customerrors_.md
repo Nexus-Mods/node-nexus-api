@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md)
+[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md)
 
 # External module: "customErrors"
 
@@ -9,6 +9,7 @@
 * [HTTPError](../classes/_customerrors_.httperror.md)
 * [NexusError](../classes/_customerrors_.nexuserror.md)
 * [ParameterInvalid](../classes/_customerrors_.parameterinvalid.md)
+* [ProtocolError](../classes/_customerrors_.protocolerror.md)
 * [RateLimitError](../classes/_customerrors_.ratelimiterror.md)
 * [TimeoutError](../classes/_customerrors_.timeouterror.md)
 

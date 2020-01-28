@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IModFiles](../interfaces/_types_.imodfiles.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IModFiles](../interfaces/_types_.imodfiles.md)
 
 # Interface: IModFiles
 

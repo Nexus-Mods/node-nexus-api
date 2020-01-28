@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileInfo](../interfaces/_types_.ifileinfo.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileInfo](../interfaces/_types_.ifileinfo.md)
 
 # Interface: IFileInfo
 
@@ -8,8 +8,6 @@ Information about a specific mod file
 
 **IFileInfo**
 
-↳  [IFileInfoEx](_types_.ifileinfoex.md)
-
 ## Index
 
 ### Properties
@@ -17,6 +15,8 @@ Information about a specific mod file
 * [category_id](_types_.ifileinfo.md#category_id)
 * [category_name](_types_.ifileinfo.md#category_name)
 * [changelog_html](_types_.ifileinfo.md#changelog_html)
+* [content_preview_link](_types_.ifileinfo.md#content_preview_link)
+* [description](_types_.ifileinfo.md#description)
 * [external_virus_scan_url](_types_.ifileinfo.md#external_virus_scan_url)
 * [file_id](_types_.ifileinfo.md#file_id)
 * [file_name](_types_.ifileinfo.md#file_name)
@@ -24,6 +24,7 @@ Information about a specific mod file
 * [mod_version](_types_.ifileinfo.md#mod_version)
 * [name](_types_.ifileinfo.md#name)
 * [size](_types_.ifileinfo.md#size)
+* [size_kb](_types_.ifileinfo.md#size_kb)
 * [uploaded_time](_types_.ifileinfo.md#uploaded_time)
 * [uploaded_timestamp](_types_.ifileinfo.md#uploaded_timestamp)
 * [version](_types_.ifileinfo.md#version)
@@ -57,6 +58,24 @@ ___
 **● changelog_html**: *`string`*
 
 html encoded changelog (matched via file version) null if there is none
+
+___
+<a id="content_preview_link"></a>
+
+###  content_preview_link
+
+**● content_preview_link**: *`string`*
+
+url of the content preview (json file containing list of files)
+
+___
+<a id="description"></a>
+
+###  description
+
+**● description**: *`string`*
+
+file description
 
 ___
 <a id="external_virus_scan_url"></a>
@@ -119,7 +138,16 @@ ___
 
 **● size**: *`number`*
 
-File size in bytes
+File size in kilobytes
+
+___
+<a id="size_kb"></a>
+
+###  size_kb
+
+**● size_kb**: *`number`*
+
+File size. also in kilobytes. Because - ugh, don't ask
 
 ___
 <a id="uploaded_time"></a>

@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IModInfo](../interfaces/_types_.imodinfo.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IModInfo](../interfaces/_types_.imodinfo.md)
 
 # Interface: IModInfo
 
@@ -14,28 +14,43 @@ Details about a mod
 
 ### Properties
 
+* [allow_rating](_types_.imodinfo.md#allow_rating)
 * [author](_types_.imodinfo.md#author)
+* [available](_types_.imodinfo.md#available)
 * [category_id](_types_.imodinfo.md#category_id)
 * [contains_adult_content](_types_.imodinfo.md#contains_adult_content)
 * [created_time](_types_.imodinfo.md#created_time)
 * [created_timestamp](_types_.imodinfo.md#created_timestamp)
 * [description](_types_.imodinfo.md#description)
+* [domain_name](_types_.imodinfo.md#domain_name)
 * [endorsement](_types_.imodinfo.md#endorsement)
+* [endorsement_count](_types_.imodinfo.md#endorsement_count)
+* [game_id](_types_.imodinfo.md#game_id)
+* [mod_id](_types_.imodinfo.md#mod_id)
 * [name](_types_.imodinfo.md#name)
 * [picture_url](_types_.imodinfo.md#picture_url)
-* [primary_file](_types_.imodinfo.md#primary_file)
+* [status](_types_.imodinfo.md#status)
 * [summary](_types_.imodinfo.md#summary)
-* [type](_types_.imodinfo.md#type)
 * [updated_time](_types_.imodinfo.md#updated_time)
 * [updated_timestamp](_types_.imodinfo.md#updated_timestamp)
 * [uploaded_by](_types_.imodinfo.md#uploaded_by)
 * [uploaded_users_profile_url](_types_.imodinfo.md#uploaded_users_profile_url)
+* [user](_types_.imodinfo.md#user)
 * [version](_types_.imodinfo.md#version-1)
 
 ---
 
 ## Properties
 
+<a id="allow_rating"></a>
+
+###  allow_rating
+
+**● allow_rating**: *`boolean`*
+
+whether this mod allows endorsements
+
+___
 <a id="author"></a>
 
 ###  author
@@ -43,6 +58,15 @@ Details about a mod
 **● author**: *`string`*
 
 Author of the mod
+
+___
+<a id="available"></a>
+
+###  available
+
+**● available**: *`boolean`*
+
+whether the mod is currently available/visible to users If a mod isn't available the api returns very limited information, essentially hiding all textual info that could contain offensive content but certain "maintenance" info is still provided.
 
 ___
 <a id="category_id"></a>
@@ -58,9 +82,9 @@ ___
 
 ###  contains_adult_content
 
-**● contains_adult_content**: *`number`*
+**● contains_adult_content**: *`boolean`*
 
-whether this mod is tagged as adult (1 = true, 0 = false)
+whether this mod is tagged as adult
 
 ___
 <a id="created_time"></a>
@@ -83,11 +107,20 @@ unix timestamp of when the mod was created
 ___
 <a id="description"></a>
 
-###  description
+### `<Optional>` description
 
 **● description**: *`string`*
 
-long description
+long description (bbcode)
+
+___
+<a id="domain_name"></a>
+
+###  domain_name
+
+**● domain_name**: *`string`*
+
+domain name (as used in urls and as the game id in all other requests)
 
 ___
 <a id="endorsement"></a>
@@ -107,49 +140,67 @@ obsolete - will be removed in the near future
  version: `number`
 
 ___
+<a id="endorsement_count"></a>
+
+###  endorsement_count
+
+**● endorsement_count**: *`number`*
+
+endorsement count
+
+___
+<a id="game_id"></a>
+
+###  game_id
+
+**● game_id**: *`number`*
+
+internal id of the game this mod belongs to
+
+___
+<a id="mod_id"></a>
+
+###  mod_id
+
+**● mod_id**: *`number`*
+
+id of this mod (should be the same you queried for)
+
+___
 <a id="name"></a>
 
-###  name
+### `<Optional>` name
 
 **● name**: *`string`*
 
-Name of the mod
+Name of the mod (not present if the file is under moderation)
 
 ___
 <a id="picture_url"></a>
 
-###  picture_url
+### `<Optional>` picture_url
 
 **● picture_url**: *`string`*
 
 url of the primary screenshot
 
 ___
-<a id="primary_file"></a>
+<a id="status"></a>
 
-### `<Optional>` primary_file
+###  status
 
-**● primary_file**: *[IFileInfo](_types_.ifileinfo.md)*
+**● status**: *[ModStatus](../modules/_types_.md#modstatus)*
 
-the primary file for this mod
+current status of the mod
 
 ___
 <a id="summary"></a>
 
-###  summary
+### `<Optional>` summary
 
 **● summary**: *`string`*
 
 short description
-
-___
-<a id="type"></a>
-
-###  type
-
-**● type**: *`number`*
-
-mod type
 
 ___
 <a id="updated_time"></a>
@@ -186,6 +237,15 @@ ___
 **● uploaded_users_profile_url**: *`string`*
 
 url of the profile image of the uploader
+
+___
+<a id="user"></a>
+
+###  user
+
+**● user**: *[IUser](_types_.iuser.md)*
+
+more detailed info about the author
 
 ___
 <a id="version-1"></a>

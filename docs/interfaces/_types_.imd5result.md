@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IMD5Result](../interfaces/_types_.imd5result.md)
+[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IMD5Result](../interfaces/_types_.imd5result.md)
 
 # Interface: IMD5Result
 
@@ -23,7 +23,7 @@ Result from a md5 lookup
 
 ###  file_details
 
-**● file_details**: *[IFileInfoEx](_types_.ifileinfoex.md)*
+**● file_details**: *[IFileInfo](_types_.ifileinfo.md)*
 
 ___
 <a id="mod"></a>

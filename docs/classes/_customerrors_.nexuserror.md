@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [NexusError](../classes/_customerrors_.nexuserror.md)
+[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [NexusError](../classes/_customerrors_.nexuserror.md)
 
 # Class: NexusError
 
@@ -87,7 +87,7 @@ ___
 
 ###  request
 
-getrequest(): `string`
+**get request**(): `string`
 
 **Returns:** `string`
 
@@ -96,7 +96,7 @@ ___
 
 ###  statusCode
 
-getstatusCode(): `number`
+**get statusCode**(): `number`
 
 **Returns:** `number`
 
