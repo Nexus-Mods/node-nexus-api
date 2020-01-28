@@ -1,9 +1,10 @@
 {
-  "private": true,
-  "name": "nexus-api",
-  "version": "1.0.3",
+  "name": "@nexusmods/nexus-api",
+  "version": "1.0.4",
   "main": "./lib/index.js",
   "typings": "lib/index",
+  "homepage": "https://www.nexusmods.com/",
+  "repository": "Nexus-Mods/node-nexus-api",
   "files": [
     "lib/"
   ],
