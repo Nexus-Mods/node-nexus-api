@@ -22,6 +22,11 @@ declare class Nexus {
     getLatestAdded(gameId?: string): Promise<types.IModInfo[]>;
     getLatestUpdated(gameId?: string): Promise<types.IModInfo[]>;
     getTrending(gameId?: string): Promise<types.IModInfo[]>;
+    getCollectionsByGame(gameId?: string): Promise<types.ICollectionInfo[]>;
+    getCollectionsByUser(userId: string): Promise<types.ICollectionInfo[]>;
+    getRevisions(collectionId: string): Promise<string[]>;
+    getCollectionImages(collectionId: string): Promise<any[]>;
+    getCollectionVideos(collectionId: string): Promise<any[]>;
     getEndorsements(): Promise<types.IEndorsement[]>;
     getColourschemes(): Promise<types.IColourScheme[]>;
     getColorschemes(): Promise<types.IColourScheme[]>;
@@ -35,6 +40,12 @@ declare class Nexus {
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
     sendCollection(manifest: types.ICollectionManifest, assetFilePath: string, gameId?: string): Promise<any>;
+    getCollection(collectionId: string): Promise<any>;
+    getRevisionInfo(collectionId: string, revisionId: string): Promise<any>;
+    getCollectionDownloadURLs(collectionId: string, revisionId: string, key?: string, expires?: number, gameId?: string): Promise<any>;
+    endorseCollection(collectionId: string, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<never>;
+    rateCollection(collectionId: string, rating: number, gameId?: string): Promise<never>;
+    getCollectionVideo(collectionId: string, videoId: string): Promise<any[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
     private checkFileSize(filePath);

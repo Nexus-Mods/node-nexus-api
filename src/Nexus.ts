@@ -356,6 +356,61 @@ class Nexus {
   }
 
   /**
+   * get list of collections by game id
+   * @param gameId id of the game to query
+   */
+  public async getCollectionsByGame(gameId?: string): Promise<types.ICollectionInfo[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/games/{gameId}/collections', this.args({
+      path: this.filter({ gameId }),
+    }));
+  }
+
+  /**
+   * get list of collections by game id
+   * @param gameId id of the game to query
+   */
+  public async getCollectionsByUser(userId: string): Promise<types.ICollectionInfo[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/users/{userId}/collections', this.args({
+      path: this.filter({ userId }),
+    }));
+  }
+
+  /**
+   * get list of collections by game id
+   * @param gameId id of the game to query
+   */
+  public async getRevisions(collectionId: string): Promise<string[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/collections/{collectionId}/revisions', this.args({
+      path: this.filter({ collectionId }),
+    }));
+  }
+
+  /**
+   * get list of images for a collection
+   * @param collectionId id of the collection
+   */
+  public async getCollectionImages(collectionId: string): Promise<any[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/collections/{collectionId}/images', this.args({
+      path: this.filter({ collectionId }),
+    }));
+  }
+
+  /**
+   * get list of videos for a collection
+   * @param collectionId id of the collection
+   */
+  public async getCollectionVideos(collectionId: string): Promise<any[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/collections/{collectionId}/videos', this.args({
+      path: this.filter({ collectionId }),
+    }));
+  }
+
+  /**
    * get list of endorsements the user has given
    */
   public async getEndorsements(): Promise<types.IEndorsement[]> {
@@ -574,6 +629,100 @@ class Nexus {
         }
       });
     });
+  }
+
+  /**
+   * get information about a collection
+   * @param collectionId id of the collection
+   */
+  public async getCollection(collectionId: string): Promise<any> {
+    await this.mQuota.wait();
+
+    return this.request(this.mBaseURL + '/collections/{ collectionId }',
+                        this.args({ path: this.filter({ collectionId }) }));
+  }
+
+  /**
+   * get information about a revision of a collection
+   * @param collectionId id of the collection
+   * @param revisionId id of the revision to get information about
+   */
+  public async getRevisionInfo(collectionId: string, revisionId: string): Promise<any> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/collections/{collectionId}/revisions/{revisionId}', this.args({
+      path: this.filter({ collectionId, revisionId }),
+    }));
+  }
+
+  public async getCollectionDownloadURLs(collectionId: string, revisionId: string, key?: string, expires?: number, gameId?: string): Promise<any> {
+    await this.mQuota.wait();
+
+    let urlPath = '/collections/{collectionId}/revisions/{revisionId}/download_link';
+    if ((key !== undefined) && (expires !== undefined)) {
+      urlPath += '?key={key}&expires={expires}';
+    }
+    return this.request(this.mBaseURL + urlPath,
+                this.args({ path: this.filter({ collectionId, revisionId, gameId, key, expires }) }));
+  }
+
+  /**
+   * endorse a collection
+   * @param collectionId the collection to endorse
+   * @param endorseStatus the new endorsement status
+   * @param gameId id of the game
+   */
+  public async endorseCollection(collectionId: string, endorseStatus: 'abstain' | 'endorse', gameId?: string) {
+    if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
+      return Promise.reject('invalid endorse status, should be "endorse" or "abstain"');
+    }
+
+    await this.mQuota.wait();
+
+    this.request(this.mBaseURL + '/endorsements', this.args({
+      data: {
+        rating: endorseStatus === 'endorse' ? 10 : 0,
+        game_id: gameId || this.mBaseData.path.gameId,
+        rateable_type: 'collection',
+        rateable_id: collectionId,
+      },
+    }), 'POST');
+  }
+
+  /**
+   * rate a collection (how well it worked, not whether the user liked the content, use endorsements for that!)
+   * @param collectionId collection id
+   * @param rating the rating, between -10 (didn't work at all) and +10 (worked perfectly)
+   * @param gameId id of the game
+   */
+  public async rateCollection(collectionId: string, rating: number, gameId?: string) {
+    if ((rating < -10) || (rating > 10)) {
+      return Promise.reject('valid ratings are -10 to 10');
+    }
+    await this.mQuota.wait();
+
+    this.request(this.mBaseURL + '/ratings', this.args({
+      data: {
+        rating,
+        game_id: gameId || this.mBaseData.path.gameId,
+        rateable_type: 'collection',
+        rateable_id: collectionId,
+      },
+    }), 'POST');
+  }
+
+  //#endregion
+
+  //#region Media
+
+  /**
+   * get informationo about a collection video
+   * @param collectionId id of the collection
+   */
+  public async getCollectionVideo(collectionId: string, videoId: string): Promise<any[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/collections/{collectionId}/videos', this.args({
+      path: this.filter({ collectionId }),
+    }));
   }
 
   //#endregion

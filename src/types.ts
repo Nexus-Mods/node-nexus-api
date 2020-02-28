@@ -514,7 +514,18 @@ export type UpdatePeriod = '1d' | '1w' | '1m';
  * an entry in the update list
  */
 export interface IUpdateEntry {
-  mod_id: number,
-  latest_file_update: number,
-  latest_mod_activity: number,
+  mod_id: number;
+  latest_file_update: number;
+  latest_mod_activity: number;
+}
+
+export interface IVideoInfo {
+  game_id: number;
+  user_id: number;
+  url: string;
+  title: string;
+  descriaption: string;
+  verified: boolean;
+  position: boolean;
+  revision_number: number;
 }

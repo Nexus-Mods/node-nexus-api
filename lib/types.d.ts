@@ -196,3 +196,13 @@ export interface IUpdateEntry {
     latest_file_update: number;
     latest_mod_activity: number;
 }
+export interface IVideoInfo {
+    game_id: number;
+    user_id: number;
+    url: string;
+    title: string;
+    descriaption: string;
+    verified: boolean;
+    position: boolean;
+    revision_number: number;
+}
