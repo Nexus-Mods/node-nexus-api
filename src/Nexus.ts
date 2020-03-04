@@ -90,7 +90,8 @@ function handleRestResult(resolve, reject, url: string, error: any,
 function restGet(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
-    request.get(format(url, args.path || {}), {
+    const finalURL = format(url, args.path || {});
+    request.get(finalURL, {
       headers: args.headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
@@ -113,9 +114,11 @@ function restGet(url: string, args: IRequestArgs, onUpdateLimit: (daily: number,
 function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
+    const finalURL = format(url, args.path);
+    console.log('POST', finalURL);
     request({
       method,
-      url: format(url, args.path),
+      url: finalURL,
       headers: args.headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
@@ -136,6 +139,7 @@ function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdate
 }
 
 function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void, method?: REST_METHOD): Promise<any> {
+  console.log('rest request', url, args);
   return args.data !== undefined
     ? restPost(method || 'POST', url, args, onUpdateLimit)
     : restGet(url, args, onUpdateLimit);
@@ -359,32 +363,45 @@ class Nexus {
    * get list of collections by game id
    * @param gameId id of the game to query
    */
-  public async getCollectionsByGame(gameId?: string): Promise<types.ICollectionInfo[]> {
+  public async getCollectionsByGame(gameId?: string): Promise<types.ICollection[]> {
     await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/games/{gameId}/collections', this.args({
+    const res = await this.request(this.mBaseURL + '/games/{gameId}/collections', this.args({
       path: this.filter({ gameId }),
     }));
+
+    return res.collections;
   }
 
   /**
    * get list of collections by game id
    * @param gameId id of the game to query
    */
-  public async getCollectionsByUser(userId: string): Promise<types.ICollectionInfo[]> {
+  public async getCollectionsByUser(userId: string): Promise<types.ICollection[]> {
     await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/users/{userId}/collections', this.args({
+    const res = await this.request(this.mBaseURL + '/users/{userId}/collections', this.args({
       path: this.filter({ userId }),
     }));
+
+    return res.collections;
   }
 
   /**
    * get list of collections by game id
    * @param gameId id of the game to query
    */
-  public async getRevisions(collectionId: string): Promise<string[]> {
+  public async getRevisions(collectionId: string): Promise<types.IRevision[]> {
     await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/collections/{collectionId}/revisions', this.args({
+    const res = await this.request(this.mBaseURL + '/collections/{collectionId}/revisions', this.args({
       path: this.filter({ collectionId }),
+    }));
+
+    return res.collection_revisions;
+  }
+
+  public async getRevisionMods(collectionId: string, revisionId: string): Promise<types.IRevisionMod[]> {
+    await this.mQuota.wait();
+    return this.request(this.mBaseURL + '/collections/{collectionId}/revisions/{revisionId}/revision_mods', this.args({
+      path: this.filter({ collectionId, revisionId }),
     }));
   }
 
@@ -592,22 +609,24 @@ class Nexus {
 
   //#region Collection
 
-  public async sendCollection(manifest: types.ICollectionManifest, assetFilePath: string, gameId?: string): Promise<any> {
+  public async sendCollection(manifest: types.ICollectionManifest, assetFilePath: string, gameId?: string): Promise<types.IRevision> {
     await this.mQuota.wait();
 
     return new Promise<any>((resolve, reject) => {
       const formData = {
+        collection_id: manifest.info.id,
         collection_schema_id: 1,
         name: manifest.info.name,
         description: manifest.info.description,
         summary: manifest.info.description,
+        adult_content: manifest.info.adult_content ? 'true' : 'false',
         collection_manifest: JSON.stringify(manifest),
         collection_data: fs.createReadStream(assetFilePath),
       };
 
       const baseUrl = param.API_DEV_URL || param.API_URL;
 
-      const url = `${baseUrl}/games/${gameId || this.mBaseData.path.gameId}/collections`;
+      const url = `${baseUrl}/games/${gameId || this.mBaseData.path.gameId}/collections/revisions`;
       const headers = {
         ...this.mBaseData.headers,
       };
@@ -623,9 +642,15 @@ class Nexus {
         if (error !== null) {
           return reject(error);
         } else if (response.statusCode >= 400) {
-          return reject(new HTTPError(response.statusCode, response.statusMessage, body));
+          if (response.statusCode === 422) {
+            // this probably means an invalid request was made
+            return reject(new ParameterInvalid(body.message));
+          } else {
+            return reject(new HTTPError(response.statusCode, response.statusMessage, body));
+          }
         } else {
-          return resolve(JSON.parse(body));
+          const result = JSON.parse(body);
+          return resolve(result.collection_revision);
         }
       });
     });
@@ -635,11 +660,12 @@ class Nexus {
    * get information about a collection
    * @param collectionId id of the collection
    */
-  public async getCollection(collectionId: string): Promise<any> {
+  public async getCollectionInfo(collectionId: string): Promise<types.ICollectionDetailed> {
     await this.mQuota.wait();
 
-    return this.request(this.mBaseURL + '/collections/{ collectionId }',
+    const res = await this.request(this.mBaseURL + '/collections/{collectionId}',
                         this.args({ path: this.filter({ collectionId }) }));
+    return res.collection;
   }
 
   /**
@@ -647,17 +673,19 @@ class Nexus {
    * @param collectionId id of the collection
    * @param revisionId id of the revision to get information about
    */
-  public async getRevisionInfo(collectionId: string, revisionId: string): Promise<any> {
+  public async getRevisionInfo(collectionId: string, revisionId: string): Promise<types.IRevisionDetailed> {
     await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/collections/{collectionId}/revisions/{revisionId}', this.args({
+    const res = await this.request(this.mBaseURL + '/collections/{collectionId}/revisions/{revisionId}', this.args({
       path: this.filter({ collectionId, revisionId }),
     }));
+
+    return res.collection_revision;
   }
 
-  public async getCollectionDownloadURLs(collectionId: string, revisionId: string, key?: string, expires?: number, gameId?: string): Promise<any> {
+  public async getCollectionDownloadURLs(collectionId: string, revisionId: string, key?: string, expires?: number, gameId?: string): Promise<types.ICollectionDownloadLink> {
     await this.mQuota.wait();
 
-    let urlPath = '/collections/{collectionId}/revisions/{revisionId}/download_link';
+    let urlPath = '/games/{gameId}/collections/{collectionId}/revisions/{revisionId}/download_link';
     if ((key !== undefined) && (expires !== undefined)) {
       urlPath += '?key={key}&expires={expires}';
     }

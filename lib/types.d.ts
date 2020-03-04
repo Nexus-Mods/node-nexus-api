@@ -118,12 +118,14 @@ export interface IGithubIssue {
     updated_at: string;
 }
 export interface ICollectionInfo {
+    id?: number;
     author: string;
     author_url: string;
     name: string;
     version: string;
     description: string;
-    game_id: string;
+    domain_name: string;
+    adult_content: boolean;
 }
 export declare type UpdatePolicy = 'exact' | 'latest';
 export declare type SourceType = 'browse' | 'manual' | 'direct' | 'nexus';
@@ -143,7 +145,7 @@ export interface ICollectionMod {
     name: string;
     version: string;
     optional: boolean;
-    game_id: string;
+    domain_name: string;
     source: ICollectionSource;
     author?: string;
 }
@@ -195,6 +197,103 @@ export interface IUpdateEntry {
     mod_id: number;
     latest_file_update: number;
     latest_mod_activity: number;
+}
+export interface ICollectionCategory {
+    id: number;
+    name: string;
+    game_id: number;
+    description: string;
+}
+export interface ICollection {
+    collection_id: number;
+    name: string;
+    summary: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+    user: {
+        member_id: number;
+        member_group_id: number;
+        name: string;
+    };
+}
+export interface ICollectionDetailed extends ICollection {
+    enable_donations: boolean;
+    endorsement_count: number;
+    category: ICollectionCategory;
+    game: {
+        id: number;
+        name: string;
+        domain_name: string;
+    };
+    collection_images: IImageInfo[];
+    collection_videos: IVideoInfo[];
+}
+export interface IRevisionModFile {
+    id: number[];
+    game_id: number;
+    category_id: number;
+    owner_id: number;
+    name: string;
+    description: string;
+    uri: string;
+    size: number;
+    version: string;
+    date: number;
+    count: number;
+    u_count: number;
+    mod_id: number;
+    primary: number;
+    manager: number;
+    requirements_alert: boolean;
+    scanned: number;
+    report_link: string;
+}
+export interface IRevisionMod {
+    revision_mod_id: number;
+    mod: IModInfo;
+    game_id: number;
+    mod_file: IRevisionModFile;
+    collection_id: number;
+    collection_revision_id: number;
+}
+export interface ICollectionDownloadLink {
+    download_link: string;
+}
+export interface IExternalResource {
+    collection_revision_id: number;
+    collection_id: number;
+    game_id: number;
+    resource_url: string;
+    update_policy: UpdatePolicy;
+    version: string;
+}
+export declare type RevisionStatus = 'private' | 'public' | 'hidden' | 'testing' | 'nuked';
+export interface IRevision {
+    revision_id: number;
+    revision: number;
+    adult_content: boolean;
+    revision_status_id: RevisionStatus;
+    collection: ICollection;
+    uri: string;
+    success_rate: {
+        positive: number;
+        negative: number;
+    };
+    tags: Array<{
+        name: string;
+    }>;
+    collection_schema: {
+        id: number;
+        version: string;
+    };
+    collection_revision_mods: IRevisionMod[];
+    external_resources: IExternalResource[];
+}
+export interface IRevisionDetailed extends IRevision {
+    mods: IRevisionMod[];
+}
+export interface IImageInfo {
 }
 export interface IVideoInfo {
     game_id: number;

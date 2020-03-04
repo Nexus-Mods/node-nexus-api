@@ -22,9 +22,10 @@ declare class Nexus {
     getLatestAdded(gameId?: string): Promise<types.IModInfo[]>;
     getLatestUpdated(gameId?: string): Promise<types.IModInfo[]>;
     getTrending(gameId?: string): Promise<types.IModInfo[]>;
-    getCollectionsByGame(gameId?: string): Promise<types.ICollectionInfo[]>;
-    getCollectionsByUser(userId: string): Promise<types.ICollectionInfo[]>;
-    getRevisions(collectionId: string): Promise<string[]>;
+    getCollectionsByGame(gameId?: string): Promise<types.ICollection[]>;
+    getCollectionsByUser(userId: string): Promise<types.ICollection[]>;
+    getRevisions(collectionId: string): Promise<types.IRevision[]>;
+    getRevisionMods(collectionId: string, revisionId: string): Promise<types.IRevisionMod[]>;
     getCollectionImages(collectionId: string): Promise<any[]>;
     getCollectionVideos(collectionId: string): Promise<any[]>;
     getEndorsements(): Promise<types.IEndorsement[]>;
@@ -39,10 +40,10 @@ declare class Nexus {
     getFileInfo(modId: number, fileId: number, gameId?: string): Promise<types.IFileInfo>;
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
-    sendCollection(manifest: types.ICollectionManifest, assetFilePath: string, gameId?: string): Promise<any>;
-    getCollection(collectionId: string): Promise<any>;
-    getRevisionInfo(collectionId: string, revisionId: string): Promise<any>;
-    getCollectionDownloadURLs(collectionId: string, revisionId: string, key?: string, expires?: number, gameId?: string): Promise<any>;
+    sendCollection(manifest: types.ICollectionManifest, assetFilePath: string, gameId?: string): Promise<types.IRevision>;
+    getCollectionInfo(collectionId: string): Promise<types.ICollectionDetailed>;
+    getRevisionInfo(collectionId: string, revisionId: string): Promise<types.IRevisionDetailed>;
+    getCollectionDownloadURLs(collectionId: string, revisionId: string, key?: string, expires?: number, gameId?: string): Promise<types.ICollectionDownloadLink>;
     endorseCollection(collectionId: string, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<never>;
     rateCollection(collectionId: string, rating: number, gameId?: string): Promise<never>;
     getCollectionVideo(collectionId: string, videoId: string): Promise<any[]>;
