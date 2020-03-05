@@ -237,6 +237,7 @@ export interface IRevisionModFile {
     name: string;
     description: string;
     uri: string;
+    file_name: string;
     size: number;
     version: string;
     date: number;

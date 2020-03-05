@@ -389,7 +389,7 @@ class Nexus {
    * get list of collections by game id
    * @param gameId id of the game to query
    */
-  public async getRevisions(collectionId: string): Promise<types.IRevision[]> {
+  public async getRevisions(collectionId: number): Promise<types.IRevision[]> {
     await this.mQuota.wait();
     const res = await this.request(this.mBaseURL + '/collections/{collectionId}/revisions', this.args({
       path: this.filter({ collectionId }),
@@ -398,7 +398,7 @@ class Nexus {
     return res.collection_revisions;
   }
 
-  public async getRevisionMods(collectionId: string, revisionId: string): Promise<types.IRevisionMod[]> {
+  public async getRevisionMods(collectionId: number, revisionId: number): Promise<types.IRevisionMod[]> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/collections/{collectionId}/revisions/{revisionId}/revision_mods', this.args({
       path: this.filter({ collectionId, revisionId }),
@@ -409,7 +409,7 @@ class Nexus {
    * get list of images for a collection
    * @param collectionId id of the collection
    */
-  public async getCollectionImages(collectionId: string): Promise<any[]> {
+  public async getCollectionImages(collectionId: number): Promise<any[]> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/collections/{collectionId}/images', this.args({
       path: this.filter({ collectionId }),
@@ -420,7 +420,7 @@ class Nexus {
    * get list of videos for a collection
    * @param collectionId id of the collection
    */
-  public async getCollectionVideos(collectionId: string): Promise<any[]> {
+  public async getCollectionVideos(collectionId: number): Promise<any[]> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/collections/{collectionId}/videos', this.args({
       path: this.filter({ collectionId }),
@@ -614,7 +614,6 @@ class Nexus {
 
     return new Promise<any>((resolve, reject) => {
       const formData = {
-        collection_id: manifest.info.collection_id,
         collection_schema_id: 1,
         name: manifest.info.name,
         description: manifest.info.description,
@@ -623,6 +622,10 @@ class Nexus {
         collection_manifest: JSON.stringify(manifest),
         collection_data: fs.createReadStream(assetFilePath),
       };
+
+      if (manifest.info.collection_id !== undefined) {
+        formData['collection_id'] = manifest.info.collection_id;
+      }
 
       const baseUrl = param.API_DEV_URL || param.API_URL;
 
@@ -644,7 +647,25 @@ class Nexus {
         } else if (response.statusCode >= 400) {
           if (response.statusCode === 422) {
             // this probably means an invalid request was made
-            return reject(new ParameterInvalid(body.message));
+            if (body.message !== undefined) {
+              return reject(new ParameterInvalid(body.message));
+            } else {
+              try {
+                const parsed = JSON.parse(body);
+                const ex = new ParameterInvalid(parsed.message);
+                if (parsed.name !== undefined) {
+                  ex.name = parsed.name;
+                }
+                Object.keys(parsed).forEach(key => {
+                  if (['name', 'message'].indexOf(key) === -1) {
+                    ex[key] = parsed[key];
+                  }
+                });
+                return reject(ex);
+              } catch (err) {
+                return reject(new ParameterInvalid(body));
+              }
+            }
           } else {
             return reject(new HTTPError(response.statusCode, response.statusMessage, body));
           }
@@ -660,7 +681,7 @@ class Nexus {
    * get information about a collection
    * @param collectionId id of the collection
    */
-  public async getCollectionInfo(collectionId: string): Promise<types.ICollectionDetailed> {
+  public async getCollectionInfo(collectionId: number): Promise<types.ICollectionDetailed> {
     await this.mQuota.wait();
 
     const res = await this.request(this.mBaseURL + '/collections/{collectionId}',
@@ -673,7 +694,7 @@ class Nexus {
    * @param collectionId id of the collection
    * @param revisionId id of the revision to get information about
    */
-  public async getRevisionInfo(collectionId: string, revisionId: string): Promise<types.IRevisionDetailed> {
+  public async getRevisionInfo(collectionId: number, revisionId: number): Promise<types.IRevisionDetailed> {
     await this.mQuota.wait();
     const res = await this.request(this.mBaseURL + '/collections/{collectionId}/revisions/{revisionId}', this.args({
       path: this.filter({ collectionId, revisionId }),
@@ -682,7 +703,7 @@ class Nexus {
     return res.collection_revision;
   }
 
-  public async getCollectionDownloadURLs(collectionId: string, revisionId: string, key?: string, expires?: number, gameId?: string): Promise<types.ICollectionDownloadLink> {
+  public async getCollectionDownloadURLs(collectionId: number, revisionId: number, key?: string, expires?: number, gameId?: string): Promise<types.ICollectionDownloadLink> {
     await this.mQuota.wait();
 
     let urlPath = '/games/{gameId}/collections/{collectionId}/revisions/{revisionId}/download_link';
@@ -699,7 +720,7 @@ class Nexus {
    * @param endorseStatus the new endorsement status
    * @param gameId id of the game
    */
-  public async endorseCollection(collectionId: string, endorseStatus: 'abstain' | 'endorse', gameId?: string) {
+  public async endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string) {
     if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
       return Promise.reject('invalid endorse status, should be "endorse" or "abstain"');
     }
@@ -722,7 +743,7 @@ class Nexus {
    * @param rating the rating, between -10 (didn't work at all) and +10 (worked perfectly)
    * @param gameId id of the game
    */
-  public async rateCollection(collectionId: string, rating: number, gameId?: string) {
+  public async rateCollection(collectionId: number, rating: number, gameId?: string) {
     if ((rating < -10) || (rating > 10)) {
       return Promise.reject('valid ratings are -10 to 10');
     }
@@ -746,7 +767,7 @@ class Nexus {
    * get informationo about a collection video
    * @param collectionId id of the collection
    */
-  public async getCollectionVideo(collectionId: string, videoId: string): Promise<any[]> {
+  public async getCollectionVideo(collectionId: number, videoId: string): Promise<any[]> {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/collections/{collectionId}/videos', this.args({
       path: this.filter({ collectionId }),

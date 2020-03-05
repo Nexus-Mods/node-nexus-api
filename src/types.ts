@@ -568,6 +568,7 @@ export interface IRevisionModFile {
   name: string;
   description: string;
   uri: string;
+  file_name: string;
   size: number;
   version: string;
   // timestamp. not sure of what. time of the upload maybe?
