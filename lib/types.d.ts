@@ -118,7 +118,7 @@ export interface IGithubIssue {
     updated_at: string;
 }
 export interface ICollectionInfo {
-    id?: number;
+    collection_id?: number;
     author: string;
     author_url: string;
     name: string;

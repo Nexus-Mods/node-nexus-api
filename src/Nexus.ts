@@ -614,7 +614,7 @@ class Nexus {
 
     return new Promise<any>((resolve, reject) => {
       const formData = {
-        collection_id: manifest.info.id,
+        collection_id: manifest.info.collection_id,
         collection_schema_id: 1,
         name: manifest.info.name,
         description: manifest.info.description,

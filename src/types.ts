@@ -392,7 +392,7 @@ export interface IGithubIssue {
 }
 
 export interface ICollectionInfo {
-  id?: number;
+  collection_id?: number;
   author: string;
   author_url: string;
   name: string;
