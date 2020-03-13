@@ -36,6 +36,7 @@ export interface IUser {
   member_id: number;
   member_group_id: number;
   name: string;
+  avatar?: { url: string };
 }
 
 export type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
@@ -557,36 +558,35 @@ export interface ICollectionDetailed extends ICollection {
   collection_videos: IVideoInfo[];
 }
 
+export interface IRevisionModInfo {
+  name: string;
+  summary: string;
+  picture_url: string;
+  author: IUser;
+  uploader: IUser;
+  mod_id: number;
+  game_id: number;
+  endorsement_count: number;
+  available: boolean;
+}
+
 /**
  * a single file as referenced by a collection
  */
 export interface IRevisionModFile {
-  id: number[];
+  file_id: number;
   game_id: number;
-  category_id: number;
-  owner_id: number;
   name: string;
-  description: string;
-  uri: string;
-  file_name: string;
-  size: number;
   version: string;
-  // timestamp. not sure of what. time of the upload maybe?
-  date: number;
-  count: number;
-  u_count: number;
-  mod_id: number;
-  primary: number;
-  manager: number;
-  requirements_alert: boolean;
-  scanned: number;
-  report_link: string;
+  category_id: number;
+  category_name: string;
+  size: number;
+  file_name: string;
 }
 
 export interface IRevisionMod {
-  revision_mod_id: number;
-  mod: IModInfo;
   game_id: number;
+  mod: IRevisionModInfo;
   mod_file: IRevisionModFile;
   collection_id: number;
   collection_revision_id: number;
@@ -620,12 +620,11 @@ export interface IRevision {
   success_rate: { positive: number, negative: number };
   tags: Array<{ name: string }>;
   collection_schema: { id: number, version: string };
-  collection_revision_mods: IRevisionMod[];
   external_resources: IExternalResource[];
 }
 
 export interface IRevisionDetailed extends IRevision {
-  mods: IRevisionMod[];
+  collection_revision_mods: IRevisionMod[];
 }
 
 export interface IImageInfo {

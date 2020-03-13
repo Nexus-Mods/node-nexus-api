@@ -11,6 +11,9 @@ export interface IUser {
     member_id: number;
     member_group_id: number;
     name: string;
+    avatar?: {
+        url: string;
+    };
 }
 export declare type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
 export declare type ModStatus = 'under_moderation' | 'published' | 'not_published' | 'publish_with_game' | 'removed' | 'wastebinned' | 'hidden';
@@ -229,31 +232,30 @@ export interface ICollectionDetailed extends ICollection {
     collection_images: IImageInfo[];
     collection_videos: IVideoInfo[];
 }
-export interface IRevisionModFile {
-    id: number[];
-    game_id: number;
-    category_id: number;
-    owner_id: number;
+export interface IRevisionModInfo {
     name: string;
-    description: string;
-    uri: string;
-    file_name: string;
-    size: number;
-    version: string;
-    date: number;
-    count: number;
-    u_count: number;
+    summary: string;
+    picture_url: string;
+    author: IUser;
+    uploader: IUser;
     mod_id: number;
-    primary: number;
-    manager: number;
-    requirements_alert: boolean;
-    scanned: number;
-    report_link: string;
+    game_id: number;
+    endorsement_count: number;
+    available: boolean;
+}
+export interface IRevisionModFile {
+    file_id: number;
+    game_id: number;
+    name: string;
+    version: string;
+    category_id: number;
+    category_name: string;
+    size: number;
+    file_name: string;
 }
 export interface IRevisionMod {
-    revision_mod_id: number;
-    mod: IModInfo;
     game_id: number;
+    mod: IRevisionModInfo;
     mod_file: IRevisionModFile;
     collection_id: number;
     collection_revision_id: number;
@@ -288,11 +290,10 @@ export interface IRevision {
         id: number;
         version: string;
     };
-    collection_revision_mods: IRevisionMod[];
     external_resources: IExternalResource[];
 }
 export interface IRevisionDetailed extends IRevision {
-    mods: IRevisionMod[];
+    collection_revision_mods: IRevisionMod[];
 }
 export interface IImageInfo {
 }

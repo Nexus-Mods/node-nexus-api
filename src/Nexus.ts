@@ -647,24 +647,22 @@ class Nexus {
         } else if (response.statusCode >= 400) {
           if (response.statusCode === 422) {
             // this probably means an invalid request was made
-            if (body.message !== undefined) {
-              return reject(new ParameterInvalid(body.message));
-            } else {
-              try {
-                const parsed = JSON.parse(body);
-                const ex = new ParameterInvalid(parsed.message);
-                if (parsed.name !== undefined) {
-                  ex.name = parsed.name;
-                }
-                Object.keys(parsed).forEach(key => {
-                  if (['name', 'message'].indexOf(key) === -1) {
-                    ex[key] = parsed[key];
-                  }
-                });
-                return reject(ex);
-              } catch (err) {
-                return reject(new ParameterInvalid(body));
+            try {
+              const parsed = JSON.parse(body);
+              const ex = parsed.message !== undefined
+                ? new ParameterInvalid(parsed.message)
+                : new ParameterInvalid(parsed);
+              if (parsed.name !== undefined) {
+                ex.name = parsed.name;
               }
+              Object.keys(parsed).forEach(key => {
+                if (['name', 'message'].indexOf(key) === -1) {
+                  ex[key] = parsed[key];
+                }
+              });
+              return reject(ex);
+            } catch (err) {
+              return reject(new ParameterInvalid(body));
             }
           } else {
             return reject(new HTTPError(response.statusCode, response.statusMessage, body));
