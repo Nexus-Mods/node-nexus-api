@@ -725,7 +725,7 @@ class Nexus {
 
     await this.mQuota.wait();
 
-    this.request(this.mBaseURL + '/endorsements', this.args({
+    return await this.request(this.mBaseURL + '/endorsements', this.args({
       data: {
         rating: endorseStatus === 'endorse' ? 10 : 0,
         game_id: gameId || this.mBaseData.path.gameId,
@@ -747,7 +747,7 @@ class Nexus {
     }
     await this.mQuota.wait();
 
-    this.request(this.mBaseURL + '/ratings', this.args({
+    return await this.request(this.mBaseURL + '/ratings', this.args({
       data: {
         rating,
         game_id: gameId || this.mBaseData.path.gameId,
