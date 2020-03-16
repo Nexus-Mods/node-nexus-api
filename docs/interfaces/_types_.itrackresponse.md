@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [ITrackResponse](../interfaces/_types_.itrackresponse.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [ITrackResponse](_types_.itrackresponse.md)
 
 # Interface: ITrackResponse
 
@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-**ITrackResponse**
+* **ITrackResponse**
 
 ## Index
 
@@ -14,17 +14,12 @@
 
 * [message](_types_.itrackresponse.md#message)
 
----
-
 ## Properties
-
-<a id="message"></a>
 
 ###  message
 
-**● message**: *`string`*
+• **message**: *string*
+
+Defined in src/types.ts:470
 
 textual result of the action, something like "User 123 is now Tracking Mod: 456"
-
-___
-

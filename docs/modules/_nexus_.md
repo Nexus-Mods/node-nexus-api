@@ -1,6 +1,6 @@
-[@nexusmods/nexus-api](../README.md) > ["Nexus"](../modules/_nexus_.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["Nexus"](_nexus_.md)
 
-# External module: "Nexus"
+# Module: "Nexus"
 
 ## Index
 
@@ -16,6 +16,11 @@
 
 * [REST_METHOD](_nexus_.md#rest_method)
 
+### Variables
+
+* [format](_nexus_.md#format)
+* [request](_nexus_.md#request)
+
 ### Functions
 
 * [handleRestResult](_nexus_.md#handlerestresult)
@@ -23,92 +28,146 @@
 * [restGet](_nexus_.md#restget)
 * [restPost](_nexus_.md#restpost)
 
----
-
 ## Type aliases
-
-<a id="rest_method"></a>
 
 ###  REST_METHOD
 
-**Ƭ REST_METHOD**: *"DELETE" \| "POST"*
+Ƭ **REST_METHOD**: *"DELETE" | "POST"*
+
+Defined in src/Nexus.ts:12
+
+## Variables
+
+###  format
+
+• **format**: *any*
+
+Defined in src/Nexus.ts:9
 
 ___
+
+###  request
+
+• **request**: *RequestAPI‹Request‹›, CoreOptions, UriOptions | UrlOptions›*
+
+Defined in src/Nexus.ts:8
 
 ## Functions
 
-<a id="handlerestresult"></a>
-
 ###  handleRestResult
 
-▸ **handleRestResult**(resolve: *`any`*, reject: *`any`*, url: *`string`*, error: *`any`*, response: *`request.RequestResponse`*, body: *`any`*, onUpdateLimit: *`function`*): `any`
+▸ **handleRestResult**(`resolve`: any, `reject`: any, `url`: string, `error`: any, `response`: request.RequestResponse, `body`: any, `onUpdateLimit`: function): *any*
+
+Defined in src/Nexus.ts:30
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| resolve | `any` |
-| reject | `any` |
-| url | `string` |
-| error | `any` |
-| response | `request.RequestResponse` |
-| body | `any` |
-| onUpdateLimit | `function` |
+▪ **resolve**: *any*
 
-**Returns:** `any`
+▪ **reject**: *any*
+
+▪ **url**: *string*
+
+▪ **error**: *any*
+
+▪ **response**: *request.RequestResponse*
+
+▪ **body**: *any*
+
+▪ **onUpdateLimit**: *function*
+
+▸ (`daily`: number, `hourly`: number): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`daily` | number |
+`hourly` | number |
+
+**Returns:** *any*
 
 ___
-<a id="rest"></a>
 
 ###  rest
 
-▸ **rest**(url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*, onUpdateLimit: *`function`*, method?: *[REST_METHOD](_nexus_.md#rest_method)*): `Promise`<`any`>
+▸ **rest**(`url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function, `method?`: [REST_METHOD](_nexus_.md#rest_method)): *Promise‹any›*
+
+Defined in src/Nexus.ts:138
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| url | `string` |
-| args | [IRequestArgs](../interfaces/_nexus_.irequestargs.md) |
-| onUpdateLimit | `function` |
-| `Optional` method | [REST_METHOD](_nexus_.md#rest_method) |
+▪ **url**: *string*
 
-**Returns:** `Promise`<`any`>
+▪ **args**: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*
+
+▪ **onUpdateLimit**: *function*
+
+▸ (`daily`: number, `hourly`: number): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`daily` | number |
+`hourly` | number |
+
+▪`Optional`  **method**: *[REST_METHOD](_nexus_.md#rest_method)*
+
+**Returns:** *Promise‹any›*
 
 ___
-<a id="restget"></a>
 
 ###  restGet
 
-▸ **restGet**(url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*, onUpdateLimit: *`function`*): `Promise`<`any`>
+▸ **restGet**(`url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function): *Promise‹any›*
+
+Defined in src/Nexus.ts:90
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| url | `string` |
-| args | [IRequestArgs](../interfaces/_nexus_.irequestargs.md) |
-| onUpdateLimit | `function` |
+▪ **url**: *string*
 
-**Returns:** `Promise`<`any`>
+▪ **args**: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*
+
+▪ **onUpdateLimit**: *function*
+
+▸ (`daily`: number, `hourly`: number): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`daily` | number |
+`hourly` | number |
+
+**Returns:** *Promise‹any›*
 
 ___
-<a id="restpost"></a>
 
 ###  restPost
 
-▸ **restPost**(method: *[REST_METHOD](_nexus_.md#rest_method)*, url: *`string`*, args: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*, onUpdateLimit: *`function`*): `Promise`<`any`>
+▸ **restPost**(`method`: [REST_METHOD](_nexus_.md#rest_method), `url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function): *Promise‹any›*
+
+Defined in src/Nexus.ts:113
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| method | [REST_METHOD](_nexus_.md#rest_method) |
-| url | `string` |
-| args | [IRequestArgs](../interfaces/_nexus_.irequestargs.md) |
-| onUpdateLimit | `function` |
+▪ **method**: *[REST_METHOD](_nexus_.md#rest_method)*
 
-**Returns:** `Promise`<`any`>
+▪ **url**: *string*
 
-___
+▪ **args**: *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*
 
+▪ **onUpdateLimit**: *function*
+
+▸ (`daily`: number, `hourly`: number): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`daily` | number |
+`hourly` | number |
+
+**Returns:** *Promise‹any›*

@@ -1,14 +1,15 @@
-[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [RateLimitError](../classes/_customerrors_.ratelimiterror.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](../modules/_customerrors_.md) › [RateLimitError](_customerrors_.ratelimiterror.md)
 
 # Class: RateLimitError
 
-Error thrown when too many requests were made to the api You should not see this error in your application as it is handled internally
+Error thrown when too many requests were made to the api
+You should not see this error in your application as it is handled internally
 
 ## Hierarchy
 
- `Error`
+* [Error](_customerrors_.timeouterror.md#static-error)
 
-**↳ RateLimitError**
+  ↳ **RateLimitError**
 
 ## Index
 
@@ -20,51 +21,55 @@ Error thrown when too many requests were made to the api You should not see this
 
 * [message](_customerrors_.ratelimiterror.md#message)
 * [name](_customerrors_.ratelimiterror.md#name)
-* [stack](_customerrors_.ratelimiterror.md#stack)
-* [Error](_customerrors_.ratelimiterror.md#error)
-
----
+* [stack](_customerrors_.ratelimiterror.md#optional-stack)
+* [Error](_customerrors_.ratelimiterror.md#static-error)
 
 ## Constructors
 
-<a id="constructor"></a>
-
 ###  constructor
 
-⊕ **new RateLimitError**(): [RateLimitError](_customerrors_.ratelimiterror.md)
+\+ **new RateLimitError**(): *[RateLimitError](_customerrors_.ratelimiterror.md)*
 
-**Returns:** [RateLimitError](_customerrors_.ratelimiterror.md)
+Defined in src/customErrors.ts:25
 
-___
+**Returns:** *[RateLimitError](_customerrors_.ratelimiterror.md)*
 
 ## Properties
 
-<a id="message"></a>
-
 ###  message
 
-**● message**: *`string`*
+• **message**: *string*
+
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[message](_customerrors_.timeouterror.md#message)*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:974
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
 
-___
-<a id="stack"></a>
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[name](_customerrors_.timeouterror.md#name)*
 
-### `<Optional>` stack
-
-**● stack**: *`string`*
-
-___
-<a id="error"></a>
-
-### `<Static>` Error
-
-**● Error**: *`ErrorConstructor`*
+Defined in node_modules/typescript/lib/lib.es5.d.ts:973
 
 ___
 
+### `Optional` stack
+
+• **stack**? : *string*
+
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[stack](_customerrors_.timeouterror.md#optional-stack)*
+
+*Overrides [TimeoutError](_customerrors_.timeouterror.md).[stack](_customerrors_.timeouterror.md#optional-stack)*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:975
+
+___
+
+### `Static` Error
+
+▪ **Error**: *ErrorConstructor*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:984

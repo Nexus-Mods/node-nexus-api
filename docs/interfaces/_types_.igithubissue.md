@@ -1,12 +1,13 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGithubIssue](../interfaces/_types_.igithubissue.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IGithubIssue](_types_.igithubissue.md)
 
 # Interface: IGithubIssue
 
-Info about a feedback report exported to github INTERNAL USE ONLY
+Info about a feedback report exported to github
+INTERNAL USE ONLY
 
 ## Hierarchy
 
-**IGithubIssue**
+* **IGithubIssue**
 
 ## Index
 
@@ -20,57 +21,58 @@ Info about a feedback report exported to github INTERNAL USE ONLY
 * [issue_title](_types_.igithubissue.md#issue_title)
 * [updated_at](_types_.igithubissue.md#updated_at)
 
----
-
 ## Properties
-
-<a id="created_at"></a>
 
 ###  created_at
 
-**● created_at**: *`string`*
+• **created_at**: *string*
+
+Defined in src/types.ts:406
 
 ___
-<a id="grouping_key"></a>
 
 ###  grouping_key
 
-**● grouping_key**: *`string`*
+• **grouping_key**: *string*
+
+Defined in src/types.ts:405
 
 ___
-<a id="id"></a>
 
 ###  id
 
-**● id**: *`number`*
+• **id**: *number*
+
+Defined in src/types.ts:401
 
 ___
-<a id="issue_number"></a>
 
 ###  issue_number
 
-**● issue_number**: *`number`*
+• **issue_number**: *number*
+
+Defined in src/types.ts:402
 
 ___
-<a id="issue_state"></a>
 
 ###  issue_state
 
-**● issue_state**: *`string`*
+• **issue_state**: *string*
+
+Defined in src/types.ts:404
 
 ___
-<a id="issue_title"></a>
 
 ###  issue_title
 
-**● issue_title**: *`string`*
+• **issue_title**: *string*
+
+Defined in src/types.ts:403
 
 ___
-<a id="updated_at"></a>
 
 ###  updated_at
 
-**● updated_at**: *`string`*
+• **updated_at**: *string*
 
-___
-
+Defined in src/types.ts:407

@@ -1,6 +1,6 @@
-[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](_customerrors_.md)
 
-# External module: "customErrors"
+# Module: "customErrors"
 
 ## Index
 
@@ -12,6 +12,3 @@
 * [ProtocolError](../classes/_customerrors_.protocolerror.md)
 * [RateLimitError](../classes/_customerrors_.ratelimiterror.md)
 * [TimeoutError](../classes/_customerrors_.timeouterror.md)
-
----
-

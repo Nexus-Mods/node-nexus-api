@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGameListEntry](../interfaces/_types_.igamelistentry.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IGameListEntry](_types_.igamelistentry.md)
 
 # Interface: IGameListEntry
 
@@ -6,9 +6,9 @@ basic information about a game
 
 ## Hierarchy
 
-**IGameListEntry**
+* **IGameListEntry**
 
-↳  [IGameInfo](_types_.igameinfo.md)
+  ↳ [IGameInfo](_types_.igameinfo.md)
 
 ## Index
 
@@ -25,98 +25,103 @@ basic information about a game
 * [name](_types_.igamelistentry.md#name)
 * [nexusmods_url](_types_.igamelistentry.md#nexusmods_url)
 
----
-
 ## Properties
-
-<a id="approved_date"></a>
 
 ###  approved_date
 
-**● approved_date**: *`number`*
+• **approved_date**: *number*
+
+Defined in src/types.ts:339
 
 unix timestamp of when this game was added to nexuis mods
 
 ___
-<a id="domain_name"></a>
 
 ###  domain_name
 
-**● domain_name**: *`string`*
+• **domain_name**: *string*
+
+Defined in src/types.ts:306
 
 domain name (as used in urls and as the game id in all other requests)
 
 ___
-<a id="downloads"></a>
 
 ###  downloads
 
-**● downloads**: *`number`*
+• **downloads**: *number*
+
+Defined in src/types.ts:335
 
 number of downloads from nexus for files for this game
 
 ___
-<a id="file_count"></a>
 
 ###  file_count
 
-**● file_count**: *`number`*
+• **file_count**: *number*
+
+Defined in src/types.ts:331
 
 number of files hosted on nexus for this game
 
 ___
-<a id="forum_url"></a>
 
 ###  forum_url
 
-**● forum_url**: *`string`*
+• **forum_url**: *string*
+
+Defined in src/types.ts:314
 
 url for the corresponding forum section
 
 ___
-<a id="genre"></a>
 
 ###  genre
 
-**● genre**: *`string`*
+• **genre**: *string*
 
-genre of the game (possible values?)
+Defined in src/types.ts:323
+
+genre of the game
+(possible values?)
 
 ___
-<a id="id"></a>
 
 ###  id
 
-**● id**: *`number`*
+• **id**: *number*
+
+Defined in src/types.ts:302
 
 numerical id
 
 ___
-<a id="mods"></a>
 
 ###  mods
 
-**● mods**: *`number`*
+• **mods**: *number*
+
+Defined in src/types.ts:327
 
 number of mods hosted on nexus for this game
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
+
+Defined in src/types.ts:310
 
 display name
 
 ___
-<a id="nexusmods_url"></a>
 
 ###  nexusmods_url
 
-**● nexusmods_url**: *`string`*
+• **nexusmods_url**: *string*
 
-url for the primary nexusmods page (should be [https://www.nexusmods.com/](https://www.nexusmods.com/))
+Defined in src/types.ts:318
 
-___
-
+url for the primary nexusmods page (should be https://www.nexusmods.com/<domain_name>)

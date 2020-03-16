@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [ProtocolError](../classes/_customerrors_.protocolerror.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](../modules/_customerrors_.md) › [ProtocolError](_customerrors_.protocolerror.md)
 
 # Class: ProtocolError
 
@@ -6,9 +6,9 @@ Error thrown when a protocol error is reported.
 
 ## Hierarchy
 
- `Error`
+* [Error](_customerrors_.timeouterror.md#static-error)
 
-**↳ ProtocolError**
+  ↳ **ProtocolError**
 
 ## Index
 
@@ -20,57 +20,61 @@ Error thrown when a protocol error is reported.
 
 * [message](_customerrors_.protocolerror.md#message)
 * [name](_customerrors_.protocolerror.md#name)
-* [stack](_customerrors_.protocolerror.md#stack)
-* [Error](_customerrors_.protocolerror.md#error)
-
----
+* [stack](_customerrors_.protocolerror.md#optional-stack)
+* [Error](_customerrors_.protocolerror.md#static-error)
 
 ## Constructors
 
-<a id="constructor"></a>
-
 ###  constructor
 
-⊕ **new ProtocolError**(message: *`string`*): [ProtocolError](_customerrors_.protocolerror.md)
+\+ **new ProtocolError**(`message`: string): *[ProtocolError](_customerrors_.protocolerror.md)*
+
+Defined in src/customErrors.ts:14
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| message | `string` |
+Name | Type |
+------ | ------ |
+`message` | string |
 
-**Returns:** [ProtocolError](_customerrors_.protocolerror.md)
-
-___
+**Returns:** *[ProtocolError](_customerrors_.protocolerror.md)*
 
 ## Properties
 
-<a id="message"></a>
-
 ###  message
 
-**● message**: *`string`*
+• **message**: *string*
+
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[message](_customerrors_.timeouterror.md#message)*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:974
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
 
-___
-<a id="stack"></a>
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[name](_customerrors_.timeouterror.md#name)*
 
-### `<Optional>` stack
-
-**● stack**: *`string`*
-
-___
-<a id="error"></a>
-
-### `<Static>` Error
-
-**● Error**: *`ErrorConstructor`*
+Defined in node_modules/typescript/lib/lib.es5.d.ts:973
 
 ___
 
+### `Optional` stack
+
+• **stack**? : *string*
+
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[stack](_customerrors_.timeouterror.md#optional-stack)*
+
+*Overrides [TimeoutError](_customerrors_.timeouterror.md).[stack](_customerrors_.timeouterror.md#optional-stack)*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:975
+
+___
+
+### `Static` Error
+
+▪ **Error**: *ErrorConstructor*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:984

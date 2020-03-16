@@ -1,6 +1,6 @@
 {
   "name": "@nexusmods/nexus-api",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "./lib/index.js",
   "typings": "lib/index",
   "homepage": "https://www.nexusmods.com/",
@@ -10,11 +10,14 @@
   ],
   "description": "API for the Nexus Mods page",
   "scripts": {
-    "docs": "typedoc --theme markdown --excludePrivate --excludeProtected --mdHideSources --out docs src",
+    "docs": "typedoc --theme markdown --excludePrivate --excludeProtected --out docs src",
     "build": "tsc -p ."
   },
   "author": "Black Tree Gaming Ltd.",
   "license": "LGPL-3.0",
+  "resolutions": {
+    "**/optimist/minimist": "1.2.2"
+  },
   "devDependencies": {
     "@types/form-data": "^0.0.32",
     "@types/node": "^6.0.45",
@@ -23,9 +26,9 @@
     "@types/ref-union": "^0.0.28",
     "@types/request": "^2.47.0",
     "@types/typescript": "^2.0.0",
-    "typescript": "2.6.2",
-    "typedoc": "^0.13.0",
-    "typedoc-plugin-markdown": "^1.1.18"
+    "typedoc": "^0.17.0",
+    "typedoc-plugin-markdown": "^2.2.17",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "request": "^2.85.0",

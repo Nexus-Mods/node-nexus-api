@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [ITrackedMod](../interfaces/_types_.itrackedmod.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [ITrackedMod](_types_.itrackedmod.md)
 
 # Interface: ITrackedMod
 
@@ -6,7 +6,7 @@ response to a request for tracked mods
 
 ## Hierarchy
 
-**ITrackedMod**
+* **ITrackedMod**
 
 ## Index
 
@@ -15,22 +15,18 @@ response to a request for tracked mods
 * [domain_name](_types_.itrackedmod.md#domain_name)
 * [mod_id](_types_.itrackedmod.md#mod_id)
 
----
-
 ## Properties
-
-<a id="domain_name"></a>
 
 ###  domain_name
 
-**● domain_name**: *`string`*
+• **domain_name**: *string*
+
+Defined in src/types.ts:438
 
 ___
-<a id="mod_id"></a>
 
 ###  mod_id
 
-**● mod_id**: *`number`*
+• **mod_id**: *number*
 
-___
-
+Defined in src/types.ts:437

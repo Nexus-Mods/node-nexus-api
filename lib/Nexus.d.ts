@@ -36,9 +36,9 @@ declare class Nexus {
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
-    private checkFileSize(filePath);
-    private request(url, args, method?);
-    private filter(obj);
-    private args(customArgs);
+    private checkFileSize;
+    private request;
+    private filter;
+    private args;
 }
 export default Nexus;

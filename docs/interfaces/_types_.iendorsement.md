@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IEndorsement](../interfaces/_types_.iendorsement.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IEndorsement](_types_.iendorsement.md)
 
 # Interface: IEndorsement
 
@@ -6,7 +6,7 @@ response to a request for endorsements
 
 ## Hierarchy
 
-**IEndorsement**
+* **IEndorsement**
 
 ## Index
 
@@ -18,43 +18,42 @@ response to a request for endorsements
 * [status](_types_.iendorsement.md#status)
 * [version](_types_.iendorsement.md#version)
 
----
-
 ## Properties
-
-<a id="date"></a>
 
 ###  date
 
-**● date**: *`number`*
+• **date**: *number*
+
+Defined in src/types.ts:447
 
 ___
-<a id="domain_name"></a>
 
 ###  domain_name
 
-**● domain_name**: *`string`*
+• **domain_name**: *string*
+
+Defined in src/types.ts:446
 
 ___
-<a id="mod_id"></a>
 
 ###  mod_id
 
-**● mod_id**: *`number`*
+• **mod_id**: *number*
+
+Defined in src/types.ts:445
 
 ___
-<a id="status"></a>
 
 ###  status
 
-**● status**: *[EndorsedStatus](../modules/_types_.md#endorsedstatus)*
+• **status**: *[EndorsedStatus](../modules/_types_.md#endorsedstatus)*
+
+Defined in src/types.ts:449
 
 ___
-<a id="version"></a>
 
 ###  version
 
-**● version**: *`string`*
+• **version**: *string*
 
-___
-
+Defined in src/types.ts:448

@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileInfo](../interfaces/_types_.ifileinfo.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IFileInfo](_types_.ifileinfo.md)
 
 # Interface: IFileInfo
 
@@ -6,7 +6,7 @@ Information about a specific mod file
 
 ## Hierarchy
 
-**IFileInfo**
+* **IFileInfo**
 
 ## Index
 
@@ -29,152 +29,165 @@ Information about a specific mod file
 * [uploaded_timestamp](_types_.ifileinfo.md#uploaded_timestamp)
 * [version](_types_.ifileinfo.md#version)
 
----
-
 ## Properties
-
-<a id="category_id"></a>
 
 ###  category_id
 
-**● category_id**: *`number`*
+• **category_id**: *number*
+
+Defined in src/types.ts:165
 
 File type as a number (1 = main, 2 = patch, 3 = optional, 4 = old, 6 = deleted)
 
 ___
-<a id="category_name"></a>
 
 ###  category_name
 
-**● category_name**: *`string`*
+• **category_name**: *string*
 
-File type as a string ('MAIN', 'PATCH', 'OPTION', 'OLD\_VERSION', 'DELETED')
+Defined in src/types.ts:169
+
+File type as a string ('MAIN', 'PATCH', 'OPTION', 'OLD_VERSION', 'DELETED')
 
 ___
-<a id="changelog_html"></a>
 
 ###  changelog_html
 
-**● changelog_html**: *`string`*
+• **changelog_html**: *string*
 
-html encoded changelog (matched via file version) null if there is none
+Defined in src/types.ts:174
+
+html encoded changelog (matched via file version)
+null if there is none
 
 ___
-<a id="content_preview_link"></a>
 
 ###  content_preview_link
 
-**● content_preview_link**: *`string`*
+• **content_preview_link**: *string*
+
+Defined in src/types.ts:178
 
 url of the content preview (json file containing list of files)
 
 ___
-<a id="description"></a>
 
 ###  description
 
-**● description**: *`string`*
+• **description**: *string*
+
+Defined in src/types.ts:186
 
 file description
 
 ___
-<a id="external_virus_scan_url"></a>
 
 ###  external_virus_scan_url
 
-**● external_virus_scan_url**: *`string`*
+• **external_virus_scan_url**: *string*
 
-link to the virus scan results null if there is none
+Defined in src/types.ts:219
+
+link to the virus scan results
+null if there is none
 
 ___
-<a id="file_id"></a>
 
 ###  file_id
 
-**● file_id**: *`number`*
+• **file_id**: *number*
+
+Defined in src/types.ts:161
 
 file id
 
 ___
-<a id="file_name"></a>
 
 ###  file_name
 
-**● file_name**: *`string`*
+• **file_name**: *string*
+
+Defined in src/types.ts:202
 
 actual file name (derived from name with id and version appended)
 
 ___
-<a id="is_primary"></a>
 
 ###  is_primary
 
-**● is_primary**: *`boolean`*
+• **is_primary**: *boolean*
 
-whether this is the primary download for the mod (the one that users download through the link in the top right of the mod page)
+Defined in src/types.ts:224
+
+whether this is the primary download for the mod
+(the one that users download through the link in the top right of the mod page)
 
 ___
-<a id="mod_version"></a>
 
 ###  mod_version
 
-**● mod_version**: *`string`*
+• **mod_version**: *string*
+
+Defined in src/types.ts:214
 
 version of the mod (at the time this was uploaded?)
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
+
+Defined in src/types.ts:182
 
 readable file name
 
 ___
-<a id="size"></a>
 
 ###  size
 
-**● size**: *`number`*
+• **size**: *number*
+
+Defined in src/types.ts:194
 
 File size in kilobytes
 
 ___
-<a id="size_kb"></a>
 
 ###  size_kb
 
-**● size_kb**: *`number`*
+• **size_kb**: *number*
+
+Defined in src/types.ts:198
 
 File size. also in kilobytes. Because - ugh, don't ask
 
 ___
-<a id="uploaded_time"></a>
 
 ###  uploaded_time
 
-**● uploaded_time**: *`string`*
+• **uploaded_time**: *string*
+
+Defined in src/types.ts:210
 
 readable representation of the file time
 
 ___
-<a id="uploaded_timestamp"></a>
 
 ###  uploaded_timestamp
 
-**● uploaded_timestamp**: *`number`*
+• **uploaded_timestamp**: *number*
+
+Defined in src/types.ts:206
 
 unix timestamp of the time this file was uploaded
 
 ___
-<a id="version"></a>
 
 ###  version
 
-**● version**: *`string`*
+• **version**: *string*
+
+Defined in src/types.ts:190
 
 File version (doesn't actually have to match any mod version)
-
-___
-

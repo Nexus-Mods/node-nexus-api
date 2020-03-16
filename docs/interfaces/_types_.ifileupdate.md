@@ -1,12 +1,14 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileUpdate](../interfaces/_types_.ifileupdate.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IFileUpdate](_types_.ifileupdate.md)
 
 # Interface: IFileUpdate
 
-details about a file update These exist only if the author sets the field "this file is a newer version of ...".
+details about a file update
+These exist only if the author sets the field "this file is
+a newer version of ...".
 
 ## Hierarchy
 
-**IFileUpdate**
+* **IFileUpdate**
 
 ## Index
 
@@ -19,62 +21,62 @@ details about a file update These exist only if the author sets the field "this 
 * [uploaded_time](_types_.ifileupdate.md#uploaded_time)
 * [uploaded_timestamp](_types_.ifileupdate.md#uploaded_timestamp)
 
----
-
 ## Properties
-
-<a id="new_file_id"></a>
 
 ###  new_file_id
 
-**● new_file_id**: *`number`*
+• **new_file_id**: *number*
+
+Defined in src/types.ts:250
 
 id of the new file
 
 ___
-<a id="new_file_name"></a>
 
 ###  new_file_name
 
-**● new_file_name**: *`string`*
+• **new_file_name**: *string*
+
+Defined in src/types.ts:254
 
 name of the new file
 
 ___
-<a id="old_file_id"></a>
 
 ###  old_file_id
 
-**● old_file_id**: *`number`*
+• **old_file_id**: *number*
+
+Defined in src/types.ts:258
 
 id of the old file
 
 ___
-<a id="old_file_name"></a>
 
 ###  old_file_name
 
-**● old_file_name**: *`string`*
+• **old_file_name**: *string*
+
+Defined in src/types.ts:262
 
 name of the old file
 
 ___
-<a id="uploaded_time"></a>
 
 ###  uploaded_time
 
-**● uploaded_time**: *`string`*
+• **uploaded_time**: *string*
+
+Defined in src/types.ts:266
 
 readable upload time of the new file
 
 ___
-<a id="uploaded_timestamp"></a>
 
 ###  uploaded_timestamp
 
-**● uploaded_timestamp**: *`number`*
+• **uploaded_timestamp**: *number*
+
+Defined in src/types.ts:270
 
 unix timestamp of when the new file was uploaded
-
-___
-

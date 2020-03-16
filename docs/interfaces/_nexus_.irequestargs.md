@@ -1,78 +1,78 @@
-[@nexusmods/nexus-api](../README.md) > ["Nexus"](../modules/_nexus_.md) > [IRequestArgs](../interfaces/_nexus_.irequestargs.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["Nexus"](../modules/_nexus_.md) › [IRequestArgs](_nexus_.irequestargs.md)
 
 # Interface: IRequestArgs
 
 ## Hierarchy
 
-**IRequestArgs**
+* **IRequestArgs**
 
 ## Index
 
 ### Properties
 
-* [data](_nexus_.irequestargs.md#data)
-* [headers](_nexus_.irequestargs.md#headers)
-* [method](_nexus_.irequestargs.md#method)
-* [path](_nexus_.irequestargs.md#path)
-* [requestConfig](_nexus_.irequestargs.md#requestconfig)
-* [responseConfig](_nexus_.irequestargs.md#responseconfig)
-
----
+* [data](_nexus_.irequestargs.md#optional-data)
+* [headers](_nexus_.irequestargs.md#optional-headers)
+* [method](_nexus_.irequestargs.md#optional-method)
+* [path](_nexus_.irequestargs.md#optional-path)
+* [requestConfig](_nexus_.irequestargs.md#optional-requestconfig)
+* [responseConfig](_nexus_.irequestargs.md#optional-responseconfig)
 
 ## Properties
 
-<a id="data"></a>
+### `Optional` data
 
-### `<Optional>` data
+• **data**? : *any*
 
-**● data**: *`any`*
-
-___
-<a id="headers"></a>
-
-### `<Optional>` headers
-
-**● headers**: *`any`*
-
-___
-<a id="method"></a>
-
-### `<Optional>` method
-
-**● method**: *[REST_METHOD](../modules/_nexus_.md#rest_method)*
-
-___
-<a id="path"></a>
-
-### `<Optional>` path
-
-**● path**: *`any`*
-
-___
-<a id="requestconfig"></a>
-
-### `<Optional>` requestConfig
-
-**● requestConfig**: *`object`*
-
-#### Type declaration
-
- noDelay: `boolean`
-
- securityProtocol: `string`
-
- timeout: `number`
-
-___
-<a id="responseconfig"></a>
-
-### `<Optional>` responseConfig
-
-**● responseConfig**: *`object`*
-
-#### Type declaration
-
- timeout: `number`
+Defined in src/Nexus.ts:18
 
 ___
 
+### `Optional` headers
+
+• **headers**? : *any*
+
+Defined in src/Nexus.ts:16
+
+___
+
+### `Optional` method
+
+• **method**? : *[REST_METHOD](../modules/_nexus_.md#rest_method)*
+
+Defined in src/Nexus.ts:19
+
+___
+
+### `Optional` path
+
+• **path**? : *any*
+
+Defined in src/Nexus.ts:17
+
+___
+
+### `Optional` requestConfig
+
+• **requestConfig**? : *object*
+
+Defined in src/Nexus.ts:20
+
+#### Type declaration:
+
+* **noDelay**: *boolean*
+
+* **securityProtocol**: *string*
+
+* **timeout**: *number*
+
+___
+
+### `Optional` responseConfig
+
+• **responseConfig**? : *object*
+
+Defined in src/Nexus.ts:25
+
+#### Type declaration:
+
+* **timeout**: *number*

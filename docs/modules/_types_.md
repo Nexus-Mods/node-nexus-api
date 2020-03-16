@@ -1,6 +1,6 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](_types_.md)
 
-# External module: "types"
+# Module: "types"
 
 ## Index
 
@@ -35,33 +35,30 @@
 * [ModStatus](_types_.md#modstatus)
 * [UpdatePeriod](_types_.md#updateperiod)
 
----
-
 ## Type aliases
-
-<a id="endorsedstatus"></a>
 
 ###  EndorsedStatus
 
-**Ƭ EndorsedStatus**: *"Undecided" \| "Abstained" \| "Endorsed"*
+Ƭ **EndorsedStatus**: *"Undecided" | "Abstained" | "Endorsed"*
+
+Defined in src/types.ts:41
 
 ___
-<a id="modstatus"></a>
 
 ###  ModStatus
 
-**Ƭ ModStatus**: *"under_moderation" \| "published" \| "not_published" \| "publish_with_game" \| "removed" \| "wastebinned" \| "hidden"*
+Ƭ **ModStatus**: *"under_moderation" | "published" | "not_published" | "publish_with_game" | "removed" | "wastebinned" | "hidden"*
+
+Defined in src/types.ts:46
 
 possible states the mod can be in
 
 ___
-<a id="updateperiod"></a>
 
 ###  UpdatePeriod
 
-**Ƭ UpdatePeriod**: *"1d" \| "1w" \| "1m"*
+Ƭ **UpdatePeriod**: *"1d" | "1w" | "1m"*
+
+Defined in src/types.ts:487
 
 range of updates to query
-
-___
-

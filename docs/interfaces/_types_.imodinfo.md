@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IModInfo](../interfaces/_types_.imodinfo.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IModInfo](_types_.imodinfo.md)
 
 # Interface: IModInfo
 
@@ -6,9 +6,9 @@ Details about a mod
 
 ## Hierarchy
 
-**IModInfo**
+* **IModInfo**
 
-↳  [IModInfoEx](_types_.imodinfoex.md)
+  ↳ [IModInfoEx](_types_.imodinfoex.md)
 
 ## Index
 
@@ -21,240 +21,261 @@ Details about a mod
 * [contains_adult_content](_types_.imodinfo.md#contains_adult_content)
 * [created_time](_types_.imodinfo.md#created_time)
 * [created_timestamp](_types_.imodinfo.md#created_timestamp)
-* [description](_types_.imodinfo.md#description)
+* [description](_types_.imodinfo.md#optional-description)
 * [domain_name](_types_.imodinfo.md#domain_name)
-* [endorsement](_types_.imodinfo.md#endorsement)
+* [endorsement](_types_.imodinfo.md#optional-endorsement)
 * [endorsement_count](_types_.imodinfo.md#endorsement_count)
 * [game_id](_types_.imodinfo.md#game_id)
 * [mod_id](_types_.imodinfo.md#mod_id)
-* [name](_types_.imodinfo.md#name)
-* [picture_url](_types_.imodinfo.md#picture_url)
+* [name](_types_.imodinfo.md#optional-name)
+* [picture_url](_types_.imodinfo.md#optional-picture_url)
 * [status](_types_.imodinfo.md#status)
-* [summary](_types_.imodinfo.md#summary)
+* [summary](_types_.imodinfo.md#optional-summary)
 * [updated_time](_types_.imodinfo.md#updated_time)
 * [updated_timestamp](_types_.imodinfo.md#updated_timestamp)
 * [uploaded_by](_types_.imodinfo.md#uploaded_by)
 * [uploaded_users_profile_url](_types_.imodinfo.md#uploaded_users_profile_url)
 * [user](_types_.imodinfo.md#user)
-* [version](_types_.imodinfo.md#version-1)
-
----
+* [version](_types_.imodinfo.md#version)
 
 ## Properties
 
-<a id="allow_rating"></a>
-
 ###  allow_rating
 
-**● allow_rating**: *`boolean`*
+• **allow_rating**: *boolean*
+
+Defined in src/types.ts:139
 
 whether this mod allows endorsements
 
 ___
-<a id="author"></a>
 
 ###  author
 
-**● author**: *`string`*
+• **author**: *string*
+
+Defined in src/types.ts:92
 
 Author of the mod
 
 ___
-<a id="available"></a>
 
 ###  available
 
-**● available**: *`boolean`*
+• **available**: *boolean*
 
-whether the mod is currently available/visible to users If a mod isn't available the api returns very limited information, essentially hiding all textual info that could contain offensive content but certain "maintenance" info is still provided.
+Defined in src/types.ts:115
+
+whether the mod is currently available/visible to users
+If a mod isn't available the api returns very limited information, essentially
+hiding all textual info that could contain offensive content but certain "maintenance" info
+is still provided.
 
 ___
-<a id="category_id"></a>
 
 ###  category_id
 
-**● category_id**: *`number`*
+• **category_id**: *number*
+
+Defined in src/types.ts:67
 
 id of the category
 
 ___
-<a id="contains_adult_content"></a>
 
 ###  contains_adult_content
 
-**● contains_adult_content**: *`boolean`*
+• **contains_adult_content**: *boolean*
+
+Defined in src/types.ts:71
 
 whether this mod is tagged as adult
 
 ___
-<a id="created_time"></a>
 
 ###  created_time
 
-**● created_time**: *`string`*
+• **created_time**: *string*
+
+Defined in src/types.ts:127
 
 readable time of when the mod was created
 
 ___
-<a id="created_timestamp"></a>
 
 ###  created_timestamp
 
-**● created_timestamp**: *`number`*
+• **created_timestamp**: *number*
+
+Defined in src/types.ts:123
 
 unix timestamp of when the mod was created
 
 ___
-<a id="description"></a>
 
-### `<Optional>` description
+### `Optional` description
 
-**● description**: *`string`*
+• **description**? : *string*
+
+Defined in src/types.ts:84
 
 long description (bbcode)
 
 ___
-<a id="domain_name"></a>
 
 ###  domain_name
 
-**● domain_name**: *`string`*
+• **domain_name**: *string*
+
+Defined in src/types.ts:63
 
 domain name (as used in urls and as the game id in all other requests)
 
 ___
-<a id="endorsement"></a>
 
-### `<Optional>` endorsement
+### `Optional` endorsement
 
-**● endorsement**: *`object`*
+• **endorsement**? : *object*
+
+Defined in src/types.ts:147
 
 obsolete - will be removed in the near future
 
-#### Type declaration
+#### Type declaration:
 
- endorse_status: [EndorsedStatus](../modules/_types_.md#endorsedstatus)
+* **endorse_status**: *[EndorsedStatus](../modules/_types_.md#endorsedstatus)*
 
- timestamp: `number`
+* **timestamp**: *number*
 
- version: `number`
+* **version**: *number*
 
 ___
-<a id="endorsement_count"></a>
 
 ###  endorsement_count
 
-**● endorsement_count**: *`number`*
+• **endorsement_count**: *number*
+
+Defined in src/types.ts:143
 
 endorsement count
 
 ___
-<a id="game_id"></a>
 
 ###  game_id
 
-**● game_id**: *`number`*
+• **game_id**: *number*
+
+Defined in src/types.ts:59
 
 internal id of the game this mod belongs to
 
 ___
-<a id="mod_id"></a>
 
 ###  mod_id
 
-**● mod_id**: *`number`*
+• **mod_id**: *number*
+
+Defined in src/types.ts:55
 
 id of this mod (should be the same you queried for)
 
 ___
-<a id="name"></a>
 
-### `<Optional>` name
+### `Optional` name
 
-**● name**: *`string`*
+• **name**? : *string*
 
-Name of the mod (not present if the file is under moderation)
+Defined in src/types.ts:76
+
+Name of the mod
+(not present if the file is under moderation)
 
 ___
-<a id="picture_url"></a>
 
-### `<Optional>` picture_url
+### `Optional` picture_url
 
-**● picture_url**: *`string`*
+• **picture_url**? : *string*
+
+Defined in src/types.ts:119
 
 url of the primary screenshot
 
 ___
-<a id="status"></a>
 
 ###  status
 
-**● status**: *[ModStatus](../modules/_types_.md#modstatus)*
+• **status**: *[ModStatus](../modules/_types_.md#modstatus)*
+
+Defined in src/types.ts:108
 
 current status of the mod
 
 ___
-<a id="summary"></a>
 
-### `<Optional>` summary
+### `Optional` summary
 
-**● summary**: *`string`*
+• **summary**? : *string*
+
+Defined in src/types.ts:80
 
 short description
 
 ___
-<a id="updated_time"></a>
 
 ###  updated_time
 
-**● updated_time**: *`string`*
+• **updated_time**: *string*
+
+Defined in src/types.ts:135
 
 readable time of when the mod was updated
 
 ___
-<a id="updated_timestamp"></a>
 
 ###  updated_timestamp
 
-**● updated_timestamp**: *`number`*
+• **updated_timestamp**: *number*
+
+Defined in src/types.ts:131
 
 unix timestamp of when the mod was updated
 
 ___
-<a id="uploaded_by"></a>
 
 ###  uploaded_by
 
-**● uploaded_by**: *`string`*
+• **uploaded_by**: *string*
+
+Defined in src/types.ts:100
 
 name of the user who uploaded this mod
 
 ___
-<a id="uploaded_users_profile_url"></a>
 
 ###  uploaded_users_profile_url
 
-**● uploaded_users_profile_url**: *`string`*
+• **uploaded_users_profile_url**: *string*
+
+Defined in src/types.ts:104
 
 url of the profile image of the uploader
 
 ___
-<a id="user"></a>
 
 ###  user
 
-**● user**: *[IUser](_types_.iuser.md)*
+• **user**: *[IUser](_types_.iuser.md)*
+
+Defined in src/types.ts:96
 
 more detailed info about the author
 
 ___
-<a id="version-1"></a>
 
 ###  version
 
-**● version**: *`string`*
+• **version**: *string*
+
+Defined in src/types.ts:88
 
 mod version
-
-___
-

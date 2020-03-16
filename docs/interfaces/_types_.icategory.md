@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [ICategory](../interfaces/_types_.icategory.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [ICategory](_types_.icategory.md)
 
 # Interface: ICategory
 
@@ -6,7 +6,7 @@ Nexus Mods category
 
 ## Hierarchy
 
-**ICategory**
+* **ICategory**
 
 ## Index
 
@@ -16,35 +16,36 @@ Nexus Mods category
 * [name](_types_.icategory.md#name)
 * [parent_category](_types_.icategory.md#parent_category)
 
----
-
 ## Properties
-
-<a id="category_id"></a>
 
 ###  category_id
 
-**● category_id**: *`number`*
+• **category_id**: *number*
+
+Defined in src/types.ts:280
 
 numerical id
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
+
+Defined in src/types.ts:284
 
 display name
 
 ___
-<a id="parent_category"></a>
 
 ###  parent_category
 
-**● parent_category**: *`number` \| `false`*
+• **parent_category**: *number | false*
 
-id of the parent category or false if it's a top-level category. Note: often there is only a single root category named after the game. But in some cases there are additional roots, e.g. the game 'skyrim' has the roots 'Skyrim' and 'Sure AI: Enderal'
+Defined in src/types.ts:292
 
-___
-
+id of the parent category or false if it's a top-level
+category.
+Note: often there is only a single root category named after the game.
+But in some cases there are additional roots, e.g. the game 'skyrim' has
+the roots 'Skyrim' and 'Sure AI: Enderal'

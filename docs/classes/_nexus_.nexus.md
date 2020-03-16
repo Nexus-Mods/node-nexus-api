@@ -1,14 +1,12 @@
-[@nexusmods/nexus-api](../README.md) > ["Nexus"](../modules/_nexus_.md) > [Nexus](../classes/_nexus_.nexus.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["Nexus"](../modules/_nexus_.md) › [Nexus](_nexus_.nexus.md)
 
 # Class: Nexus
 
 Main class of the api
 
-*__class__*: Nexus
-
 ## Hierarchy
 
-**Nexus**
+* **Nexus**
 
 ## Index
 
@@ -44,469 +42,508 @@ Main class of the api
 * [trackMod](_nexus_.nexus.md#trackmod)
 * [untrackMod](_nexus_.nexus.md#untrackmod)
 * [validateKey](_nexus_.nexus.md#validatekey)
-* [create](_nexus_.nexus.md#create)
-
----
+* [create](_nexus_.nexus.md#static-create)
 
 ## Constructors
 
-<a id="constructor"></a>
-
 ###  constructor
 
-⊕ **new Nexus**(appName: *`string`*, appVersion: *`string`*, defaultGame: *`string`*, timeout?: *`number`*): [Nexus](_nexus_.nexus.md)
+\+ **new Nexus**(`appName`: string, `appVersion`: string, `defaultGame`: string, `timeout?`: number): *[Nexus](_nexus_.nexus.md)*
 
-Constructor please don't use this directly, use Nexus.create
+Defined in src/Nexus.ts:157
+
+Constructor
+please don't use this directly, use Nexus.create
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| appName | `string` |  Name of the client application |
-| appVersion | `string` |  Version number of the client application (Needs to be semantic format) |
-| defaultGame | `string` |  (nexus) id of the game requests are made for. Can be overridden per request |
-| `Optional` timeout | `number` |  Request timeout in milliseconds. Defaults to 30 seconds |
+Name | Type | Description |
+------ | ------ | ------ |
+`appName` | string | Name of the client application |
+`appVersion` | string | Version number of the client application (Needs to be semantic format) |
+`defaultGame` | string | (nexus) id of the game requests are made for. Can be overridden per request |
+`timeout?` | number | Request timeout in milliseconds. Defaults to 30 seconds  |
 
-**Returns:** [Nexus](_nexus_.nexus.md)
-
-___
+**Returns:** *[Nexus](_nexus_.nexus.md)*
 
 ## Methods
 
-<a id="endorsemod"></a>
-
 ###  endorseMod
 
-▸ **endorseMod**(modId: *`number`*, modVersion: *`string`*, endorseStatus: *"endorse" \| "abstain"*, gameId?: *`string`*): `Promise`<[IEndorseResponse](../interfaces/_types_.iendorseresponse.md)>
+▸ **endorseMod**(`modId`: number, `modVersion`: string, `endorseStatus`: "endorse" | "abstain", `gameId?`: string): *Promise‹[IEndorseResponse](../interfaces/_types_.iendorseresponse.md)›*
+
+Defined in src/Nexus.ts:420
 
 Endorse/Unendorse a mod
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| modId | `number` |  (nexus) id of the mod to endorse |
-| modVersion | `string` |  version of the mod the user has installed (has to correspond to a version that actually exists) |
-| endorseStatus | "endorse" \| "abstain" |  the new endorsement state |
-| `Optional` gameId | `string` |  (nexus) id of the game to endorse |
+Name | Type | Description |
+------ | ------ | ------ |
+`modId` | number | (nexus) id of the mod to endorse |
+`modVersion` | string | version of the mod the user has installed (has to correspond to a version that actually exists) |
+`endorseStatus` | "endorse" &#124; "abstain" | the new endorsement state |
+`gameId?` | string | (nexus) id of the game to endorse  |
 
-**Returns:** `Promise`<[IEndorseResponse](../interfaces/_types_.iendorseresponse.md)>
+**Returns:** *Promise‹[IEndorseResponse](../interfaces/_types_.iendorseresponse.md)›*
 
 ___
-<a id="getchangelogs"></a>
 
 ###  getChangelogs
 
-▸ **getChangelogs**(modId: *`number`*, gameId?: *`string`*): `Promise`<[IChangelogs](../interfaces/_types_.ichangelogs.md)>
+▸ **getChangelogs**(`modId`: number, `gameId?`: string): *Promise‹[IChangelogs](../interfaces/_types_.ichangelogs.md)›*
+
+Defined in src/Nexus.ts:449
 
 retrieve all changelogs for a mod
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| modId | `number` |  (nexus) id of the mod |
-| `Optional` gameId | `string` |  (nexus) game id |
+Name | Type | Description |
+------ | ------ | ------ |
+`modId` | number | (nexus) id of the mod |
+`gameId?` | string | (nexus) game id  |
 
-**Returns:** `Promise`<[IChangelogs](../interfaces/_types_.ichangelogs.md)>
+**Returns:** *Promise‹[IChangelogs](../interfaces/_types_.ichangelogs.md)›*
 
 ___
-<a id="getcolorschemes"></a>
 
 ###  getColorschemes
 
-▸ **getColorschemes**(): `Promise`<[IColourScheme](../interfaces/_types_.icolourscheme.md)[]>
+▸ **getColorschemes**(): *Promise‹[IColourScheme](../interfaces/_types_.icolourscheme.md)[]›*
+
+Defined in src/Nexus.ts:377
 
 get list of colorschemes
 
-**Returns:** `Promise`<[IColourScheme](../interfaces/_types_.icolourscheme.md)[]>
+**Returns:** *Promise‹[IColourScheme](../interfaces/_types_.icolourscheme.md)[]›*
 
 ___
-<a id="getcolourschemes"></a>
 
 ###  getColourschemes
 
-▸ **getColourschemes**(): `Promise`<[IColourScheme](../interfaces/_types_.icolourscheme.md)[]>
+▸ **getColourschemes**(): *Promise‹[IColourScheme](../interfaces/_types_.icolourscheme.md)[]›*
+
+Defined in src/Nexus.ts:369
 
 get list of colourschemes
 
-**Returns:** `Promise`<[IColourScheme](../interfaces/_types_.icolourscheme.md)[]>
+**Returns:** *Promise‹[IColourScheme](../interfaces/_types_.icolourscheme.md)[]›*
 
 ___
-<a id="getdownloadurls"></a>
 
 ###  getDownloadURLs
 
-▸ **getDownloadURLs**(modId: *`number`*, fileId: *`number`*, key?: *`string`*, expires?: *`number`*, gameId?: *`string`*): `Promise`<[IDownloadURL](../interfaces/_types_.idownloadurl.md)[]>
+▸ **getDownloadURLs**(`modId`: number, `fileId`: number, `key?`: string, `expires?`: number, `gameId?`: string): *Promise‹[IDownloadURL](../interfaces/_types_.idownloadurl.md)[]›*
 
-generate download links for a file If the user isn't premium on Nexus Mods, this requires a key that can only be generated on the website. The key is part of the nxm links that are generated by the "Download with Manager" buttons.
+Defined in src/Nexus.ts:496
+
+generate download links for a file
+If the user isn't premium on Nexus Mods, this requires a key that can only
+be generated on the website. The key is part of the nxm links that are generated by the "Download with Manager" buttons.
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| modId | `number` |  id of the mod |
-| fileId | `number` |  id of the file |
-| `Optional` key | `string` |  a download key |
-| `Optional` expires | `number` |  expiry time of the key |
-| `Optional` gameId | `string` |  id of the game |
+Name | Type | Description |
+------ | ------ | ------ |
+`modId` | number | id of the mod |
+`fileId` | number | id of the file |
+`key?` | string | a download key |
+`expires?` | number | expiry time of the key |
+`gameId?` | string | id of the game  |
 
-**Returns:** `Promise`<[IDownloadURL](../interfaces/_types_.idownloadurl.md)[]>
+**Returns:** *Promise‹[IDownloadURL](../interfaces/_types_.idownloadurl.md)[]›*
 
 ___
-<a id="getendorsements"></a>
 
 ###  getEndorsements
 
-▸ **getEndorsements**(): `Promise`<[IEndorsement](../interfaces/_types_.iendorsement.md)[]>
+▸ **getEndorsements**(): *Promise‹[IEndorsement](../interfaces/_types_.iendorsement.md)[]›*
+
+Defined in src/Nexus.ts:361
 
 get list of endorsements the user has given
 
-**Returns:** `Promise`<[IEndorsement](../interfaces/_types_.iendorsement.md)[]>
+**Returns:** *Promise‹[IEndorsement](../interfaces/_types_.iendorsement.md)[]›*
 
 ___
-<a id="getfilebymd5"></a>
 
 ###  getFileByMD5
 
-▸ **getFileByMD5**(hash: *`string`*, gameId?: *`string`*): `Promise`<[IMD5Result](../interfaces/_types_.imd5result.md)[]>
+▸ **getFileByMD5**(`hash`: string, `gameId?`: string): *Promise‹[IMD5Result](../interfaces/_types_.imd5result.md)[]›*
 
-find information about a file based on its md5 hash This can be used to find info about a file when you don't have its modid and fileid Note that technically there may be multiple results for the same md5 hash, either the same file uploaded in different places or (less likely) different files that just happen to have the same hash. This function will return all of them, you will have to sort out from the result which file you were actually looking for (e.g. by comparing size)
+Defined in src/Nexus.ts:521
+
+find information about a file based on its md5 hash
+This can be used to find info about a file when you don't have its modid and fileid
+Note that technically there may be multiple results for the same md5 hash, either the same
+file uploaded in different places or (less likely) different files that just happen to have
+the same hash.
+This function will return all of them, you will have to sort out from the result which file
+you were actually looking for (e.g. by comparing size)
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| hash | `string` |  the md5 hash of the file |
-| `Optional` gameId | `string` |  the game to search in |
+Name | Type | Description |
+------ | ------ | ------ |
+`hash` | string | the md5 hash of the file |
+`gameId?` | string | the game to search in  |
 
-**Returns:** `Promise`<[IMD5Result](../interfaces/_types_.imd5result.md)[]>
+**Returns:** *Promise‹[IMD5Result](../interfaces/_types_.imd5result.md)[]›*
 
 ___
-<a id="getfileinfo"></a>
 
 ###  getFileInfo
 
-▸ **getFileInfo**(modId: *`number`*, fileId: *`number`*, gameId?: *`string`*): `Promise`<[IFileInfo](../interfaces/_types_.ifileinfo.md)>
+▸ **getFileInfo**(`modId`: number, `fileId`: number, `gameId?`: string): *Promise‹[IFileInfo](../interfaces/_types_.ifileinfo.md)›*
+
+Defined in src/Nexus.ts:477
 
 get details about a file
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| modId | `number` |  (nexus) id of the mod |
-| fileId | `number` |  (nexus) id of the file |
-| `Optional` gameId | `string` |  (nexus) id of the game |
+Name | Type | Description |
+------ | ------ | ------ |
+`modId` | number | (nexus) id of the mod |
+`fileId` | number | (nexus) id of the file |
+`gameId?` | string | (nexus) id of the game  |
 
-**Returns:** `Promise`<[IFileInfo](../interfaces/_types_.ifileinfo.md)>
+**Returns:** *Promise‹[IFileInfo](../interfaces/_types_.ifileinfo.md)›*
 
 ___
-<a id="getgameinfo"></a>
 
 ###  getGameInfo
 
-▸ **getGameInfo**(gameId?: *`string`*): `Promise`<[IGameInfo](../interfaces/_types_.igameinfo.md)>
+▸ **getGameInfo**(`gameId?`: string): *Promise‹[IGameInfo](../interfaces/_types_.igameinfo.md)›*
+
+Defined in src/Nexus.ts:389
 
 retrieve details about a specific game
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| `Optional` gameId | `string` |  (nexus) game id to request |
+Name | Type | Description |
+------ | ------ | ------ |
+`gameId?` | string | (nexus) game id to request  |
 
-**Returns:** `Promise`<[IGameInfo](../interfaces/_types_.igameinfo.md)>
+**Returns:** *Promise‹[IGameInfo](../interfaces/_types_.igameinfo.md)›*
 
 ___
-<a id="getgames"></a>
 
 ###  getGames
 
-▸ **getGames**(): `Promise`<[IGameListEntry](../interfaces/_types_.igamelistentry.md)[]>
+▸ **getGames**(): *Promise‹[IGameListEntry](../interfaces/_types_.igamelistentry.md)[]›*
+
+Defined in src/Nexus.ts:320
 
 retrieve a list of all games currently supported by Nexus Mods
 
-**Returns:** `Promise`<[IGameListEntry](../interfaces/_types_.igamelistentry.md)[]>
+**Returns:** *Promise‹[IGameListEntry](../interfaces/_types_.igamelistentry.md)[]›*
+
 list of games
 
 ___
-<a id="getlatestadded"></a>
 
 ###  getLatestAdded
 
-▸ **getLatestAdded**(gameId?: *`string`*): `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+▸ **getLatestAdded**(`gameId?`: string): *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
+
+Defined in src/Nexus.ts:329
 
 get list of the latest added mods
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| `Optional` gameId | `string` |  id of the game to query |
+Name | Type | Description |
+------ | ------ | ------ |
+`gameId?` | string | id of the game to query  |
 
-**Returns:** `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+**Returns:** *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
 
 ___
-<a id="getlatestupdated"></a>
 
 ###  getLatestUpdated
 
-▸ **getLatestUpdated**(gameId?: *`string`*): `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+▸ **getLatestUpdated**(`gameId?`: string): *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
+
+Defined in src/Nexus.ts:340
 
 get list of the latest updated mods
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| `Optional` gameId | `string` |  id of the game to query |
+Name | Type | Description |
+------ | ------ | ------ |
+`gameId?` | string | id of the game to query  |
 
-**Returns:** `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+**Returns:** *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
 
 ___
-<a id="getmodfiles"></a>
 
 ###  getModFiles
 
-▸ **getModFiles**(modId: *`number`*, gameId?: *`string`*): `Promise`<[IModFiles](../interfaces/_types_.imodfiles.md)>
+▸ **getModFiles**(`modId`: number, `gameId?`: string): *Promise‹[IModFiles](../interfaces/_types_.imodfiles.md)›*
+
+Defined in src/Nexus.ts:461
 
 get list of all files uploaded for a mod
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| modId | `number` |  (nexus) id of the mod |
-| `Optional` gameId | `string` |  (nexus) game id |
+Name | Type | Description |
+------ | ------ | ------ |
+`modId` | number | (nexus) id of the mod |
+`gameId?` | string | (nexus) game id  |
 
-**Returns:** `Promise`<[IModFiles](../interfaces/_types_.imodfiles.md)>
+**Returns:** *Promise‹[IModFiles](../interfaces/_types_.imodfiles.md)›*
 
 ___
-<a id="getmodinfo"></a>
 
 ###  getModInfo
 
-▸ **getModInfo**(modId: *`number`*, gameId?: *`string`*): `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)>
+▸ **getModInfo**(`modId`: number, `gameId?`: string): *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)›*
+
+Defined in src/Nexus.ts:437
 
 retrieve details about a mod
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| modId | `number` |  (nexus) id of the mod |
-| `Optional` gameId | `string` |  (nexus) game id |
+Name | Type | Description |
+------ | ------ | ------ |
+`modId` | number | (nexus) id of the mod |
+`gameId?` | string | (nexus) game id  |
 
-**Returns:** `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)>
+**Returns:** *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)›*
 
 ___
-<a id="getownissues"></a>
 
 ###  getOwnIssues
 
-▸ **getOwnIssues**(): `Promise`<[IIssue](../interfaces/_types_.iissue.md)[]>
+▸ **getOwnIssues**(): *Promise‹[IIssue](../interfaces/_types_.iissue.md)[]›*
 
-get list of issues reported by this user FOR INTERNAL USE ONLY
+Defined in src/Nexus.ts:547
 
-**Returns:** `Promise`<[IIssue](../interfaces/_types_.iissue.md)[]>
+get list of issues reported by this user
+FOR INTERNAL USE ONLY
+
+**Returns:** *Promise‹[IIssue](../interfaces/_types_.iissue.md)[]›*
 
 ___
-<a id="getratelimits"></a>
 
 ###  getRateLimits
 
-▸ **getRateLimits**(): `object`
+▸ **getRateLimits**(): *object*
 
-**Returns:** `object`
+Defined in src/Nexus.ts:249
+
+**Returns:** *object*
+
+* **daily**: *number*
+
+* **hourly**: *number*
 
 ___
-<a id="getrecentlyupdatedmods"></a>
 
 ###  getRecentlyUpdatedMods
 
-▸ **getRecentlyUpdatedMods**(period: *`types.UpdatePeriod`*, gameId?: *`string`*): `Promise`<[IUpdateEntry](../interfaces/_types_.iupdateentry.md)[]>
+▸ **getRecentlyUpdatedMods**(`period`: types.UpdatePeriod, `gameId?`: string): *Promise‹[IUpdateEntry](../interfaces/_types_.iupdateentry.md)[]›*
+
+Defined in src/Nexus.ts:402
 
 retrieve list of mods for a game that has recently been updated
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| period | `types.UpdatePeriod` |  rough time range to retrieve. This is limited to specific periods (1d, 1w, 1m) because the list is cached on the server |
-| `Optional` gameId | `string` |  (nexus) game id to request |
+Name | Type | Description |
+------ | ------ | ------ |
+`period` | types.UpdatePeriod | rough time range to retrieve. This is limited to specific periods                        (1d, 1w, 1m) because the list is cached on the server |
+`gameId?` | string | (nexus) game id to request  |
 
-**Returns:** `Promise`<[IUpdateEntry](../interfaces/_types_.iupdateentry.md)[]>
+**Returns:** *Promise‹[IUpdateEntry](../interfaces/_types_.iupdateentry.md)[]›*
 
 ___
-<a id="gettrackedmods"></a>
 
 ###  getTrackedMods
 
-▸ **getTrackedMods**(): `Promise`<[ITrackedMod](../interfaces/_types_.itrackedmod.md)[]>
+▸ **getTrackedMods**(): *Promise‹[ITrackedMod](../interfaces/_types_.itrackedmod.md)[]›*
+
+Defined in src/Nexus.ts:272
 
 Get list of all mods being tracked by the user
 
-**Returns:** `Promise`<[ITrackedMod](../interfaces/_types_.itrackedmod.md)[]>
+**Returns:** *Promise‹[ITrackedMod](../interfaces/_types_.itrackedmod.md)[]›*
 
 ___
-<a id="gettrending"></a>
 
 ###  getTrending
 
-▸ **getTrending**(gameId?: *`string`*): `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+▸ **getTrending**(`gameId?`: string): *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
+
+Defined in src/Nexus.ts:351
 
 get list of trending mods
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| `Optional` gameId | `string` |  id of the game to query |
+Name | Type | Description |
+------ | ------ | ------ |
+`gameId?` | string | id of the game to query  |
 
-**Returns:** `Promise`<[IModInfo](../interfaces/_types_.imodinfo.md)[]>
+**Returns:** *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
 
 ___
-<a id="getvalidationresult"></a>
 
 ###  getValidationResult
 
-▸ **getValidationResult**(): [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
+▸ **getValidationResult**(): *[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)*
 
-retrieve the result of the last key validation. This is useful primarily after creating the object with Nexus.create
+Defined in src/Nexus.ts:223
 
-**Returns:** [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
+retrieve the result of the last key validation.
+This is useful primarily after creating the object with Nexus.create
+
+**Returns:** *[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)*
 
 ___
-<a id="sendfeedback"></a>
 
 ###  sendFeedback
 
-▸ **sendFeedback**(title: *`string`*, message: *`string`*, fileBundle: *`string`*, anonymous: *`boolean`*, groupingKey?: *`string`*, id?: *`string`*): `Promise`<[IFeedbackResponse](../interfaces/_types_.ifeedbackresponse.md)>
+▸ **sendFeedback**(`title`: string, `message`: string, `fileBundle`: string, `anonymous`: boolean, `groupingKey?`: string, `id?`: string): *Promise‹[IFeedbackResponse](../interfaces/_types_.ifeedbackresponse.md)›*
 
-send a feedback message FOR INTERNAL USE ONLY
+Defined in src/Nexus.ts:564
+
+send a feedback message
+FOR INTERNAL USE ONLY
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| title | `string` |  title of the message |
-| message | `string` |  content |
-| fileBundle | `string` |  path to an archive that is sent along |
-| anonymous | `boolean` |  whether the report should be made anonymously |
-| `Optional` groupingKey | `string` |  a key that is used to group identical reports |
-| `Optional` id | `string` |  reference id |
+Name | Type | Description |
+------ | ------ | ------ |
+`title` | string | title of the message |
+`message` | string | content |
+`fileBundle` | string | path to an archive that is sent along |
+`anonymous` | boolean | whether the report should be made anonymously |
+`groupingKey?` | string | a key that is used to group identical reports |
+`id?` | string | reference id  |
 
-**Returns:** `Promise`<[IFeedbackResponse](../interfaces/_types_.ifeedbackresponse.md)>
+**Returns:** *Promise‹[IFeedbackResponse](../interfaces/_types_.ifeedbackresponse.md)›*
 
 ___
-<a id="setgame"></a>
 
 ###  setGame
 
-▸ **setGame**(gameId: *`string`*): `void`
+▸ **setGame**(`gameId`: string): *void*
+
+Defined in src/Nexus.ts:215
 
 change the default game id
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| gameId | `string` |  game id |
+Name | Type | Description |
+------ | ------ | ------ |
+`gameId` | string | game id  |
 
-**Returns:** `void`
+**Returns:** *void*
 
 ___
-<a id="setkey"></a>
 
 ###  setKey
 
-▸ **setKey**(apiKey: *`string`*): `Promise`<[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)>
+▸ **setKey**(`apiKey`: string): *Promise‹[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)›*
+
+Defined in src/Nexus.ts:232
 
 change the API Key and validate it This can also be used to unset the key
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| apiKey | `string` |  the new api key to set |
+Name | Type | Description |
+------ | ------ | ------ |
+`apiKey` | string | the new api key to set |
 
-**Returns:** `Promise`<[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)>
+**Returns:** *Promise‹[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)›*
+
 A promise that resolves to the user info on success or null if the apikey was undefined
 
 ___
-<a id="trackmod"></a>
 
 ###  trackMod
 
-▸ **trackMod**(modId: *`string`*, gameId?: *`string`*): `Promise`<[ITrackResponse](../interfaces/_types_.itrackresponse.md)>
+▸ **trackMod**(`modId`: string, `gameId?`: string): *Promise‹[ITrackResponse](../interfaces/_types_.itrackresponse.md)›*
+
+Defined in src/Nexus.ts:283
 
 start tracking a mod
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| modId | `string` |  id of the mod |
-| `Optional` gameId | `string` |  id of the game |
+Name | Type | Description |
+------ | ------ | ------ |
+`modId` | string | id of the mod |
+`gameId?` | string | id of the game  |
 
-**Returns:** `Promise`<[ITrackResponse](../interfaces/_types_.itrackresponse.md)>
+**Returns:** *Promise‹[ITrackResponse](../interfaces/_types_.itrackresponse.md)›*
 
 ___
-<a id="untrackmod"></a>
 
 ###  untrackMod
 
-▸ **untrackMod**(modId: *`string`*, gameId?: *`string`*): `Promise`<[ITrackResponse](../interfaces/_types_.itrackresponse.md)>
+▸ **untrackMod**(`modId`: string, `gameId?`: string): *Promise‹[ITrackResponse](../interfaces/_types_.itrackresponse.md)›*
+
+Defined in src/Nexus.ts:302
 
 stop tracking a mod
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| modId | `string` |  id of the mod |
-| `Optional` gameId | `string` |  id of the game |
+Name | Type | Description |
+------ | ------ | ------ |
+`modId` | string | id of the mod |
+`gameId?` | string | id of the game  |
 
-**Returns:** `Promise`<[ITrackResponse](../interfaces/_types_.itrackresponse.md)>
+**Returns:** *Promise‹[ITrackResponse](../interfaces/_types_.itrackresponse.md)›*
 
 ___
-<a id="validatekey"></a>
 
 ###  validateKey
 
-▸ **validateKey**(key?: *`string`*): `Promise`<[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)>
+▸ **validateKey**(`key?`: string): *Promise‹[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)›*
 
-validate a specific API key This does not update the request quota or the cached validation result so it's not useful for re-checking the key after a validation error.
+Defined in src/Nexus.ts:263
+
+validate a specific API key
+This does not update the request quota or the cached validation result so it's
+not useful for re-checking the key after a validation error.
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| `Optional` key | `string` |  the API key to validate. Tests the current one if left undefined |
+Name | Type | Description |
+------ | ------ | ------ |
+`key?` | string | the API key to validate. Tests the current one if left undefined  |
 
-**Returns:** `Promise`<[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)>
+**Returns:** *Promise‹[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)›*
 
 ___
-<a id="create"></a>
 
-### `<Static>` create
+### `Static` create
 
-▸ **create**(apiKey: *`string`*, appName: *`string`*, appVersion: *`string`*, defaultGame: *`string`*, timeout?: *`number`*): `Promise`<[Nexus](_nexus_.nexus.md)>
+▸ **create**(`apiKey`: string, `appName`: string, `appVersion`: string, `defaultGame`: string, `timeout?`: number): *Promise‹[Nexus](_nexus_.nexus.md)›*
+
+Defined in src/Nexus.ts:205
 
 create a Nexus instance and immediately verify the API Key
 
 **Parameters:**
 
-| Name | Type | Description |
-| ------ | ------ | ------ |
-| apiKey | `string` |  the api key to use for connections |
-| appName | `string` |  name of the client application |
-| appVersion | `string` |  Version number of the client application (Needs to be semantic format) |
-| defaultGame | `string` |  (nexus) id of the game requests are made for. Can be overridden per request |
-| `Optional` timeout | `number` |  Request timeout in milliseconds. Defaults to 5000ms |
+Name | Type | Description |
+------ | ------ | ------ |
+`apiKey` | string | the api key to use for connections |
+`appName` | string | name of the client application |
+`appVersion` | string | Version number of the client application (Needs to be semantic format) |
+`defaultGame` | string | (nexus) id of the game requests are made for. Can be overridden per request |
+`timeout?` | number | Request timeout in milliseconds. Defaults to 5000ms  |
 
-**Returns:** `Promise`<[Nexus](_nexus_.nexus.md)>
-
-___
-
+**Returns:** *Promise‹[Nexus](_nexus_.nexus.md)›*

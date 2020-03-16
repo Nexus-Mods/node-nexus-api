@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IGameInfo](../interfaces/_types_.igameinfo.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IGameInfo](_types_.igameinfo.md)
 
 # Interface: IGameInfo
 
@@ -6,9 +6,9 @@ extended information about a game
 
 ## Hierarchy
 
- [IGameListEntry](_types_.igamelistentry.md)
+* [IGameListEntry](_types_.igamelistentry.md)
 
-**↳ IGameInfo**
+  ↳ **IGameInfo**
 
 ## Index
 
@@ -26,107 +26,133 @@ extended information about a game
 * [name](_types_.igameinfo.md#name)
 * [nexusmods_url](_types_.igameinfo.md#nexusmods_url)
 
----
-
 ## Properties
-
-<a id="approved_date"></a>
 
 ###  approved_date
 
-**● approved_date**: *`number`*
+• **approved_date**: *number*
+
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[approved_date](_types_.igamelistentry.md#approved_date)*
+
+Defined in src/types.ts:339
 
 unix timestamp of when this game was added to nexuis mods
 
 ___
-<a id="categories"></a>
 
 ###  categories
 
-**● categories**: *[ICategory](_types_.icategory.md)[]*
+• **categories**: *[ICategory](_types_.icategory.md)[]*
+
+Defined in src/types.ts:349
 
 list of categories for this game
 
 ___
-<a id="domain_name"></a>
 
 ###  domain_name
 
-**● domain_name**: *`string`*
+• **domain_name**: *string*
+
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[domain_name](_types_.igamelistentry.md#domain_name)*
+
+Defined in src/types.ts:306
 
 domain name (as used in urls and as the game id in all other requests)
 
 ___
-<a id="downloads"></a>
 
 ###  downloads
 
-**● downloads**: *`number`*
+• **downloads**: *number*
+
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[downloads](_types_.igamelistentry.md#downloads)*
+
+Defined in src/types.ts:335
 
 number of downloads from nexus for files for this game
 
 ___
-<a id="file_count"></a>
 
 ###  file_count
 
-**● file_count**: *`number`*
+• **file_count**: *number*
+
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[file_count](_types_.igamelistentry.md#file_count)*
+
+Defined in src/types.ts:331
 
 number of files hosted on nexus for this game
 
 ___
-<a id="forum_url"></a>
 
 ###  forum_url
 
-**● forum_url**: *`string`*
+• **forum_url**: *string*
+
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[forum_url](_types_.igamelistentry.md#forum_url)*
+
+Defined in src/types.ts:314
 
 url for the corresponding forum section
 
 ___
-<a id="genre"></a>
 
 ###  genre
 
-**● genre**: *`string`*
+• **genre**: *string*
 
-genre of the game (possible values?)
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[genre](_types_.igamelistentry.md#genre)*
+
+Defined in src/types.ts:323
+
+genre of the game
+(possible values?)
 
 ___
-<a id="id"></a>
 
 ###  id
 
-**● id**: *`number`*
+• **id**: *number*
+
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[id](_types_.igamelistentry.md#id)*
+
+Defined in src/types.ts:302
 
 numerical id
 
 ___
-<a id="mods"></a>
 
 ###  mods
 
-**● mods**: *`number`*
+• **mods**: *number*
+
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[mods](_types_.igamelistentry.md#mods)*
+
+Defined in src/types.ts:327
 
 number of mods hosted on nexus for this game
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
+
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[name](_types_.igamelistentry.md#name)*
+
+Defined in src/types.ts:310
 
 display name
 
 ___
-<a id="nexusmods_url"></a>
 
 ###  nexusmods_url
 
-**● nexusmods_url**: *`string`*
+• **nexusmods_url**: *string*
 
-url for the primary nexusmods page (should be [https://www.nexusmods.com/](https://www.nexusmods.com/))
+*Inherited from [IGameListEntry](_types_.igamelistentry.md).[nexusmods_url](_types_.igamelistentry.md#nexusmods_url)*
 
-___
+Defined in src/types.ts:318
 
+url for the primary nexusmods page (should be https://www.nexusmods.com/<domain_name>)

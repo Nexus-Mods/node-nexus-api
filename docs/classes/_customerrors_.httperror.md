@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [HTTPError](../classes/_customerrors_.httperror.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](../modules/_customerrors_.md) › [HTTPError](_customerrors_.httperror.md)
 
 # Class: HTTPError
 
@@ -6,9 +6,9 @@ Error thrown if an HTTP error is reported (HTTP code 4xx or 5xx)
 
 ## Hierarchy
 
- `Error`
+* [Error](_customerrors_.timeouterror.md#static-error)
 
-**↳ HTTPError**
+  ↳ **HTTPError**
 
 ## Index
 
@@ -20,75 +20,77 @@ Error thrown if an HTTP error is reported (HTTP code 4xx or 5xx)
 
 * [message](_customerrors_.httperror.md#message)
 * [name](_customerrors_.httperror.md#name)
-* [stack](_customerrors_.httperror.md#stack)
-* [Error](_customerrors_.httperror.md#error)
+* [stack](_customerrors_.httperror.md#optional-stack)
+* [Error](_customerrors_.httperror.md#static-error)
 
 ### Accessors
 
 * [body](_customerrors_.httperror.md#body)
 
----
-
 ## Constructors
-
-<a id="constructor"></a>
 
 ###  constructor
 
-⊕ **new HTTPError**(statusCode: *`number`*, message: *`string`*, body: *`string`*): [HTTPError](_customerrors_.httperror.md)
+\+ **new HTTPError**(`statusCode`: number, `message`: string, `body`: string): *[HTTPError](_customerrors_.httperror.md)*
+
+Defined in src/customErrors.ts:36
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| statusCode | `number` |
-| message | `string` |
-| body | `string` |
+Name | Type |
+------ | ------ |
+`statusCode` | number |
+`message` | string |
+`body` | string |
 
-**Returns:** [HTTPError](_customerrors_.httperror.md)
-
-___
+**Returns:** *[HTTPError](_customerrors_.httperror.md)*
 
 ## Properties
 
-<a id="message"></a>
-
 ###  message
 
-**● message**: *`string`*
+• **message**: *string*
+
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[message](_customerrors_.timeouterror.md#message)*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:974
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
+
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[name](_customerrors_.timeouterror.md#name)*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:973
 
 ___
-<a id="stack"></a>
 
-### `<Optional>` stack
+### `Optional` stack
 
-**● stack**: *`string`*
+• **stack**? : *string*
 
-___
-<a id="error"></a>
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[stack](_customerrors_.timeouterror.md#optional-stack)*
 
-### `<Static>` Error
+*Overrides [TimeoutError](_customerrors_.timeouterror.md).[stack](_customerrors_.timeouterror.md#optional-stack)*
 
-**● Error**: *`ErrorConstructor`*
+Defined in node_modules/typescript/lib/lib.es5.d.ts:975
 
 ___
+
+### `Static` Error
+
+▪ **Error**: *ErrorConstructor*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:984
 
 ## Accessors
 
-<a id="body"></a>
-
 ###  body
 
-**get body**(): `string`
+• **get body**(): *string*
 
-**Returns:** `string`
+Defined in src/customErrors.ts:42
 
-___
-
+**Returns:** *string*

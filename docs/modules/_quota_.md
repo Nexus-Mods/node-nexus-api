@@ -1,6 +1,6 @@
-[@nexusmods/nexus-api](../README.md) > ["Quota"](../modules/_quota_.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["Quota"](_quota_.md)
 
-# External module: "Quota"
+# Module: "Quota"
 
 ## Index
 
@@ -12,23 +12,18 @@
 
 * [delay](_quota_.md#delay)
 
----
-
 ## Functions
-
-<a id="delay"></a>
 
 ###  delay
 
-▸ **delay**(milliseconds: *`number`*): `Promise`<`void`>
+▸ **delay**(`milliseconds`: number): *Promise‹void›*
+
+Defined in src/Quota.ts:3
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| milliseconds | `number` |
+Name | Type |
+------ | ------ |
+`milliseconds` | number |
 
-**Returns:** `Promise`<`void`>
-
-___
-
+**Returns:** *Promise‹void›*

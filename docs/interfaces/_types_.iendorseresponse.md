@@ -1,4 +1,4 @@
-[@nexusmods/nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IEndorseResponse](../interfaces/_types_.iendorseresponse.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IEndorseResponse](_types_.iendorseresponse.md)
 
 # Interface: IEndorseResponse
 
@@ -6,7 +6,7 @@
 
 ## Hierarchy
 
-**IEndorseResponse**
+* **IEndorseResponse**
 
 ## Index
 
@@ -15,24 +15,20 @@
 * [message](_types_.iendorseresponse.md#message)
 * [status](_types_.iendorseresponse.md#status)
 
----
-
 ## Properties
-
-<a id="message"></a>
 
 ###  message
 
-**● message**: *`string`*
+• **message**: *string*
+
+Defined in src/types.ts:459
 
 textual reply to the request, something like "Updated to: Endorsed"
 
 ___
-<a id="status"></a>
 
 ###  status
 
-**● status**: *[EndorsedStatus](../modules/_types_.md#endorsedstatus)*
+• **status**: *[EndorsedStatus](../modules/_types_.md#endorsedstatus)*
 
-___
-
+Defined in src/types.ts:460
