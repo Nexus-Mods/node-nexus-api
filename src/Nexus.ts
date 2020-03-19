@@ -736,12 +736,12 @@ class Nexus {
   }
 
   /**
-   * rate a collection (how well it worked, not whether the user liked the content, use endorsements for that!)
+   * rate a collection revision (how well it worked, not whether the user liked the content, use endorsements for that!)
    * @param collectionId collection id
    * @param rating the rating, between -10 (didn't work at all) and +10 (worked perfectly)
    * @param gameId id of the game
    */
-  public async rateCollection(collectionId: number, rating: number, gameId?: string) {
+  public async rateRevision(revisionId: number, rating: number, gameId?: string) {
     if ((rating < -10) || (rating > 10)) {
       return Promise.reject('valid ratings are -10 to 10');
     }
@@ -750,9 +750,9 @@ class Nexus {
     return await this.request(this.mBaseURL + '/ratings', this.args({
       data: {
         rating,
-        game_id: gameId || this.mBaseData.path.gameId,
-        rateable_type: 'collection',
-        rateable_id: collectionId,
+        game_domain_name: gameId || this.mBaseData.path.gameId,
+        rateable_type: 'revision',
+        rateable_id: revisionId,
       },
     }), 'POST');
   }

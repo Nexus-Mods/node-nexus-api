@@ -45,13 +45,13 @@ declare class Nexus {
     getRevisionInfo(collectionId: number, revisionId: number): Promise<types.IRevisionDetailed>;
     getCollectionDownloadURLs(collectionId: number, revisionId: number, key?: string, expires?: number, gameId?: string): Promise<types.ICollectionDownloadLink>;
     endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<any>;
-    rateCollection(collectionId: number, rating: number, gameId?: string): Promise<any>;
+    rateRevision(revisionId: number, rating: number, gameId?: string): Promise<any>;
     getCollectionVideo(collectionId: number, videoId: string): Promise<any[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
-    private checkFileSize;
-    private request;
-    private filter;
-    private args;
+    private checkFileSize(filePath);
+    private request(url, args, method?);
+    private filter(obj);
+    private args(customArgs);
 }
 export default Nexus;
