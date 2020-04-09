@@ -1,6 +1,6 @@
 {
   "name": "@nexusmods/nexus-api",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "./lib/index.js",
   "typings": "lib/index",
   "homepage": "https://www.nexusmods.com/",
@@ -15,9 +15,6 @@
   },
   "author": "Black Tree Gaming Ltd.",
   "license": "LGPL-3.0",
-  "resolutions": {
-    "**/optimist/minimist": "1.2.2"
-  },
   "devDependencies": {
     "@types/form-data": "^0.0.32",
     "@types/node": "^6.0.45",
