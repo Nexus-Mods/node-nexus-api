@@ -28,7 +28,7 @@ interface IRequestArgs {
 }
 
 function handleRestResult(resolve, reject, url: string, error: any,
-                          response: request.RequestResponse, body: any, onUpdateLimit: (daily: number, hourly: number) => void) {
+                          response: request.RequestResponse, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
     if ((error.code === 'ETIMEDOUT') || (error.code === 'ESOCKETTIMEOUT')) {
       return reject(new TimeoutError('request timed out: ' + url));
@@ -82,6 +82,10 @@ function handleRestResult(resolve, reject, url: string, error: any,
       // if it is an html page, it has to be coming from a load balancer or firewall or something that apparently doesn't
       // give a shit about the content type we asked for, so the API is apparently not reachable atm.
       return reject(new NexusError('API currently not reachable, please try again later.', response.statusCode, url));
+    }
+    const ecMatch = body.match(/error code: ([0-9]+)/);
+    if (ecMatch == null) {
+      return reject(new ProtocolError(`Network error ${ecMatch[1]}`));
     }
     reject(new Error(`failed to parse server response for request "${url}": ${err.message}`));
   }

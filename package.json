@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "nexus-api",
-  "version": "1.1.0-dev8",
+  "version": "1.1.0-dev9",
   "main": "./lib/index.js",
   "typings": "lib/index",
   "files": [
@@ -22,9 +22,9 @@
     "@types/ref-union": "^0.0.28",
     "@types/request": "^2.47.0",
     "@types/typescript": "^2.0.0",
-    "typescript": "2.6.2",
     "typedoc": "^0.13.0",
-    "typedoc-plugin-markdown": "^1.1.18"
+    "typedoc-plugin-markdown": "^1.1.18",
+    "typescript": "2.6.2"
   },
   "dependencies": {
     "request": "^2.85.0",

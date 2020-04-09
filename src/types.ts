@@ -562,7 +562,7 @@ export interface IRevisionModInfo {
   name: string;
   summary: string;
   picture_url: string;
-  author: IUser;
+  author: string;
   uploader: IUser;
   mod_id: number;
   game_id: number;
@@ -605,7 +605,7 @@ export interface IExternalResource {
   version: string;
 }
 
-export type RevisionStatus = 'private' | 'public' | 'hidden' | 'testing' | 'nuked';
+export type RevisionStatus = 'is_private' | 'is_public' | 'is_hidden' | 'is_testing' | 'is_nuked';
 
 /**
  * a specific revision of a collection
