@@ -14,7 +14,8 @@ export const DEFAULT_TIMEOUT_MS: number = 30000;
 // applies only when the request limit for the hour hasn't been exceeded yet
 export const DELAY_AFTER_429_MS: number = 1000;
 
-export const API_URL: string = 'https://api.nexusmods.com/v1';
+const NEXUS_DOMAIN = process.env['NEXUS_DOMAIN'] || 'nexusmods.com';
+export const API_URL: string = `https://api.${NEXUS_DOMAIN}/v1`;
 
 // can be used to redirect requests for in-development requests to a different server and separate
 // api key

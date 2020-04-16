@@ -236,7 +236,7 @@ export interface IRevisionModInfo {
     name: string;
     summary: string;
     picture_url: string;
-    author: IUser;
+    author: string;
     uploader: IUser;
     mod_id: number;
     game_id: number;
@@ -271,7 +271,7 @@ export interface IExternalResource {
     update_policy: UpdatePolicy;
     version: string;
 }
-export declare type RevisionStatus = 'private' | 'public' | 'hidden' | 'testing' | 'nuked';
+export declare type RevisionStatus = 'is_private' | 'is_public' | 'is_hidden' | 'is_testing' | 'is_nuked';
 export interface IRevision {
     revision_id: number;
     revision: number;

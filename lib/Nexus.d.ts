@@ -49,9 +49,9 @@ declare class Nexus {
     getCollectionVideo(collectionId: number, videoId: string): Promise<any[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
-    private checkFileSize(filePath);
-    private request(url, args, method?);
-    private filter(obj);
-    private args(customArgs);
+    private checkFileSize;
+    private request;
+    private filter;
+    private args;
 }
 export default Nexus;
