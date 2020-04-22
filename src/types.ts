@@ -612,7 +612,7 @@ export type RevisionStatus = 'is_private' | 'is_public' | 'is_hidden' | 'is_test
  */
 export interface IRevision {
   revision_id: number;
-  revision: number;
+  revision_number: number;
   adult_content: boolean;
   revision_status_id: RevisionStatus;
   collection: ICollection;
