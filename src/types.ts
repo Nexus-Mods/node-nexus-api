@@ -36,7 +36,7 @@ export interface IUser {
   member_id: number;
   member_group_id: number;
   name: string;
-  avatar?: { url: string };
+  avatar?: string;
 }
 
 export type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
@@ -403,36 +403,8 @@ export interface ICollectionInfo {
   adult_content: boolean;
 }
 
-export type UpdatePolicy = 'exact' | 'latest';
+export type UpdatePolicy = 'exact' | 'latest' | 'prefer';
 export type SourceType = 'browse' | 'manual' | 'direct' | 'nexus';
-
-export interface ICollectionSource {
-  type: SourceType;
-  md5?: string;
-  url?: string;
-  instructions?: string;
-  mod_id?: string;
-  file_id?: string;
-  // determines which file to get if there is an update compared to what's in the mod pack
-  update_policy?: UpdatePolicy;
-  file_size?: number;
-  logical_filename?: string;
-  file_expression?: string;
-}
-
-export interface ICollectionMod {
-  name: string;
-  version: string;
-  optional: boolean;
-  domain_name: string;
-  source: ICollectionSource;
-  author?: string;
-}
-
-export interface ICollectionManifest {
-  info: ICollectionInfo;
-  mods: ICollectionMod[];
-}
 
 /**
  * response to a feedback request
@@ -522,40 +494,63 @@ export interface IUpdateEntry {
   latest_mod_activity: number;
 }
 
-/**
- * category collection
- * These are different from mod collections because it's a new system.
- * There are more fields than this but those should be irrelevant to a client.
- */
-export interface ICollectionCategory {
-  id: number;
-  name: string;
-  game_id: number;
+export interface ITimestamped {
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface ICollectionMetadata extends ITimestamped {
+  summary: string;
   description: string;
+}
+
+export interface IGame {
+  id: number;
+  domainName: string;
+  name: string;
+}
+
+export interface IImageType {
+  description: string;
+  id: number;
+  rHorizontal: number;
+  rVertical: number;
+}
+
+export interface IImage extends ITimestamped {
+  gameId: number;
+  imageType: IImageType;
+  imageTypeId: number;
+  imageableId: number;
+  imageableType: string;
+  position: boolean;
+  title: string;
+  url: string;
+  user: IUser;
+  userId: number;
+  verified: boolean;
 }
 
 /**
  * Base information about a collection
  */
-export interface ICollection {
-  collection_id: number;
-  // whether donations for this collections are accepted
+export interface ICollection extends ITimestamped {
+  id: number;
   name: string;
-  summary: string;
-  description: string;
-  created_at: string;
-  updated_at: string;
+  category?: string;
+  endorsements: number;
+  tags: string[];
+  game: IGame;
+  gameId: number;
+  visible: boolean;
+  enableDonations: boolean;
   // author/curator of this collection
-  user: { member_id: number, member_group_id: number, name: string };
-}
-
-export interface ICollectionDetailed extends ICollection {
-  enable_donations: boolean;
-  endorsement_count: number;
-  category: ICollectionCategory;
-  game: { id: number, name: string, domain_name: string };
-  collection_images: IImageInfo[];
-  collection_videos: IVideoInfo[];
+  user: IUser;
+  userId: number;
+  images: IImage[];
+  metadata?: ICollectionMetadata;
+  currentRevision: IRevision;
+  revisions: IRevision[];
 }
 
 export interface IRevisionModInfo {
@@ -607,36 +602,154 @@ export interface IExternalResource {
 
 export type RevisionStatus = 'is_private' | 'is_public' | 'is_hidden' | 'is_testing' | 'is_nuked';
 
+export interface ICollectionSchema extends ITimestamped {
+  id: number;
+  version: string;
+}
+
+export interface ICollectionBugReport extends ITimestamped {
+  id: number;
+  collectionRevisionId: number;
+  collectionBugStatusId: number;
+  title: string;
+  description: string;
+  user: IUser;
+  userId: number;
+}
+
+export interface IModCategory {
+  date?: number;
+  gameId: number;
+  id: number;
+  name: string;
+  tags?: string;
+}
+
+export interface ITrackingState {
+  test?: number;
+}
+
+export interface IMod {
+  id: number;
+  author?: string;
+  category: string;
+  description: string;
+  gameId: number;
+  ipAddress: string;
+  modCategory: IModCategory;
+  modId: number;
+  name: string;
+  summary: string;
+  trackingData: ITrackingState;
+  uploader: IUser;
+  version: string;
+}
+
+export interface IModFile {
+  categoryId: number;
+  count: number;
+  date: number;
+  description: string;
+  fileId: number;
+  game: IGame;
+  manager: number;
+  mod: IMod;
+  modId: number;
+  name: string;
+  owner: IUser;
+  primary: number;
+  reportLink: string;
+  requirementsAlert: number;
+  scanned: number;
+  size: number;
+  uCount: number;
+  uri: string;
+  version: string;
+}
+
+export interface ICollectionRevisionMod {
+  id: number;
+  collectionId: number;
+  collectionRevisionId: number;
+  file?: IModFile;
+  fileId: number;
+  gameId: number;
+  optional: boolean;
+  updatePolicy: string;
+  version: string;
+}
+
 /**
  * a specific revision of a collection
  */
-export interface IRevision {
-  revision_id: number;
-  revision_number: number;
-  adult_content: boolean;
-  revision_status_id: RevisionStatus;
+export interface IRevision extends ITimestamped {
+  id: number;
+  adultContent: string;
+  bugReports: ICollectionBugReport[];
   collection: ICollection;
-  uri: string;
-  success_rate: { positive: number, negative: number };
-  tags: Array<{ name: string }>;
-  collection_schema: { id: number, version: string };
-  external_resources: IExternalResource[];
+  collectionId: number;
+  collectionSchema: ICollectionSchema;
+  collectionSchemaId: number;
+  downloadUri: string;
+  externalResources: IExternalResource[];
+  fileSize: number;
+  installationInfo?: string;
+  latest: boolean;
+  modFiles: ICollectionRevisionMod[];
+  rating: number;
+  revision: number;
+  revisionStatusId: number;
+  status: string;
+  votes: number;
 }
 
-export interface IRevisionDetailed extends IRevision {
-  collection_revision_mods: IRevisionMod[];
+export interface ICollectionManifestInfo {
+  author: string;
+  authorUrl?: string;
+  name: string;
+  description?: string;
+  domainName: string;
 }
 
-export interface IImageInfo {
+export interface ICollectionManifestModSource {
+  type: SourceType;
+  modId?: number;
+  fileId?: number;
+  md5?: string;
+  fileSize?: number;
+  updatePolicy?: UpdatePolicy;
+  logicalFilename?: string;
+  fileExpression?: string;
+  url?: string;
 }
 
-export interface IVideoInfo {
-  game_id: number;
-  user_id: number;
-  url: string;
-  title: string;
-  descriaption: string;
-  verified: boolean;
-  position: boolean;
-  revision_number: number;
+export interface ICollectionManifestMod {
+  name: string;
+  version: string;
+  optional: boolean;
+  domain_name: string;
+  source: ICollectionManifestModSource;
+  author?: string;
+}
+
+export interface ICollectionManifest {
+  info: ICollectionManifestInfo;
+  mods: ICollectionManifestMod[];
+}
+
+/**
+ * payload used to create a collection revision
+ */
+export interface ICollectionPayload {
+  adultContent: boolean;
+  // serialized asset file
+  assetFile: string;
+  collectionSchemaId: number;
+  collectionManifest: ICollectionManifest;
+}
+
+export interface ICreateCollectionResult {
+  collectionId?: number;
+  revisionId?: number;
+  success: boolean;
 }

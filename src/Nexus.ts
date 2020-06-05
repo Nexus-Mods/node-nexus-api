@@ -1,11 +1,15 @@
 import * as param from './parameters';
 import * as types from './types';
+import * as graphQL from './typesGraphQL';
 import Quota from './Quota';
 
 import * as fs from 'fs';
+import * as http from 'http';
+import * as https from 'https';
 import * as os from 'os';
 import * as process from 'process';
-import request = require('request');
+import * as querystring from 'querystring';
+import * as url from 'url';
 import format = require('string-template');
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError } from './customErrors';
 
@@ -20,7 +24,6 @@ interface IRequestArgs {
   requestConfig?: {
     timeout: number,
     noDelay: boolean,
-    securityProtocol: string,
   };
   responseConfig?: {
     timeout: number,
@@ -28,7 +31,7 @@ interface IRequestArgs {
 }
 
 function handleRestResult(resolve, reject, url: string, error: any,
-                          response: request.RequestResponse, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
+                          response: http.IncomingMessage, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
     if ((error.code === 'ETIMEDOUT') || (error.code === 'ESOCKETTIMEOUT')) {
       return reject(new TimeoutError('request timed out: ' + url));
@@ -91,59 +94,98 @@ function handleRestResult(resolve, reject, url: string, error: any,
   }
 }
 
-function restGet(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
-  const stackErr = new Error();
+function lib(inputUrl: string): typeof http | typeof https {
+  return url.parse(inputUrl).protocol === 'http:'
+    ? http
+    : https;
+}
+
+function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   return new Promise<any>((resolve, reject) => {
-    const finalURL = format(url, args.path || {});
-    request.get(finalURL, {
+    const finalURL = format(inputUrl, args.path || {});
+    lib(inputUrl).get({
+      ...url.parse(finalURL),
       headers: args.headers,
-      followRedirect: true,
       timeout: args.requestConfig.timeout,
-      agentOptions: {
-        secureProtocol: args.requestConfig.securityProtocol
-      },
-    }, (error, response, body) => {
-      if (error) {
-        // if this error remains uncaught the error message won't be particularly
-        // enlightening so we enhance it a bit
-        error.message += ` (request: ${url})`;
-        error.stack += '\n' + stackErr.stack;
+    }, (res: http.IncomingMessage) => {
+      const { statusCode } = res;
+      const contentType = res.headers['content-type'];
+
+      let err: string;
+      if (statusCode !== 200) {
+        err = `Request Failed. Status Code: ${statusCode}`;
+      } else if (!/^application\/json/.test(contentType)) {
+        err = `Invalid content-type ${contentType}`;
       }
 
-      handleRestResult(resolve, reject, url, error, response, body, onUpdateLimit);
+      if (err !== undefined) {
+        res.resume();
+        return reject(new Error(err));
+      }
+
+      res.setEncoding('utf8');
+      let rawData = '';
+      res
+        .on('data', (chunk) => { rawData += chunk; })
+        .on('error', err => {
+          handleRestResult(resolve, reject, inputUrl, err, res, rawData, onUpdateLimit);
+        })
+        .on('end', () => {
+          handleRestResult(resolve, reject, inputUrl, null, res, rawData, onUpdateLimit);
+        });
     });
   });
 }
 
-function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
+function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
-    const finalURL = format(url, args.path);
-    console.log('POST', finalURL);
-    request({
+    const finalURL = format(inputUrl, args.path);
+    const body = JSON.stringify(args.data, undefined, 2);
+
+    const headers = {
+      ...args.headers,
+      'Content-Length': body.length,
+    }
+
+    if (process.env.APIKEYMASTER !== undefined) {
+      headers['apikeymaster'] = process.env.APIKEYMASTER;
+    }
+
+    const req = lib(inputUrl).request({
+      ...url.parse(finalURL),
       method,
-      url: finalURL,
-      headers: args.headers,
-      followRedirect: true,
+      headers,
       timeout: args.requestConfig.timeout,
-      agentOptions: {
-        secureProtocol: args.requestConfig.securityProtocol
-      },
-      body: JSON.stringify(args.data),
-    }, (error, response, body) => {
-      if (error) {
-        // if this error remains uncaught the error message won't be particularly
-        // enlightening so we enhance it a bit
-        error.message += ` (request: ${url})`;
-        error.stack += '\n' + stackErr.stack;
-      }
-      handleRestResult(resolve, reject, url, error, response, body, onUpdateLimit);
+    }, (res: http.IncomingMessage) => {
+      res.setEncoding('utf8');
+      let rawData = '';
+      res
+        .on('data', (chunk) => { rawData += chunk; })
+        .on('error', err => {
+          handleRestResult(resolve, reject, inputUrl, err, res, rawData, onUpdateLimit);
+        })
+        .on('end', () => {
+          const { statusCode } = res;
+          const contentType = res.headers['content-type'];
+
+          let err: Error = null;
+          if (statusCode !== 200) {
+            err = new HTTPError(res.statusCode, res.statusMessage, rawData);
+          } else if (!/^application\/json/.test(contentType)) {
+            err = new Error(`Invalid content-type ${contentType}`);
+          }
+
+          handleRestResult(resolve, reject, inputUrl, err, res, rawData, onUpdateLimit);
+        });
     });
+
+    req.write(body);
+    req.end();
   });
 }
 
 function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void, method?: REST_METHOD): Promise<any> {
-  console.log('rest request', url, args);
   return args.data !== undefined
     ? restPost(method || 'POST', url, args, onUpdateLimit)
     : restGet(url, args, onUpdateLimit);
@@ -160,6 +202,7 @@ class Nexus {
   private mBaseData: IRequestArgs;
 
   private mBaseURL = param.API_URL;
+  private mGraphBaseURL = param.GRAPHQL_URL;
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
   private mRateLimit: { daily: number, hourly: number } = { daily: 1000, hourly: 100 };
@@ -189,7 +232,6 @@ class Nexus {
         gameId: defaultGame,
       },
       requestConfig: {
-        securityProtocol: param.SECURITY_PROTOCOL_VERSION,
         timeout: timeout || param.DEFAULT_TIMEOUT_MS,
         noDelay: true,
       },
@@ -360,74 +402,6 @@ class Nexus {
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/trending', this.args({
       path: this.filter({ gameId }),
-    }));
-  }
-
-  /**
-   * get list of collections by game id
-   * @param gameId id of the game to query
-   */
-  public async getCollectionsByGame(gameId?: string): Promise<types.ICollection[]> {
-    await this.mQuota.wait();
-    const res = await this.request(this.mBaseURL + '/games/{gameId}/collections', this.args({
-      path: this.filter({ gameId }),
-    }));
-
-    return res.collections;
-  }
-
-  /**
-   * get list of collections by game id
-   * @param gameId id of the game to query
-   */
-  public async getCollectionsByUser(userId: string): Promise<types.ICollection[]> {
-    await this.mQuota.wait();
-    const res = await this.request(this.mBaseURL + '/users/{userId}/collections', this.args({
-      path: this.filter({ userId }),
-    }));
-
-    return res.collections;
-  }
-
-  /**
-   * get list of collections by game id
-   * @param gameId id of the game to query
-   */
-  public async getRevisions(collectionId: number): Promise<types.IRevision[]> {
-    await this.mQuota.wait();
-    const res = await this.request(this.mBaseURL + '/collections/{collectionId}/revisions', this.args({
-      path: this.filter({ collectionId }),
-    }));
-
-    return res.collection_revisions;
-  }
-
-  public async getRevisionMods(collectionId: number, revisionId: number): Promise<types.IRevisionMod[]> {
-    await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/collections/{collectionId}/revisions/{revisionId}/revision_mods', this.args({
-      path: this.filter({ collectionId, revisionId }),
-    }));
-  }
-
-  /**
-   * get list of images for a collection
-   * @param collectionId id of the collection
-   */
-  public async getCollectionImages(collectionId: number): Promise<any[]> {
-    await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/collections/{collectionId}/images', this.args({
-      path: this.filter({ collectionId }),
-    }));
-  }
-
-  /**
-   * get list of videos for a collection
-   * @param collectionId id of the collection
-   */
-  public async getCollectionVideos(collectionId: number): Promise<any[]> {
-    await this.mQuota.wait();
-    return this.request(this.mBaseURL + '/collections/{collectionId}/videos', this.args({
-      path: this.filter({ collectionId }),
     }));
   }
 
@@ -613,107 +587,75 @@ class Nexus {
 
   //#region Collection
 
-  public async sendCollection(manifest: types.ICollectionManifest, assetFilePath: string, gameId?: string): Promise<types.IRevision> {
+  public async createCollection(data: types.ICollectionPayload): Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
-    return new Promise<any>((resolve, reject) => {
-      const formData = {
-        collection_schema_id: 1,
-        name: manifest.info.name,
-        description: manifest.info.description,
-        summary: manifest.info.description,
-        adult_content: manifest.info.adult_content ? 'true' : 'false',
-        collection_manifest: JSON.stringify(manifest),
-        collection_data: fs.createReadStream(assetFilePath),
-      };
-
-      if (manifest.info.collection_id !== undefined) {
-        formData['collection_id'] = manifest.info.collection_id;
-      }
-
-      const baseUrl = param.API_DEV_URL || param.API_URL;
-
-      const url = `${baseUrl}/games/${gameId || this.mBaseData.path.gameId}/collections/revisions`;
-      const headers = {
-        ...this.mBaseData.headers,
-      };
-      if (!!param.APIKEY_DEV) {
-        headers.APIKEY = param.APIKEY_DEV;
-      }
-      request.post({
-        headers,
-        url,
-        formData,
-        timeout: this.mBaseData.requestConfig.timeout,
-      }, (error, response, body) => {
-        if (error !== null) {
-          return reject(error);
-        } else if (response.statusCode >= 400) {
-          if (response.statusCode === 422) {
-            // this probably means an invalid request was made
-            try {
-              const parsed = JSON.parse(body);
-              const ex = parsed.message !== undefined
-                ? new ParameterInvalid(parsed.message)
-                : new ParameterInvalid(parsed);
-              if (parsed.name !== undefined) {
-                ex.name = parsed.name;
-              }
-              Object.keys(parsed).forEach(key => {
-                if (['name', 'message'].indexOf(key) === -1) {
-                  ex[key] = parsed[key];
-                }
-              });
-              return reject(ex);
-            } catch (err) {
-              return reject(new ParameterInvalid(body));
-            }
-          } else {
-            return reject(new HTTPError(response.statusCode, response.statusMessage, body));
-          }
-        } else {
-          const result = JSON.parse(body);
-          return resolve(result.collection_revision);
-        }
-      });
-    });
+    return await this.mutateGraph(
+      'createCollection',
+      {
+        collectionData: { type: 'CollectionPayload', optional: false },
+      },
+      { collectionData: data },
+      this.args({ path: this.filter({}) }),
+    );
   }
 
-  /**
-   * get information about a collection
-   * @param collectionId id of the collection
-   */
-  public async getCollectionInfo(collectionId: number): Promise<types.ICollectionDetailed> {
+  public async updateCollection(data: types.ICollectionPayload, collectionId: number): Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
-    const res = await this.request(this.mBaseURL + '/collections/{collectionId}',
-                        this.args({ path: this.filter({ collectionId }) }));
-    return res.collection;
+    return await this.mutateGraph(
+      'updateCollection',
+      {
+        collectionData: { type: 'CollectionPayload', optional: false },
+        collectionId: { type: 'Int', optional: false },
+      },
+      { collectionData: data, collectionId },
+      this.args({ path: this.filter({}) }),
+    );
   }
 
-  /**
-   * get information about a revision of a collection
-   * @param collectionId id of the collection
-   * @param revisionId id of the revision to get information about
-   */
-  public async getRevisionInfo(collectionId: number, revisionId: number): Promise<types.IRevisionDetailed> {
+  public async getCollectionGraph(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>> {
     await this.mQuota.wait();
-    const res = await this.request(this.mBaseURL + '/collections/{collectionId}/revisions/{revisionId}', this.args({
-      path: this.filter({ collectionId, revisionId }),
-    }));
 
-    return res.collection_revision;
+    const res = await this.requestGraph<types.ICollection>(
+      'collection',
+      {
+        id: { type: 'Int', optional: false },
+      },
+      query, { id: collectionId },
+      this.args({ path: this.filter({}) }));
+
+    return res;
   }
 
-  public async getCollectionDownloadURLs(collectionId: number, revisionId: number, key?: string, expires?: number, gameId?: string): Promise<types.ICollectionDownloadLink> {
+  public async getCollectionListGraph(query: graphQL.ICollectionQuery, gameId?: string, count?: number, page?: number): Promise<Partial<types.ICollection>> {
     await this.mQuota.wait();
 
-    let urlPath = '/games/{gameId}/collections/{collectionId}/revisions/{revisionId}/download_link';
-    if ((key !== undefined) && (expires !== undefined)) {
-      urlPath += '?key={key}&expires={expires}';
-    }
-    return this.request(this.mBaseURL + urlPath,
-                this.args({ path: this.filter({ collectionId, revisionId, gameId, key, expires }) }));
+    const res = await this.requestGraph<types.ICollection>(
+      'collections',
+      {
+        game: { type: 'String', optional: false },
+        count: { type: 'Int', optional: true },
+        page: { type: 'Int', optional: true },
+      },
+      query, { game: gameId || this.mBaseData.path.game, count, page },
+      this.args({ path: this.filter({}) }));
+
+    return res;
+  }
+
+  public async getRevisionGraph(query: graphQL.IRevisionQuery, revisionId: number): Promise<Partial<types.IRevision>> {
+    await this.mQuota.wait();
+
+    const res = await this.requestGraph<types.IRevision>(
+      'collectionRevision',
+      {
+        id: { type: 'Int', optional: false },
+      },
+      query, { id: revisionId },
+      this.args({ path: this.filter({}) }));
+
+    return res;
   }
 
   /**
@@ -835,24 +777,34 @@ class Nexus {
           delete headers['APIKEY'];
         }
 
-        const url = anonymous
+        const inputUrl = anonymous
           ? `${param.API_URL}/feedbacks/anonymous`
           : `${param.API_URL}/feedbacks`;
 
-        request.post({
+        const req = lib(inputUrl).request({
+          ...url.parse(inputUrl),
+          method: 'POST',
           headers,
-          url,
-          formData,
           timeout: 30000,
-        }, (error, response, body) => {
-          if (error !== null) {
-            return reject(error);
-          } else if (response.statusCode >= 400) {
-            return reject(new HTTPError(response.statusCode, response.statusMessage, body));
-          } else {
-            return resolve(JSON.parse(body));
-          }
+        }, (res: http.IncomingMessage) => {
+          res.setEncoding('utf8');
+          let rawData = '';
+          res
+            .on('data', (chunk) => { rawData += chunk; })
+            .on('error', err => {
+              return reject(err);
+            })
+            .on('end', () => {
+              if (res.statusCode >= 400) {
+                return reject(new HTTPError(res.statusCode, res.statusMessage, rawData));
+              } else {
+                return resolve(JSON.parse(rawData));
+              }
+            });
         });
+
+        req.write(querystring.stringify(formData));
+        req.end();
       }));
   }
 
@@ -893,6 +845,79 @@ class Nexus {
         }
       }
       throw err;
+    }
+  }
+
+  private makeQueryImpl<T>(query: any, variables: any, indent: string) {
+    return Object.keys(query).reduce((prev, key) => {
+      if (query[key] !== false) {
+        prev += (indent + key);
+        if (typeof query[key] !== 'boolean') {
+          prev = prev +
+            ' {\n'
+            + this.makeQueryImpl(query[key], variables, indent + '  ')
+            + `${indent}}`;
+        }
+        return prev + '\n';
+      }
+      return prev;
+    }, '') + indent;
+  }
+
+  private makeParameters(parameters: graphQL.GraphQueryParameters) {
+    const serParameter = (par: { type: graphQL.GraphQLType, optional: boolean }) => {
+      return `${par.type}${par.optional ? '' : '!'}`;
+    }
+    return Object.keys(parameters)
+      .map(key => `\$${key}: ${serParameter(parameters[key])}`)
+      .join(', ');
+  }
+
+  private makeFilter(parameters: graphQL.GraphQueryParameters) {
+    return Object.keys(parameters)
+      .map(key => `${key}: \$${key}`)
+      .join(', ');
+  }
+
+  private makeQuery<T>(name: string, parameters: graphQL.GraphQueryParameters, query: any, variables: any) {
+    return `query ${name}(${this.makeParameters(parameters)}) {\n`
+      + `  ${name}(${this.makeFilter(parameters)}) {${this.makeQueryImpl(query, variables, '    ')}`
+      + '  }\n'
+      + '}';
+  }
+
+  private makeMutation<T>(name: string, parameters: graphQL.GraphQueryParameters, data: any) {
+    return `mutation ${name}(${this.makeParameters(parameters)}) {\n`
+      + `  ${name}(${this.makeFilter(parameters)}) { collectionId, revisionId, success }`
+      + '}';
+  }
+
+  private async requestGraph<T>(root: string, parameters: graphQL.GraphQueryParameters, query: any,
+                                variables: any, args: IRequestArgs): Promise<T> {
+    args.data = {
+      query: this.makeQuery<T>(root, parameters, query, variables),
+      variables,
+    };
+
+    const res = await this.request(this.mGraphBaseURL, args, 'POST');
+    if (res.data) {
+      return res.data[root];
+    } else {
+      throw new Error(res.errors.map(err => err.message).join(', '));
+    }
+  }
+
+  private async mutateGraph<T>(name: string, parameters: graphQL.GraphQueryParameters,
+                               data: any, args: IRequestArgs): Promise<T> {
+    args.data = {
+      query: this.makeMutation<T>(name, parameters, data),
+      variables: data,
+    }
+    const res = await this.request(this.mGraphBaseURL, args, 'POST');
+    if (res.data) {
+      return res.data[name];
+    } else {
+      throw new Error(res.errors.map(err => err.message).join(', '));
     }
   }
 

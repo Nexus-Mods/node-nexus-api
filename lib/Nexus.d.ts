@@ -1,7 +1,9 @@
 import * as types from './types';
+import * as graphQL from './typesGraphQL';
 declare class Nexus {
     private mBaseData;
     private mBaseURL;
+    private mGraphBaseURL;
     private mQuota;
     private mValidationResult;
     private mRateLimit;
@@ -22,12 +24,6 @@ declare class Nexus {
     getLatestAdded(gameId?: string): Promise<types.IModInfo[]>;
     getLatestUpdated(gameId?: string): Promise<types.IModInfo[]>;
     getTrending(gameId?: string): Promise<types.IModInfo[]>;
-    getCollectionsByGame(gameId?: string): Promise<types.ICollection[]>;
-    getCollectionsByUser(userId: string): Promise<types.ICollection[]>;
-    getRevisions(collectionId: number): Promise<types.IRevision[]>;
-    getRevisionMods(collectionId: number, revisionId: number): Promise<types.IRevisionMod[]>;
-    getCollectionImages(collectionId: number): Promise<any[]>;
-    getCollectionVideos(collectionId: number): Promise<any[]>;
     getEndorsements(): Promise<types.IEndorsement[]>;
     getColourschemes(): Promise<types.IColourScheme[]>;
     getColorschemes(): Promise<types.IColourScheme[]>;
@@ -40,10 +36,11 @@ declare class Nexus {
     getFileInfo(modId: number, fileId: number, gameId?: string): Promise<types.IFileInfo>;
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
-    sendCollection(manifest: types.ICollectionManifest, assetFilePath: string, gameId?: string): Promise<types.IRevision>;
-    getCollectionInfo(collectionId: number): Promise<types.ICollectionDetailed>;
-    getRevisionInfo(collectionId: number, revisionId: number): Promise<types.IRevisionDetailed>;
-    getCollectionDownloadURLs(collectionId: number, revisionId: number, key?: string, expires?: number, gameId?: string): Promise<types.ICollectionDownloadLink>;
+    createCollection(data: types.ICollectionPayload): Promise<types.ICreateCollectionResult>;
+    updateCollection(data: types.ICollectionPayload, collectionId: number): Promise<types.ICreateCollectionResult>;
+    getCollectionGraph(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>>;
+    getCollectionListGraph(query: graphQL.ICollectionQuery, gameId?: string, count?: number, page?: number): Promise<Partial<types.ICollection>>;
+    getRevisionGraph(query: graphQL.IRevisionQuery, revisionId: number): Promise<Partial<types.IRevision>>;
     endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<any>;
     rateRevision(revisionId: number, rating: number, gameId?: string): Promise<any>;
     getCollectionVideo(collectionId: number, videoId: string): Promise<any[]>;
@@ -51,6 +48,13 @@ declare class Nexus {
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
     private checkFileSize;
     private request;
+    private makeQueryImpl;
+    private makeParameters;
+    private makeFilter;
+    private makeQuery;
+    private makeMutation;
+    private requestGraph;
+    private mutateGraph;
     private filter;
     private args;
 }

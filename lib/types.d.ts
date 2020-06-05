@@ -11,9 +11,7 @@ export interface IUser {
     member_id: number;
     member_group_id: number;
     name: string;
-    avatar?: {
-        url: string;
-    };
+    avatar?: string;
 }
 export declare type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
 export declare type ModStatus = 'under_moderation' | 'published' | 'not_published' | 'publish_with_game' | 'removed' | 'wastebinned' | 'hidden';
@@ -130,32 +128,8 @@ export interface ICollectionInfo {
     domain_name: string;
     adult_content: boolean;
 }
-export declare type UpdatePolicy = 'exact' | 'latest';
+export declare type UpdatePolicy = 'exact' | 'latest' | 'prefer';
 export declare type SourceType = 'browse' | 'manual' | 'direct' | 'nexus';
-export interface ICollectionSource {
-    type: SourceType;
-    md5?: string;
-    url?: string;
-    instructions?: string;
-    mod_id?: string;
-    file_id?: string;
-    update_policy?: UpdatePolicy;
-    file_size?: number;
-    logical_filename?: string;
-    file_expression?: string;
-}
-export interface ICollectionMod {
-    name: string;
-    version: string;
-    optional: boolean;
-    domain_name: string;
-    source: ICollectionSource;
-    author?: string;
-}
-export interface ICollectionManifest {
-    info: ICollectionInfo;
-    mods: ICollectionMod[];
-}
 export interface IFeedbackResponse {
     id: number;
     status: number;
@@ -201,36 +175,54 @@ export interface IUpdateEntry {
     latest_file_update: number;
     latest_mod_activity: number;
 }
-export interface ICollectionCategory {
-    id: number;
-    name: string;
-    game_id: number;
-    description: string;
+export interface ITimestamped {
+    updatedAt: string;
+    createdAt: string;
 }
-export interface ICollection {
-    collection_id: number;
-    name: string;
+export interface ICollectionMetadata extends ITimestamped {
     summary: string;
     description: string;
-    created_at: string;
-    updated_at: string;
-    user: {
-        member_id: number;
-        member_group_id: number;
-        name: string;
-    };
 }
-export interface ICollectionDetailed extends ICollection {
-    enable_donations: boolean;
-    endorsement_count: number;
-    category: ICollectionCategory;
-    game: {
-        id: number;
-        name: string;
-        domain_name: string;
-    };
-    collection_images: IImageInfo[];
-    collection_videos: IVideoInfo[];
+export interface IGame {
+    id: number;
+    domainName: string;
+    name: string;
+}
+export interface IImageType {
+    description: string;
+    id: number;
+    rHorizontal: number;
+    rVertical: number;
+}
+export interface IImage extends ITimestamped {
+    gameId: number;
+    imageType: IImageType;
+    imageTypeId: number;
+    imageableId: number;
+    imageableType: string;
+    position: boolean;
+    title: string;
+    url: string;
+    user: IUser;
+    userId: number;
+    verified: boolean;
+}
+export interface ICollection extends ITimestamped {
+    id: number;
+    name: string;
+    category?: string;
+    endorsements: number;
+    tags: string[];
+    game: IGame;
+    gameId: number;
+    visible: boolean;
+    enableDonations: boolean;
+    user: IUser;
+    userId: number;
+    images: IImage[];
+    metadata?: ICollectionMetadata;
+    currentRevision: IRevision;
+    revisions: IRevision[];
 }
 export interface IRevisionModInfo {
     name: string;
@@ -272,38 +264,134 @@ export interface IExternalResource {
     version: string;
 }
 export declare type RevisionStatus = 'is_private' | 'is_public' | 'is_hidden' | 'is_testing' | 'is_nuked';
-export interface IRevision {
-    revision_id: number;
-    revision: number;
-    adult_content: boolean;
-    revision_status_id: RevisionStatus;
-    collection: ICollection;
-    uri: string;
-    success_rate: {
-        positive: number;
-        negative: number;
-    };
-    tags: Array<{
-        name: string;
-    }>;
-    collection_schema: {
-        id: number;
-        version: string;
-    };
-    external_resources: IExternalResource[];
+export interface ICollectionSchema extends ITimestamped {
+    id: number;
+    version: string;
 }
-export interface IRevisionDetailed extends IRevision {
-    collection_revision_mods: IRevisionMod[];
-}
-export interface IImageInfo {
-}
-export interface IVideoInfo {
-    game_id: number;
-    user_id: number;
-    url: string;
+export interface ICollectionBugReport extends ITimestamped {
+    id: number;
+    collectionRevisionId: number;
+    collectionBugStatusId: number;
     title: string;
-    descriaption: string;
-    verified: boolean;
-    position: boolean;
-    revision_number: number;
+    description: string;
+    user: IUser;
+    userId: number;
+}
+export interface IModCategory {
+    date?: number;
+    gameId: number;
+    id: number;
+    name: string;
+    tags?: string;
+}
+export interface ITrackingState {
+    test?: number;
+}
+export interface IMod {
+    id: number;
+    author?: string;
+    category: string;
+    description: string;
+    gameId: number;
+    ipAddress: string;
+    modCategory: IModCategory;
+    modId: number;
+    name: string;
+    summary: string;
+    trackingData: ITrackingState;
+    uploader: IUser;
+    version: string;
+}
+export interface IModFile {
+    categoryId: number;
+    count: number;
+    date: number;
+    description: string;
+    fileId: number;
+    game: IGame;
+    manager: number;
+    mod: IMod;
+    modId: number;
+    name: string;
+    owner: IUser;
+    primary: number;
+    reportLink: string;
+    requirementsAlert: number;
+    scanned: number;
+    size: number;
+    uCount: number;
+    uri: string;
+    version: string;
+}
+export interface ICollectionRevisionMod {
+    id: number;
+    collectionId: number;
+    collectionRevisionId: number;
+    file?: IModFile;
+    fileId: number;
+    gameId: number;
+    optional: boolean;
+    updatePolicy: string;
+    version: string;
+}
+export interface IRevision extends ITimestamped {
+    id: number;
+    adultContent: string;
+    bugReports: ICollectionBugReport[];
+    collection: ICollection;
+    collectionId: number;
+    collectionSchema: ICollectionSchema;
+    collectionSchemaId: number;
+    downloadUri: string;
+    externalResources: IExternalResource[];
+    fileSize: number;
+    installationInfo?: string;
+    latest: boolean;
+    modFiles: ICollectionRevisionMod[];
+    rating: number;
+    revision: number;
+    revisionStatusId: number;
+    status: string;
+    votes: number;
+}
+export interface ICollectionManifestInfo {
+    author: string;
+    authorUrl?: string;
+    name: string;
+    description?: string;
+    domainName: string;
+}
+export interface ICollectionManifestModSource {
+    type: SourceType;
+    modId?: number;
+    fileId?: number;
+    md5?: string;
+    fileSize?: number;
+    updatePolicy?: UpdatePolicy;
+    logicalFilename?: string;
+    fileExpression?: string;
+    url?: string;
+}
+export interface ICollectionManifestMod {
+    name: string;
+    version: string;
+    optional: boolean;
+    domain_name: string;
+    source: ICollectionManifestModSource;
+    author?: string;
+}
+export interface ICollectionManifest {
+    info: ICollectionManifestInfo;
+    mods: ICollectionManifestMod[];
+}
+export interface ICollectionPayload {
+    adultContent: boolean;
+    assetFile: string;
+    collectionSchemaId: number;
+    collectionManifest: ICollectionManifest;
+}
+export interface ICreateCollectionResult {
+    collectionId?: number;
+    revisionId?: number;
+    success: boolean;
 }
