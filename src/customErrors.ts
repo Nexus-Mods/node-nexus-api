@@ -74,3 +74,14 @@ export class ParameterInvalid extends Error {
     this.name = this.constructor.name;
   }
 }
+
+/**
+ * Error thrown when the JWT has expired
+ * You should not see this error in your application as a refresh is performed when encountering it
+ */
+export class JwtExpiredError extends Error {
+  constructor() {
+    super('JWT has expired');
+    this.name = this.constructor.name;
+  }
+}

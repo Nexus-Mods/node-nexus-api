@@ -7,13 +7,15 @@ import * as os from 'os';
 import * as process from 'process';
 import request = require('request');
 import format = require('string-template');
-import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError } from './customErrors';
+import setCookieParser = require('set-cookie-parser');
+import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError } from './customErrors';
 
 type REST_METHOD = 'DELETE' | 'POST';
 
 //#region REST
 interface IRequestArgs {
   headers?: any;
+  cookies?: any;
   path?: any;
   data?: any;
   method?: REST_METHOD;
@@ -70,9 +72,21 @@ function handleRestResult(resolve, reject, url: string, error: any,
 
     const data = JSON.parse(body || '{}');
 
+    if (response.statusCode === 401 && data.message == 'Token has expired') {
+      // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
+      // https://tools.ietf.org/html/rfc6750
+      return reject(new JwtExpiredError());
+    }
+
     if ((response.statusCode < 200) || (response.statusCode >= 300)) {
       return reject(new NexusError(data.message || data.error || response.statusMessage,
                                    response.statusCode, url));
+    }
+
+    // Append response headers to data
+    const cookies = setCookieParser.parse(response, { map: true });
+    if (cookies['jwt_fingerprint'] !== undefined) {
+      data['jwt_fingerprint'] = cookies['jwt_fingerprint'].value;
     }
 
     resolve(data);
@@ -91,7 +105,7 @@ function restGet(url: string, args: IRequestArgs, onUpdateLimit: (daily: number,
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     request.get(format(url, args.path || {}), {
-      headers: args.headers,
+      headers: parseRequestCookies(args).headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
       agentOptions: {
@@ -116,7 +130,7 @@ function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdate
     request({
       method,
       url: format(url, args.path),
-      headers: args.headers,
+      headers: parseRequestCookies(args).headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
       agentOptions: {
@@ -133,6 +147,15 @@ function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdate
       handleRestResult(resolve, reject, url, error, response, body, onUpdateLimit);
     });
   });
+}
+
+function parseRequestCookies(args: IRequestArgs): IRequestArgs {
+  if (!args.cookies) {
+    return args;
+  }
+
+  args.headers['Cookie'] = Object.keys(args.cookies).map( (key) => `${key}=${args.cookies[key]}`).join('; ');
+  return args;
 }
 
 function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void, method?: REST_METHOD): Promise<any> {
@@ -155,6 +178,10 @@ class Nexus {
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
   private mRateLimit: { daily: number, hourly: number } = { daily: 1000, hourly: 100 };
+  private oAuthCredentials: types.IOAuthCredentials;
+  private oAuthConfig: types.IOAuthConfig; 
+  private onNewOAuthCredentialsHandler: types.OnNewOauthCredentialsHandler;
+  private jwtRefreshTries: number = 0;
 
   //#region Constructor and maintenance
 
@@ -170,13 +197,13 @@ class Nexus {
     this.mBaseData = {
       headers: {
         'Content-Type': 'application/json',
-        APIKEY: undefined,
         'Protocol-Version': param.PROTOCOL_VERSION,
         'Application-Name': appName,
         'Application-Version': appVersion,
         'User-Agent': `NexusApiClient/${param.PROTOCOL_VERSION} (${os.type()} ${os.release()}; ${process.arch})`
                     + ` Node/${process.versions.node}`,
       },
+      cookies: {},
       path: {
         gameId: defaultGame,
       },
@@ -205,6 +232,13 @@ class Nexus {
   public static async create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
     res.mValidationResult = await res.setKey(apiKey);
+    return res;
+  }
+
+  public static async createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
+    const res = new Nexus(appName, appVersion, defaultGame, timeout);
+    res.setOAuthCredentials(credentials);
+    res.oAuthConfig = config;
     return res;
   }
 
@@ -244,6 +278,16 @@ class Nexus {
       this.mValidationResult = null;
       return null;
     }
+  }
+
+  private setOAuthCredentials(credentials: types.IOAuthCredentials): void {
+    this.mBaseData.headers['Authorization'] = `Bearer ${credentials.token}`;
+    this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
+    this.oAuthCredentials = credentials;
+  }
+  
+  public setOnNewOAuthCredentialsHandler(handler: types.OnNewOauthCredentialsHandler) {
+    this.onNewOAuthCredentialsHandler = handler;
   }
 
   public getRateLimits(): { daily: number, hourly: number } {
@@ -649,8 +693,33 @@ class Nexus {
           return this.request(url, args, method);
         }
       }
+      if (err instanceof JwtExpiredError && this.jwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+        this.jwtRefreshTries++;
+        return this.handleJwtRefresh().then((newOAuthCredentials) => {
+          this.setOAuthCredentials(newOAuthCredentials);
+          if (this.onNewOAuthCredentialsHandler !== undefined) {
+            this.onNewOAuthCredentialsHandler(newOAuthCredentials);
+          }
+          return this.request(url, args, method);
+        });
+      }
       throw err;
     }
+  }
+
+  private handleJwtRefresh(): Promise<any> {
+    return this.request(`${param.USER_SERVICE_API_URL}/oauth/token`, this.args({
+      data: {
+        client_id: this.oAuthConfig.id,
+        client_secret: this.oAuthConfig.secret,
+        refresh_token: this.oAuthCredentials.refreshToken,
+        grant_type: 'refresh_token',
+      }
+    })).then((data: any) => ({
+        token: data.access_token,
+        refreshToken: data.refresh_token,
+        fingerprint: data.jwt_fingerprint,
+    }));
   }
 
   private filter(obj: any): any {
