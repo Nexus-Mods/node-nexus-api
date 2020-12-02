@@ -166,3 +166,13 @@ export interface IUpdateEntry {
     latest_file_update: number;
     latest_mod_activity: number;
 }
+export interface IOAuthCredentials {
+    token: string;
+    refreshToken: string;
+    fingerprint: string;
+}
+export interface IOAuthConfig {
+    id: string;
+    secret: string;
+}
+export declare type OnNewOauthCredentialsHandler = (onNewOauthCredentials: IOAuthCredentials) => void;

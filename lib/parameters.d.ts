@@ -4,6 +4,8 @@ export declare const QUOTA_MAX_PREMIUM: number;
 export declare const DEFAULT_TIMEOUT_MS: number;
 export declare const DELAY_AFTER_429_MS: number;
 export declare const API_URL: string;
+export declare const USER_SERVICE_API_URL: string;
 export declare const PROTOCOL_VERSION: string;
 export declare const SECURITY_PROTOCOL_VERSION: string;
 export declare const MAX_FILE_SIZE: number;
+export declare const MAX_JWT_REFRESH_TRIES: number;
