@@ -69,3 +69,44 @@ Please note that tampering with this throttling may lead to more requests being 
 ### Feedback API
 
 The library contains a feedback API but it's only intended for internal use
+
+## OAuth support
+
+Experimental support for OAuth/JWT has been added to this library.
+
+Gaining a JWT is not part of this library.
+
+Once you have a JWT, refreshToken and fingerprint you can create a client like so:
+
+```
+const credentials = {
+    token: '<<JWT>>',
+    refreshToken: '<<REFRESH_TOKEN>>',
+    fingerprint: '<<FINGERPRINT>>',
+};
+
+const config = {
+    id: '<<OAUTH_CLIENT_ID>>',
+    secret: '<<OAUTH_CLIENT_SECRET>>',
+};
+
+const appName = '<<YOUR_APP_NAME>>';
+const appVersion = '<<YOUR_APP_VERSION>>';
+const defaultGame = '1';
+
+const client = Nexus.createWithOAuth(credentials, config, appName, appVersion, defaultGame).then(nexus => {
+    console.log(`Hello your Nexus client is here: ${nexus}`);
+});
+```
+
+The client handles dealing with expired tokens by calling a refresh token endpoint. An instance of the client will retain these new credentials for the next time a request is made. But when you next create a client instance, it is your responsibility to provide these new credentials from your storage mechanism.
+
+You can listen to credential refreshes and pass them to your app for storage and later re-use:
+
+```
+const client = Nexus.createWithOAuth(credentials, config, appName, appVersion, defaultGame).then(nexus => {
+    nexus.setOnNewOAuthCredentialsHandler((credentials) => {
+        console.log(`We have received new credentials: ${credentials}. They should now be stored somewhere.`);
+    });
+});
+```

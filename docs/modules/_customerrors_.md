@@ -7,6 +7,7 @@
 ### Classes
 
 * [HTTPError](../classes/_customerrors_.httperror.md)
+* [JwtExpiredError](../classes/_customerrors_.jwtexpirederror.md)
 * [NexusError](../classes/_customerrors_.nexuserror.md)
 * [ParameterInvalid](../classes/_customerrors_.parameterinvalid.md)
 * [ProtocolError](../classes/_customerrors_.protocolerror.md)

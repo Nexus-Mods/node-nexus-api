@@ -23,6 +23,8 @@
 * [IModFiles](../interfaces/_types_.imodfiles.md)
 * [IModInfo](../interfaces/_types_.imodinfo.md)
 * [IModInfoEx](../interfaces/_types_.imodinfoex.md)
+* [IOAuthConfig](../interfaces/_types_.ioauthconfig.md)
+* [IOAuthCredentials](../interfaces/_types_.ioauthcredentials.md)
 * [ITrackResponse](../interfaces/_types_.itrackresponse.md)
 * [ITrackedMod](../interfaces/_types_.itrackedmod.md)
 * [IUpdateEntry](../interfaces/_types_.iupdateentry.md)
@@ -33,6 +35,7 @@
 
 * [EndorsedStatus](_types_.md#endorsedstatus)
 * [ModStatus](_types_.md#modstatus)
+* [OnNewOauthCredentialsHandler](_types_.md#onnewoauthcredentialshandler)
 * [UpdatePeriod](_types_.md#updateperiod)
 
 ## Type aliases
@@ -41,7 +44,7 @@
 
 Ƭ **EndorsedStatus**: *"Undecided" | "Abstained" | "Endorsed"*
 
-Defined in src/types.ts:41
+*Defined in [src/types.ts:41](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L41)*
 
 ___
 
@@ -49,9 +52,27 @@ ___
 
 Ƭ **ModStatus**: *"under_moderation" | "published" | "not_published" | "publish_with_game" | "removed" | "wastebinned" | "hidden"*
 
-Defined in src/types.ts:46
+*Defined in [src/types.ts:46](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L46)*
 
 possible states the mod can be in
+
+___
+
+###  OnNewOauthCredentialsHandler
+
+Ƭ **OnNewOauthCredentialsHandler**: *function*
+
+*Defined in [src/types.ts:509](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L509)*
+
+#### Type declaration:
+
+▸ (`onNewOauthCredentials`: [IOAuthCredentials](../interfaces/_types_.ioauthcredentials.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`onNewOauthCredentials` | [IOAuthCredentials](../interfaces/_types_.ioauthcredentials.md) |
 
 ___
 
@@ -59,6 +80,6 @@ ___
 
 Ƭ **UpdatePeriod**: *"1d" | "1w" | "1m"*
 
-Defined in src/types.ts:487
+*Defined in [src/types.ts:487](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L487)*
 
 range of updates to query

@@ -1,6 +1,6 @@
-[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](../modules/_customerrors_.md) › [RateLimitError](_customerrors_.ratelimiterror.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](../modules/_customerrors_.md) › [JwtExpiredError](_customerrors_.jwtexpirederror.md)
 
-# Class: RateLimitError
+# Class: JwtExpiredError
 
 Error thrown when too many requests were made to the api
 You should not see this error in your application as it is handled internally
@@ -9,30 +9,30 @@ You should not see this error in your application as it is handled internally
 
 * [Error](_customerrors_.timeouterror.md#static-error)
 
-  ↳ **RateLimitError**
+  ↳ **JwtExpiredError**
 
 ## Index
 
 ### Constructors
 
-* [constructor](_customerrors_.ratelimiterror.md#constructor)
+* [constructor](_customerrors_.jwtexpirederror.md#constructor)
 
 ### Properties
 
-* [message](_customerrors_.ratelimiterror.md#message)
-* [name](_customerrors_.ratelimiterror.md#name)
-* [stack](_customerrors_.ratelimiterror.md#optional-stack)
-* [Error](_customerrors_.ratelimiterror.md#static-error)
+* [message](_customerrors_.jwtexpirederror.md#message)
+* [name](_customerrors_.jwtexpirederror.md#name)
+* [stack](_customerrors_.jwtexpirederror.md#optional-stack)
+* [Error](_customerrors_.jwtexpirederror.md#static-error)
 
 ## Constructors
 
 ###  constructor
 
-\+ **new RateLimitError**(): *[RateLimitError](_customerrors_.ratelimiterror.md)*
+\+ **new JwtExpiredError**(): *[JwtExpiredError](_customerrors_.jwtexpirederror.md)*
 
-*Defined in [src/customErrors.ts:25](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/customErrors.ts#L25)*
+*Defined in [src/customErrors.ts:82](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/customErrors.ts#L82)*
 
-**Returns:** *[RateLimitError](_customerrors_.ratelimiterror.md)*
+**Returns:** *[JwtExpiredError](_customerrors_.jwtexpirederror.md)*
 
 ## Properties
 

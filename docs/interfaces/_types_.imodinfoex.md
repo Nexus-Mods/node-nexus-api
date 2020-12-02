@@ -44,7 +44,7 @@
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[allow_rating](_types_.imodinfo.md#allow_rating)*
 
-Defined in src/types.ts:139
+*Defined in [src/types.ts:139](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L139)*
 
 whether this mod allows endorsements
 
@@ -56,7 +56,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[author](_types_.imodinfo.md#author)*
 
-Defined in src/types.ts:92
+*Defined in [src/types.ts:92](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L92)*
 
 Author of the mod
 
@@ -68,7 +68,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[available](_types_.imodinfo.md#available)*
 
-Defined in src/types.ts:115
+*Defined in [src/types.ts:115](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L115)*
 
 whether the mod is currently available/visible to users
 If a mod isn't available the api returns very limited information, essentially
@@ -83,7 +83,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[category_id](_types_.imodinfo.md#category_id)*
 
-Defined in src/types.ts:67
+*Defined in [src/types.ts:67](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L67)*
 
 id of the category
 
@@ -95,7 +95,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[contains_adult_content](_types_.imodinfo.md#contains_adult_content)*
 
-Defined in src/types.ts:71
+*Defined in [src/types.ts:71](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L71)*
 
 whether this mod is tagged as adult
 
@@ -107,7 +107,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[created_time](_types_.imodinfo.md#created_time)*
 
-Defined in src/types.ts:127
+*Defined in [src/types.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L127)*
 
 readable time of when the mod was created
 
@@ -119,7 +119,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[created_timestamp](_types_.imodinfo.md#created_timestamp)*
 
-Defined in src/types.ts:123
+*Defined in [src/types.ts:123](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L123)*
 
 unix timestamp of when the mod was created
 
@@ -131,7 +131,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[description](_types_.imodinfo.md#optional-description)*
 
-Defined in src/types.ts:84
+*Defined in [src/types.ts:84](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L84)*
 
 long description (bbcode)
 
@@ -143,7 +143,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[domain_name](_types_.imodinfo.md#domain_name)*
 
-Defined in src/types.ts:63
+*Defined in [src/types.ts:63](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L63)*
 
 domain name (as used in urls and as the game id in all other requests)
 
@@ -155,7 +155,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[endorsement](_types_.imodinfo.md#optional-endorsement)*
 
-Defined in src/types.ts:147
+*Defined in [src/types.ts:147](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L147)*
 
 obsolete - will be removed in the near future
 
@@ -175,7 +175,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[endorsement_count](_types_.imodinfo.md#endorsement_count)*
 
-Defined in src/types.ts:143
+*Defined in [src/types.ts:143](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L143)*
 
 endorsement count
 
@@ -187,7 +187,7 @@ ___
 
 *Overrides [IModInfo](_types_.imodinfo.md).[game_id](_types_.imodinfo.md#game_id)*
 
-Defined in src/types.ts:374
+*Defined in [src/types.ts:374](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L374)*
 
 ___
 
@@ -197,7 +197,7 @@ ___
 
 *Overrides [IModInfo](_types_.imodinfo.md).[mod_id](_types_.imodinfo.md#mod_id)*
 
-Defined in src/types.ts:373
+*Defined in [src/types.ts:373](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L373)*
 
 ___
 
@@ -207,7 +207,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[name](_types_.imodinfo.md#optional-name)*
 
-Defined in src/types.ts:76
+*Defined in [src/types.ts:76](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L76)*
 
 Name of the mod
 (not present if the file is under moderation)
@@ -220,7 +220,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[picture_url](_types_.imodinfo.md#optional-picture_url)*
 
-Defined in src/types.ts:119
+*Defined in [src/types.ts:119](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L119)*
 
 url of the primary screenshot
 
@@ -232,7 +232,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[status](_types_.imodinfo.md#status)*
 
-Defined in src/types.ts:108
+*Defined in [src/types.ts:108](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L108)*
 
 current status of the mod
 
@@ -244,7 +244,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[summary](_types_.imodinfo.md#optional-summary)*
 
-Defined in src/types.ts:80
+*Defined in [src/types.ts:80](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L80)*
 
 short description
 
@@ -256,7 +256,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[updated_time](_types_.imodinfo.md#updated_time)*
 
-Defined in src/types.ts:135
+*Defined in [src/types.ts:135](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L135)*
 
 readable time of when the mod was updated
 
@@ -268,7 +268,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[updated_timestamp](_types_.imodinfo.md#updated_timestamp)*
 
-Defined in src/types.ts:131
+*Defined in [src/types.ts:131](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L131)*
 
 unix timestamp of when the mod was updated
 
@@ -280,7 +280,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[uploaded_by](_types_.imodinfo.md#uploaded_by)*
 
-Defined in src/types.ts:100
+*Defined in [src/types.ts:100](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L100)*
 
 name of the user who uploaded this mod
 
@@ -292,7 +292,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[uploaded_users_profile_url](_types_.imodinfo.md#uploaded_users_profile_url)*
 
-Defined in src/types.ts:104
+*Defined in [src/types.ts:104](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L104)*
 
 url of the profile image of the uploader
 
@@ -304,7 +304,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[user](_types_.imodinfo.md#user)*
 
-Defined in src/types.ts:96
+*Defined in [src/types.ts:96](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L96)*
 
 more detailed info about the author
 
@@ -316,6 +316,6 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[version](_types_.imodinfo.md#version)*
 
-Defined in src/types.ts:88
+*Defined in [src/types.ts:88](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L88)*
 
 mod version

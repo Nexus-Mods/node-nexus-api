@@ -34,7 +34,7 @@ Error reported by the nexus api
 
 \+ **new NexusError**(`message`: string, `statusCode`: number, `url`: string): *[NexusError](_customerrors_.nexuserror.md)*
 
-Defined in src/customErrors.ts:52
+*Defined in [src/customErrors.ts:52](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/customErrors.ts#L52)*
 
 **Parameters:**
 
@@ -92,7 +92,7 @@ Defined in node_modules/typescript/lib/lib.es5.d.ts:984
 
 • **get request**(): *string*
 
-Defined in src/customErrors.ts:63
+*Defined in [src/customErrors.ts:63](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/customErrors.ts#L63)*
 
 **Returns:** *string*
 
@@ -102,6 +102,6 @@ ___
 
 • **get statusCode**(): *number*
 
-Defined in src/customErrors.ts:59
+*Defined in [src/customErrors.ts:59](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/customErrors.ts#L59)*
 
 **Returns:** *number*
