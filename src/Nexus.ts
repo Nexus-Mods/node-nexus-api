@@ -8,6 +8,8 @@ import * as process from 'process';
 import request = require('request');
 import format = require('string-template');
 import setCookieParser = require('set-cookie-parser');
+import { EventEmitter } from 'events';
+import TypedEmitter from 'typed-emitter';
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError } from './customErrors';
 
 type REST_METHOD = 'DELETE' | 'POST';
@@ -172,16 +174,16 @@ function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, ho
  * @class Nexus
  */
 class Nexus {
-  private mBaseData: IRequestArgs;
+  public events: TypedEmitter<types.INexusEvents> = new EventEmitter() as TypedEmitter<types.INexusEvents>;
 
+  private mBaseData: IRequestArgs;
   private mBaseURL = param.API_URL;
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
   private mRateLimit: { daily: number, hourly: number } = { daily: 1000, hourly: 100 };
-  private oAuthCredentials: types.IOAuthCredentials;
-  private oAuthConfig: types.IOAuthConfig; 
-  private onNewOAuthCredentialsHandler: types.OnNewOauthCredentialsHandler;
-  private jwtRefreshTries: number = 0;
+  private mOAuthCredentials: types.IOAuthCredentials;
+  private mOAuthConfig: types.IOAuthConfig;
+  private mJwtRefreshTries: number = 0;
 
   //#region Constructor and maintenance
 
@@ -237,8 +239,8 @@ class Nexus {
 
   public static async createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
-    res.setOAuthCredentials(credentials);
-    res.oAuthConfig = config;
+    res.oAuthCredentials = credentials;
+    res.mOAuthConfig = config;
     return res;
   }
 
@@ -278,16 +280,6 @@ class Nexus {
       this.mValidationResult = null;
       return null;
     }
-  }
-
-  private setOAuthCredentials(credentials: types.IOAuthCredentials): void {
-    this.mBaseData.headers['Authorization'] = `Bearer ${credentials.token}`;
-    this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
-    this.oAuthCredentials = credentials;
-  }
-  
-  public setOnNewOAuthCredentialsHandler(handler: types.OnNewOauthCredentialsHandler) {
-    this.onNewOAuthCredentialsHandler = handler;
   }
 
   public getRateLimits(): { daily: number, hourly: number } {
@@ -685,6 +677,7 @@ class Nexus {
       return await rest(url, args, (daily: number, hourly: number) => {
         this.mRateLimit = { daily, hourly };
         this.mQuota.updateLimit(Math.max(daily, hourly));
+        this.mJwtRefreshTries = 0;
       }, method);
     } catch (err) {
       if (err instanceof RateLimitError) {
@@ -693,33 +686,41 @@ class Nexus {
           return this.request(url, args, method);
         }
       }
-      if (err instanceof JwtExpiredError && this.jwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
-        this.jwtRefreshTries++;
-        return this.handleJwtRefresh().then((newOAuthCredentials) => {
-          this.setOAuthCredentials(newOAuthCredentials);
-          if (this.onNewOAuthCredentialsHandler !== undefined) {
-            this.onNewOAuthCredentialsHandler(newOAuthCredentials);
-          }
-          return this.request(url, args, method);
-        });
+      if (err instanceof JwtExpiredError && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+        this.mJwtRefreshTries++;
+        this.oAuthCredentials = await this.handleJwtRefresh();
+        return this.request(url, args, method);
       }
+      this.mJwtRefreshTries = 0;
       throw err;
     }
   }
 
-  private handleJwtRefresh(): Promise<any> {
-    return this.request(`${param.USER_SERVICE_API_URL}/oauth/token`, this.args({
+  private set oAuthCredentials(credentials: types.IOAuthCredentials) {
+    this.mOAuthCredentials = credentials;
+    this.mBaseData.headers['Authorization'] = `Bearer ${credentials.token}`;
+    this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
+  }
+
+  private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
+    const refreshResult = await this.request(`${param.USER_SERVICE_API_URL}/oauth/token`, this.args({
       data: {
-        client_id: this.oAuthConfig.id,
-        client_secret: this.oAuthConfig.secret,
-        refresh_token: this.oAuthCredentials.refreshToken,
+        client_id: this.mOAuthConfig.id,
+        client_secret: this.mOAuthConfig.secret,
+        refresh_token: this.mOAuthCredentials.refreshToken,
         grant_type: 'refresh_token',
       }
-    })).then((data: any) => ({
-        token: data.access_token,
-        refreshToken: data.refresh_token,
-        fingerprint: data.jwt_fingerprint,
     }));
+
+    const newOAuthCredentials = {
+      token: refreshResult.access_token,
+      refreshToken: refreshResult.refresh_token,
+      fingerprint: refreshResult.jwt_fingerprint,
+    };
+
+    this.events.emit('oauth-credentials-updated', newOAuthCredentials);
+
+    return newOAuthCredentials;
   }
 
   private filter(obj: any): any {
