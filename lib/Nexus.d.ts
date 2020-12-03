@@ -1,22 +1,21 @@
 import * as types from './types';
+import TypedEmitter from 'typed-emitter';
 declare class Nexus {
+    events: TypedEmitter<types.INexusEvents>;
     private mBaseData;
     private mBaseURL;
     private mQuota;
     private mValidationResult;
     private mRateLimit;
-    private oAuthCredentials;
-    private oAuthConfig;
-    private onNewOAuthCredentialsHandler;
-    private jwtRefreshTries;
+    private mOAuthCredentials;
+    private mOAuthConfig;
+    private mJwtRefreshTries;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     static createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setGame(gameId: string): void;
     getValidationResult(): types.IValidateKeyResponse;
     setKey(apiKey: string): Promise<types.IValidateKeyResponse>;
-    private setOAuthCredentials;
-    setOnNewOAuthCredentialsHandler(handler: types.OnNewOauthCredentialsHandler): void;
     getRateLimits(): {
         daily: number;
         hourly: number;
@@ -45,6 +44,7 @@ declare class Nexus {
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
     private checkFileSize;
     private request;
+    private set oAuthCredentials(value);
     private handleJwtRefresh;
     private filter;
     private args;

@@ -175,4 +175,6 @@ export interface IOAuthConfig {
     id: string;
     secret: string;
 }
-export declare type OnNewOauthCredentialsHandler = (onNewOauthCredentials: IOAuthCredentials) => void;
+export interface INexusEvents {
+    'oauth-credentials-updated': (credentials: IOAuthCredentials) => void;
+}
