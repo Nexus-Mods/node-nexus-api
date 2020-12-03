@@ -24,6 +24,7 @@
 * [IModFiles](_index_.md#imodfiles)
 * [IModInfo](_index_.md#imodinfo)
 * [IModInfoEx](_index_.md#imodinfoex)
+* [INexusEvents](_index_.md#inexusevents)
 * [IOAuthConfig](_index_.md#ioauthconfig)
 * [IOAuthCredentials](_index_.md#ioauthcredentials)
 * [ITrackResponse](_index_.md#itrackresponse)
@@ -33,7 +34,6 @@
 * [IValidateKeyResponse](_index_.md#ivalidatekeyresponse)
 * [ModStatus](_index_.md#modstatus)
 * [NexusError](_index_.md#nexuserror)
-* [OnNewOauthCredentialsHandler](_index_.md#onnewoauthcredentialshandler)
 * [ParameterInvalid](_index_.md#parameterinvalid)
 * [RateLimitError](_index_.md#ratelimiterror)
 * [TimeoutError](_index_.md#timeouterror)
@@ -149,6 +149,12 @@ ___
 
 ___
 
+###  INexusEvents
+
+• **INexusEvents**:
+
+___
+
 ###  IOAuthConfig
 
 • **IOAuthConfig**:
@@ -200,12 +206,6 @@ ___
 ###  NexusError
 
 • **NexusError**:
-
-___
-
-###  OnNewOauthCredentialsHandler
-
-• **OnNewOauthCredentialsHandler**:
 
 ___
 

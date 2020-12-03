@@ -2,8 +2,8 @@
 
 # Class: JwtExpiredError
 
-Error thrown when too many requests were made to the api
-You should not see this error in your application as it is handled internally
+Error thrown when the JWT has expired
+You should not see this error in your application as a refresh is performed when encountering it
 
 ## Hierarchy
 
@@ -30,7 +30,7 @@ You should not see this error in your application as it is handled internally
 
 \+ **new JwtExpiredError**(): *[JwtExpiredError](_customerrors_.jwtexpirederror.md)*
 
-*Defined in [src/customErrors.ts:82](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/customErrors.ts#L82)*
+*Defined in [src/customErrors.ts:82](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/customErrors.ts#L82)*
 
 **Returns:** *[JwtExpiredError](_customerrors_.jwtexpirederror.md)*
 

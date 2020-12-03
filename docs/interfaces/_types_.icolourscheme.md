@@ -24,7 +24,7 @@ colourscheme entry as returned by getColourSchemes
 
 • **darker_colour**: *string*
 
-*Defined in [src/types.ts:481](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L481)*
+*Defined in [src/types.ts:481](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L481)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **id**: *number*
 
-*Defined in [src/types.ts:477](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L477)*
+*Defined in [src/types.ts:477](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L477)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [src/types.ts:478](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L478)*
+*Defined in [src/types.ts:478](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L478)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • **primary_colour**: *string*
 
-*Defined in [src/types.ts:479](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L479)*
+*Defined in [src/types.ts:479](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L479)*
 
 ___
 
@@ -56,4 +56,4 @@ ___
 
 • **secondary_colour**: *string*
 
-*Defined in [src/types.ts:480](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L480)*
+*Defined in [src/types.ts:480](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L480)*

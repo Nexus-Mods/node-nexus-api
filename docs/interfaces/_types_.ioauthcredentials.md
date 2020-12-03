@@ -20,7 +20,7 @@
 
 • **fingerprint**: *string*
 
-*Defined in [src/types.ts:501](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L501)*
+*Defined in [src/types.ts:501](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L501)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **refreshToken**: *string*
 
-*Defined in [src/types.ts:500](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L500)*
+*Defined in [src/types.ts:500](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L500)*
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 • **token**: *string*
 
-*Defined in [src/types.ts:499](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L499)*
+*Defined in [src/types.ts:499](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L499)*

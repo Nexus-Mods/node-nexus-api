@@ -21,7 +21,7 @@
 
 • **message**: *string*
 
-*Defined in [src/types.ts:459](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L459)*
+*Defined in [src/types.ts:459](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L459)*
 
 textual reply to the request, something like "Updated to: Endorsed"
 
@@ -31,4 +31,4 @@ ___
 
 • **status**: *[EndorsedStatus](../modules/_types_.md#endorsedstatus)*
 
-*Defined in [src/types.ts:460](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L460)*
+*Defined in [src/types.ts:460](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L460)*

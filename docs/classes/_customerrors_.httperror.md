@@ -33,7 +33,7 @@ Error thrown if an HTTP error is reported (HTTP code 4xx or 5xx)
 
 \+ **new HTTPError**(`statusCode`: number, `message`: string, `body`: string): *[HTTPError](_customerrors_.httperror.md)*
 
-*Defined in [src/customErrors.ts:36](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/customErrors.ts#L36)*
+*Defined in [src/customErrors.ts:36](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/customErrors.ts#L36)*
 
 **Parameters:**
 
@@ -91,6 +91,6 @@ Defined in node_modules/typescript/lib/lib.es5.d.ts:984
 
 • **get body**(): *string*
 
-*Defined in [src/customErrors.ts:42](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/customErrors.ts#L42)*
+*Defined in [src/customErrors.ts:42](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/customErrors.ts#L42)*
 
 **Returns:** *string*

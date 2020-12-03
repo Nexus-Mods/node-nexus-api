@@ -20,6 +20,6 @@
 
 • **message**: *string*
 
-*Defined in [src/types.ts:470](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L470)*
+*Defined in [src/types.ts:470](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L470)*
 
 textual result of the action, something like "User 123 is now Tracking Mod: 456"

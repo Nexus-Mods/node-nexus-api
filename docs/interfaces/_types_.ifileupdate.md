@@ -27,7 +27,7 @@ a newer version of ...".
 
 • **new_file_id**: *number*
 
-*Defined in [src/types.ts:250](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L250)*
+*Defined in [src/types.ts:250](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L250)*
 
 id of the new file
 
@@ -37,7 +37,7 @@ ___
 
 • **new_file_name**: *string*
 
-*Defined in [src/types.ts:254](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L254)*
+*Defined in [src/types.ts:254](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L254)*
 
 name of the new file
 
@@ -47,7 +47,7 @@ ___
 
 • **old_file_id**: *number*
 
-*Defined in [src/types.ts:258](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L258)*
+*Defined in [src/types.ts:258](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L258)*
 
 id of the old file
 
@@ -57,7 +57,7 @@ ___
 
 • **old_file_name**: *string*
 
-*Defined in [src/types.ts:262](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L262)*
+*Defined in [src/types.ts:262](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L262)*
 
 name of the old file
 
@@ -67,7 +67,7 @@ ___
 
 • **uploaded_time**: *string*
 
-*Defined in [src/types.ts:266](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L266)*
+*Defined in [src/types.ts:266](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L266)*
 
 readable upload time of the new file
 
@@ -77,6 +77,6 @@ ___
 
 • **uploaded_timestamp**: *number*
 
-*Defined in [src/types.ts:270](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L270)*
+*Defined in [src/types.ts:270](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L270)*
 
 unix timestamp of when the new file was uploaded

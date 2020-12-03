@@ -36,7 +36,7 @@
 
 Ƭ **REST_METHOD**: *"DELETE" | "POST"*
 
-*Defined in [src/Nexus.ts:13](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L13)*
+*Defined in [src/Nexus.ts:15](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L15)*
 
 ## Variables
 
@@ -44,7 +44,7 @@
 
 • **format**: *any*
 
-*Defined in [src/Nexus.ts:9](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L9)*
+*Defined in [src/Nexus.ts:9](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L9)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **request**: *RequestAPI‹Request‹›, CoreOptions, UriOptions | UrlOptions›*
 
-*Defined in [src/Nexus.ts:8](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L8)*
+*Defined in [src/Nexus.ts:8](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L8)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **setCookieParser**: *any*
 
-*Defined in [src/Nexus.ts:10](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L10)*
+*Defined in [src/Nexus.ts:10](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L10)*
 
 ## Functions
 
@@ -68,7 +68,7 @@ ___
 
 ▸ **handleRestResult**(`resolve`: any, `reject`: any, `url`: string, `error`: any, `response`: request.RequestResponse, `body`: any, `onUpdateLimit`: function): *any*
 
-*Defined in [src/Nexus.ts:32](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L32)*
+*Defined in [src/Nexus.ts:34](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L34)*
 
 **Parameters:**
 
@@ -103,7 +103,7 @@ ___
 
 ▸ **parseRequestCookies**(`args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md)): *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*
 
-*Defined in [src/Nexus.ts:152](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L152)*
+*Defined in [src/Nexus.ts:154](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L154)*
 
 **Parameters:**
 
@@ -119,7 +119,7 @@ ___
 
 ▸ **rest**(`url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function, `method?`: [REST_METHOD](_nexus_.md#rest_method)): *Promise‹any›*
 
-*Defined in [src/Nexus.ts:161](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L161)*
+*Defined in [src/Nexus.ts:163](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L163)*
 
 **Parameters:**
 
@@ -148,7 +148,7 @@ ___
 
 ▸ **restGet**(`url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function): *Promise‹any›*
 
-*Defined in [src/Nexus.ts:104](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L104)*
+*Defined in [src/Nexus.ts:106](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L106)*
 
 **Parameters:**
 
@@ -175,7 +175,7 @@ ___
 
 ▸ **restPost**(`method`: [REST_METHOD](_nexus_.md#rest_method), `url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function): *Promise‹any›*
 
-*Defined in [src/Nexus.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/Nexus.ts#L127)*
+*Defined in [src/Nexus.ts:129](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L129)*
 
 **Parameters:**
 

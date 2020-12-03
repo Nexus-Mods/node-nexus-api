@@ -24,7 +24,7 @@ response to a request for endorsements
 
 • **date**: *number*
 
-*Defined in [src/types.ts:447](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L447)*
+*Defined in [src/types.ts:447](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L447)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **domain_name**: *string*
 
-*Defined in [src/types.ts:446](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L446)*
+*Defined in [src/types.ts:446](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L446)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • **mod_id**: *number*
 
-*Defined in [src/types.ts:445](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L445)*
+*Defined in [src/types.ts:445](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L445)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • **status**: *[EndorsedStatus](../modules/_types_.md#endorsedstatus)*
 
-*Defined in [src/types.ts:449](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L449)*
+*Defined in [src/types.ts:449](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L449)*
 
 ___
 
@@ -56,4 +56,4 @@ ___
 
 • **version**: *string*
 
-*Defined in [src/types.ts:448](https://github.com/Nexus-Mods/node-nexus-api/blob/3265db7/src/types.ts#L448)*
+*Defined in [src/types.ts:448](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L448)*

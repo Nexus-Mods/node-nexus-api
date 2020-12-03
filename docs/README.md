@@ -105,7 +105,7 @@ You can listen to credential refreshes and pass them to your app for storage and
 
 ```
 const client = Nexus.createWithOAuth(credentials, config, appName, appVersion, defaultGame).then(nexus => {
-    nexus.setOnNewOAuthCredentialsHandler((credentials) => {
+    nexus.events.on('oauth-credentials-updated', (credentials) => {
         console.log(`We have received new credentials: ${credentials}. They should now be stored somewhere.`);
     });
 });
