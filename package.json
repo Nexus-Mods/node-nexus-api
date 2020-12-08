@@ -28,6 +28,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "jsonwebtoken": "^8.5.1",
     "request": "^2.85.0",
     "set-cookie-parser": "^2.4.6",
     "string-template": "^1.0.0",

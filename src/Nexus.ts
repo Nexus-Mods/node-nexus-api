@@ -8,6 +8,7 @@ import * as process from 'process';
 import request = require('request');
 import format = require('string-template');
 import setCookieParser = require('set-cookie-parser');
+import jwt = require('jsonwebtoken');
 import { EventEmitter } from 'events';
 import TypedEmitter from 'typed-emitter';
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError } from './customErrors';
@@ -166,6 +167,19 @@ function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, ho
     : restGet(url, args, onUpdateLimit);
 }
 
+function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredentials): types.IValidateKeyResponse {
+  const tokenData = jwt.decode(oAuthCredentials.token);
+  return {
+    user_id: tokenData.user.id,
+    key: null,
+    name: tokenData.user.username,
+    is_premium: tokenData.user.membership_roles.includes('premium'),
+    is_supporter: tokenData.user.membership_roles.includes('supporter'),
+    email: tokenData.user.email,
+    profile_url: tokenData.user.avatar,
+  };  
+}
+
 //#endregion
 
 /**
@@ -241,6 +255,7 @@ class Nexus {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
     res.oAuthCredentials = credentials;
     res.mOAuthConfig = config;
+    res.oAuthCredentials = await res.handleJwtRefresh();
     return res;
   }
 
@@ -700,6 +715,7 @@ class Nexus {
     this.mOAuthCredentials = credentials;
     this.mBaseData.headers['Authorization'] = `Bearer ${credentials.token}`;
     this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
+    this.mValidationResult = transformJwtToValidationResult(this.mOAuthCredentials);
   }
 
   private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
