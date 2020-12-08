@@ -18,7 +18,7 @@
 
 • **oauth-credentials-updated**: *function*
 
-*Defined in [src/types.ts:510](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L510)*
+*Defined in [src/types.ts:510](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L510)*
 
 #### Type declaration:
 

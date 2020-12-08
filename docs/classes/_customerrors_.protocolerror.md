@@ -29,7 +29,7 @@ Error thrown when a protocol error is reported.
 
 \+ **new ProtocolError**(`message`: string): *[ProtocolError](_customerrors_.protocolerror.md)*
 
-*Defined in [src/customErrors.ts:14](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/customErrors.ts#L14)*
+*Defined in [src/customErrors.ts:14](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L14)*
 
 **Parameters:**
 

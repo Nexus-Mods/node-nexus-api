@@ -18,7 +18,7 @@
 
 ▸ **delay**(`milliseconds`: number): *Promise‹void›*
 
-*Defined in [src/Quota.ts:3](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Quota.ts#L3)*
+*Defined in [src/Quota.ts:3](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L3)*
 
 **Parameters:**
 

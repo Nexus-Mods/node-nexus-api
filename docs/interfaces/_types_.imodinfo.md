@@ -44,7 +44,7 @@ Details about a mod
 
 • **allow_rating**: *boolean*
 
-*Defined in [src/types.ts:139](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L139)*
+*Defined in [src/types.ts:139](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L139)*
 
 whether this mod allows endorsements
 
@@ -54,7 +54,7 @@ ___
 
 • **author**: *string*
 
-*Defined in [src/types.ts:92](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L92)*
+*Defined in [src/types.ts:92](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L92)*
 
 Author of the mod
 
@@ -64,7 +64,7 @@ ___
 
 • **available**: *boolean*
 
-*Defined in [src/types.ts:115](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L115)*
+*Defined in [src/types.ts:115](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L115)*
 
 whether the mod is currently available/visible to users
 If a mod isn't available the api returns very limited information, essentially
@@ -77,7 +77,7 @@ ___
 
 • **category_id**: *number*
 
-*Defined in [src/types.ts:67](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L67)*
+*Defined in [src/types.ts:67](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L67)*
 
 id of the category
 
@@ -87,7 +87,7 @@ ___
 
 • **contains_adult_content**: *boolean*
 
-*Defined in [src/types.ts:71](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L71)*
+*Defined in [src/types.ts:71](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L71)*
 
 whether this mod is tagged as adult
 
@@ -97,7 +97,7 @@ ___
 
 • **created_time**: *string*
 
-*Defined in [src/types.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L127)*
+*Defined in [src/types.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L127)*
 
 readable time of when the mod was created
 
@@ -107,7 +107,7 @@ ___
 
 • **created_timestamp**: *number*
 
-*Defined in [src/types.ts:123](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L123)*
+*Defined in [src/types.ts:123](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L123)*
 
 unix timestamp of when the mod was created
 
@@ -117,7 +117,7 @@ ___
 
 • **description**? : *string*
 
-*Defined in [src/types.ts:84](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L84)*
+*Defined in [src/types.ts:84](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L84)*
 
 long description (bbcode)
 
@@ -127,7 +127,7 @@ ___
 
 • **domain_name**: *string*
 
-*Defined in [src/types.ts:63](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L63)*
+*Defined in [src/types.ts:63](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L63)*
 
 domain name (as used in urls and as the game id in all other requests)
 
@@ -137,7 +137,7 @@ ___
 
 • **endorsement**? : *object*
 
-*Defined in [src/types.ts:147](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L147)*
+*Defined in [src/types.ts:147](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L147)*
 
 obsolete - will be removed in the near future
 
@@ -155,7 +155,7 @@ ___
 
 • **endorsement_count**: *number*
 
-*Defined in [src/types.ts:143](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L143)*
+*Defined in [src/types.ts:143](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L143)*
 
 endorsement count
 
@@ -165,7 +165,7 @@ ___
 
 • **game_id**: *number*
 
-*Defined in [src/types.ts:59](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L59)*
+*Defined in [src/types.ts:59](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L59)*
 
 internal id of the game this mod belongs to
 
@@ -175,7 +175,7 @@ ___
 
 • **mod_id**: *number*
 
-*Defined in [src/types.ts:55](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L55)*
+*Defined in [src/types.ts:55](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L55)*
 
 id of this mod (should be the same you queried for)
 
@@ -185,7 +185,7 @@ ___
 
 • **name**? : *string*
 
-*Defined in [src/types.ts:76](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L76)*
+*Defined in [src/types.ts:76](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L76)*
 
 Name of the mod
 (not present if the file is under moderation)
@@ -196,7 +196,7 @@ ___
 
 • **picture_url**? : *string*
 
-*Defined in [src/types.ts:119](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L119)*
+*Defined in [src/types.ts:119](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L119)*
 
 url of the primary screenshot
 
@@ -206,7 +206,7 @@ ___
 
 • **status**: *[ModStatus](../modules/_types_.md#modstatus)*
 
-*Defined in [src/types.ts:108](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L108)*
+*Defined in [src/types.ts:108](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L108)*
 
 current status of the mod
 
@@ -216,7 +216,7 @@ ___
 
 • **summary**? : *string*
 
-*Defined in [src/types.ts:80](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L80)*
+*Defined in [src/types.ts:80](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L80)*
 
 short description
 
@@ -226,7 +226,7 @@ ___
 
 • **updated_time**: *string*
 
-*Defined in [src/types.ts:135](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L135)*
+*Defined in [src/types.ts:135](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L135)*
 
 readable time of when the mod was updated
 
@@ -236,7 +236,7 @@ ___
 
 • **updated_timestamp**: *number*
 
-*Defined in [src/types.ts:131](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L131)*
+*Defined in [src/types.ts:131](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L131)*
 
 unix timestamp of when the mod was updated
 
@@ -246,7 +246,7 @@ ___
 
 • **uploaded_by**: *string*
 
-*Defined in [src/types.ts:100](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L100)*
+*Defined in [src/types.ts:100](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L100)*
 
 name of the user who uploaded this mod
 
@@ -256,7 +256,7 @@ ___
 
 • **uploaded_users_profile_url**: *string*
 
-*Defined in [src/types.ts:104](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L104)*
+*Defined in [src/types.ts:104](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L104)*
 
 url of the profile image of the uploader
 
@@ -266,7 +266,7 @@ ___
 
 • **user**: *[IUser](_types_.iuser.md)*
 
-*Defined in [src/types.ts:96](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L96)*
+*Defined in [src/types.ts:96](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L96)*
 
 more detailed info about the author
 
@@ -276,6 +276,6 @@ ___
 
 • **version**: *string*
 
-*Defined in [src/types.ts:88](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L88)*
+*Defined in [src/types.ts:88](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L88)*
 
 mod version

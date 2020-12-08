@@ -30,7 +30,7 @@ You should not see this error in your application as a refresh is performed when
 
 \+ **new JwtExpiredError**(): *[JwtExpiredError](_customerrors_.jwtexpirederror.md)*
 
-*Defined in [src/customErrors.ts:82](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/customErrors.ts#L82)*
+*Defined in [src/customErrors.ts:82](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L82)*
 
 **Returns:** *[JwtExpiredError](_customerrors_.jwtexpirederror.md)*
 

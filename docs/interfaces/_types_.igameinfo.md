@@ -34,7 +34,7 @@ extended information about a game
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[approved_date](_types_.igamelistentry.md#approved_date)*
 
-*Defined in [src/types.ts:339](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L339)*
+*Defined in [src/types.ts:339](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L339)*
 
 unix timestamp of when this game was added to nexuis mods
 
@@ -44,7 +44,7 @@ ___
 
 • **categories**: *[ICategory](_types_.icategory.md)[]*
 
-*Defined in [src/types.ts:349](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L349)*
+*Defined in [src/types.ts:349](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L349)*
 
 list of categories for this game
 
@@ -56,7 +56,7 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[domain_name](_types_.igamelistentry.md#domain_name)*
 
-*Defined in [src/types.ts:306](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L306)*
+*Defined in [src/types.ts:306](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L306)*
 
 domain name (as used in urls and as the game id in all other requests)
 
@@ -68,7 +68,7 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[downloads](_types_.igamelistentry.md#downloads)*
 
-*Defined in [src/types.ts:335](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L335)*
+*Defined in [src/types.ts:335](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L335)*
 
 number of downloads from nexus for files for this game
 
@@ -80,7 +80,7 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[file_count](_types_.igamelistentry.md#file_count)*
 
-*Defined in [src/types.ts:331](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L331)*
+*Defined in [src/types.ts:331](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L331)*
 
 number of files hosted on nexus for this game
 
@@ -92,7 +92,7 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[forum_url](_types_.igamelistentry.md#forum_url)*
 
-*Defined in [src/types.ts:314](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L314)*
+*Defined in [src/types.ts:314](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L314)*
 
 url for the corresponding forum section
 
@@ -104,7 +104,7 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[genre](_types_.igamelistentry.md#genre)*
 
-*Defined in [src/types.ts:323](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L323)*
+*Defined in [src/types.ts:323](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L323)*
 
 genre of the game
 (possible values?)
@@ -117,7 +117,7 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[id](_types_.igamelistentry.md#id)*
 
-*Defined in [src/types.ts:302](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L302)*
+*Defined in [src/types.ts:302](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L302)*
 
 numerical id
 
@@ -129,7 +129,7 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[mods](_types_.igamelistentry.md#mods)*
 
-*Defined in [src/types.ts:327](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L327)*
+*Defined in [src/types.ts:327](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L327)*
 
 number of mods hosted on nexus for this game
 
@@ -141,7 +141,7 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[name](_types_.igamelistentry.md#name)*
 
-*Defined in [src/types.ts:310](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L310)*
+*Defined in [src/types.ts:310](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L310)*
 
 display name
 
@@ -153,6 +153,6 @@ ___
 
 *Inherited from [IGameListEntry](_types_.igamelistentry.md).[nexusmods_url](_types_.igamelistentry.md#nexusmods_url)*
 
-*Defined in [src/types.ts:318](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L318)*
+*Defined in [src/types.ts:318](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L318)*
 
 url for the primary nexusmods page (should be https://www.nexusmods.com/<domain_name>)

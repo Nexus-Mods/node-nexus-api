@@ -21,7 +21,7 @@ list of files (and update chain) associated with a mod
 
 • **file_updates**: *[IFileUpdate](_types_.ifileupdate.md)[]*
 
-*Defined in [src/types.ts:234](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L234)*
+*Defined in [src/types.ts:234](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L234)*
 
 list of file updates stored with a mod
 
@@ -31,6 +31,6 @@ ___
 
 • **files**: *[IFileInfo](_types_.ifileinfo.md)[]*
 
-*Defined in [src/types.ts:238](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L238)*
+*Defined in [src/types.ts:238](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L238)*
 
 list of files stored for a mod

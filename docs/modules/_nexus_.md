@@ -19,6 +19,7 @@
 ### Variables
 
 * [format](_nexus_.md#format)
+* [jwt](_nexus_.md#jwt)
 * [request](_nexus_.md#request)
 * [setCookieParser](_nexus_.md#setcookieparser)
 
@@ -29,6 +30,7 @@
 * [rest](_nexus_.md#rest)
 * [restGet](_nexus_.md#restget)
 * [restPost](_nexus_.md#restpost)
+* [transformJwtToValidationResult](_nexus_.md#transformjwttovalidationresult)
 
 ## Type aliases
 
@@ -36,7 +38,7 @@
 
 Ƭ **REST_METHOD**: *"DELETE" | "POST"*
 
-*Defined in [src/Nexus.ts:15](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L15)*
+*Defined in [src/Nexus.ts:16](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L16)*
 
 ## Variables
 
@@ -44,7 +46,15 @@
 
 • **format**: *any*
 
-*Defined in [src/Nexus.ts:9](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L9)*
+*Defined in [src/Nexus.ts:9](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L9)*
+
+___
+
+###  jwt
+
+• **jwt**: *any*
+
+*Defined in [src/Nexus.ts:11](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L11)*
 
 ___
 
@@ -52,7 +62,7 @@ ___
 
 • **request**: *RequestAPI‹Request‹›, CoreOptions, UriOptions | UrlOptions›*
 
-*Defined in [src/Nexus.ts:8](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L8)*
+*Defined in [src/Nexus.ts:8](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L8)*
 
 ___
 
@@ -60,7 +70,7 @@ ___
 
 • **setCookieParser**: *any*
 
-*Defined in [src/Nexus.ts:10](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L10)*
+*Defined in [src/Nexus.ts:10](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L10)*
 
 ## Functions
 
@@ -68,7 +78,7 @@ ___
 
 ▸ **handleRestResult**(`resolve`: any, `reject`: any, `url`: string, `error`: any, `response`: request.RequestResponse, `body`: any, `onUpdateLimit`: function): *any*
 
-*Defined in [src/Nexus.ts:34](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L34)*
+*Defined in [src/Nexus.ts:35](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L35)*
 
 **Parameters:**
 
@@ -103,7 +113,7 @@ ___
 
 ▸ **parseRequestCookies**(`args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md)): *[IRequestArgs](../interfaces/_nexus_.irequestargs.md)*
 
-*Defined in [src/Nexus.ts:154](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L154)*
+*Defined in [src/Nexus.ts:155](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L155)*
 
 **Parameters:**
 
@@ -119,7 +129,7 @@ ___
 
 ▸ **rest**(`url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function, `method?`: [REST_METHOD](_nexus_.md#rest_method)): *Promise‹any›*
 
-*Defined in [src/Nexus.ts:163](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L163)*
+*Defined in [src/Nexus.ts:164](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L164)*
 
 **Parameters:**
 
@@ -148,7 +158,7 @@ ___
 
 ▸ **restGet**(`url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function): *Promise‹any›*
 
-*Defined in [src/Nexus.ts:106](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L106)*
+*Defined in [src/Nexus.ts:107](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L107)*
 
 **Parameters:**
 
@@ -175,7 +185,7 @@ ___
 
 ▸ **restPost**(`method`: [REST_METHOD](_nexus_.md#rest_method), `url`: string, `args`: [IRequestArgs](../interfaces/_nexus_.irequestargs.md), `onUpdateLimit`: function): *Promise‹any›*
 
-*Defined in [src/Nexus.ts:129](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/Nexus.ts#L129)*
+*Defined in [src/Nexus.ts:130](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L130)*
 
 **Parameters:**
 
@@ -197,3 +207,19 @@ Name | Type |
 `hourly` | number |
 
 **Returns:** *Promise‹any›*
+
+___
+
+###  transformJwtToValidationResult
+
+▸ **transformJwtToValidationResult**(`oAuthCredentials`: [IOAuthCredentials](../interfaces/_types_.ioauthcredentials.md)): *[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)*
+
+*Defined in [src/Nexus.ts:170](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L170)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`oAuthCredentials` | [IOAuthCredentials](../interfaces/_types_.ioauthcredentials.md) |
+
+**Returns:** *[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)*

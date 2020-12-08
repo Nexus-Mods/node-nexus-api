@@ -19,7 +19,7 @@
 
 • **id**: *string*
 
-*Defined in [src/types.ts:505](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L505)*
+*Defined in [src/types.ts:505](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L505)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **secret**: *string*
 
-*Defined in [src/types.ts:506](https://github.com/Nexus-Mods/node-nexus-api/blob/5dbdef6/src/types.ts#L506)*
+*Defined in [src/types.ts:506](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L506)*
