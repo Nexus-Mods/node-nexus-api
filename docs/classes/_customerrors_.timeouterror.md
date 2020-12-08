@@ -29,7 +29,7 @@ Error thrown if a request timed out
 
 \+ **new TimeoutError**(`message`: any): *[TimeoutError](_customerrors_.timeouterror.md)*
 
-Defined in src/customErrors.ts:4
+*Defined in [src/customErrors.ts:4](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L4)*
 
 **Parameters:**
 

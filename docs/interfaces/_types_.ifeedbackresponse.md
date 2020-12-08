@@ -29,7 +29,7 @@ INTERNAL USE ONLY
 
 • **count**: *number*
 
-Defined in src/types.ts:423
+*Defined in [src/types.ts:423](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L423)*
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 • **created_at**: *string*
 
-Defined in src/types.ts:417
+*Defined in [src/types.ts:417](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L417)*
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 • **github_issue**: *[IGithubIssue](_types_.igithubissue.md)*
 
-Defined in src/types.ts:421
+*Defined in [src/types.ts:421](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L421)*
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 • **grouping_key**: *string*
 
-Defined in src/types.ts:420
+*Defined in [src/types.ts:420](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L420)*
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 • **id**: *number*
 
-Defined in src/types.ts:415
+*Defined in [src/types.ts:415](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L415)*
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 • **reference**: *string*
 
-Defined in src/types.ts:419
+*Defined in [src/types.ts:419](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L419)*
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 • **status**: *number*
 
-Defined in src/types.ts:416
+*Defined in [src/types.ts:416](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L416)*
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 • **updated_at**: *string*
 
-Defined in src/types.ts:418
+*Defined in [src/types.ts:418](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L418)*
 
 ___
 
@@ -93,4 +93,4 @@ ___
 
 • **user_blacklisted**: *boolean*
 
-Defined in src/types.ts:422
+*Defined in [src/types.ts:422](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L422)*

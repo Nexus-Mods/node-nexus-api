@@ -7,13 +7,18 @@ import * as os from 'os';
 import * as process from 'process';
 import request = require('request');
 import format = require('string-template');
-import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError } from './customErrors';
+import setCookieParser = require('set-cookie-parser');
+import jwt = require('jsonwebtoken');
+import { EventEmitter } from 'events';
+import TypedEmitter from 'typed-emitter';
+import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError } from './customErrors';
 
 type REST_METHOD = 'DELETE' | 'POST';
 
 //#region REST
 interface IRequestArgs {
   headers?: any;
+  cookies?: any;
   path?: any;
   data?: any;
   method?: REST_METHOD;
@@ -70,9 +75,21 @@ function handleRestResult(resolve, reject, url: string, error: any,
 
     const data = JSON.parse(body || '{}');
 
+    if (response.statusCode === 401 && data.message == 'Token has expired') {
+      // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
+      // https://tools.ietf.org/html/rfc6750
+      return reject(new JwtExpiredError());
+    }
+
     if ((response.statusCode < 200) || (response.statusCode >= 300)) {
       return reject(new NexusError(data.message || data.error || response.statusMessage,
                                    response.statusCode, url));
+    }
+
+    // Append response headers to data
+    const cookies = setCookieParser.parse(response, { map: true });
+    if (cookies['jwt_fingerprint'] !== undefined) {
+      data['jwt_fingerprint'] = cookies['jwt_fingerprint'].value;
     }
 
     resolve(data);
@@ -91,7 +108,7 @@ function restGet(url: string, args: IRequestArgs, onUpdateLimit: (daily: number,
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     request.get(format(url, args.path || {}), {
-      headers: args.headers,
+      headers: parseRequestCookies(args).headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
       agentOptions: {
@@ -116,7 +133,7 @@ function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdate
     request({
       method,
       url: format(url, args.path),
-      headers: args.headers,
+      headers: parseRequestCookies(args).headers,
       followRedirect: true,
       timeout: args.requestConfig.timeout,
       agentOptions: {
@@ -135,10 +152,32 @@ function restPost(method: REST_METHOD, url: string, args: IRequestArgs, onUpdate
   });
 }
 
+function parseRequestCookies(args: IRequestArgs): IRequestArgs {
+  if (!args.cookies) {
+    return args;
+  }
+
+  args.headers['Cookie'] = Object.keys(args.cookies).map( (key) => `${key}=${args.cookies[key]}`).join('; ');
+  return args;
+}
+
 function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void, method?: REST_METHOD): Promise<any> {
   return args.data !== undefined
     ? restPost(method || 'POST', url, args, onUpdateLimit)
     : restGet(url, args, onUpdateLimit);
+}
+
+function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredentials): types.IValidateKeyResponse {
+  const tokenData = jwt.decode(oAuthCredentials.token);
+  return {
+    user_id: tokenData.user.id,
+    key: null,
+    name: tokenData.user.username,
+    is_premium: tokenData.user.membership_roles.includes('premium'),
+    is_supporter: tokenData.user.membership_roles.includes('supporter'),
+    email: tokenData.user.email,
+    profile_url: tokenData.user.avatar,
+  };  
 }
 
 //#endregion
@@ -149,12 +188,16 @@ function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, ho
  * @class Nexus
  */
 class Nexus {
-  private mBaseData: IRequestArgs;
+  public events: TypedEmitter<types.INexusEvents> = new EventEmitter() as TypedEmitter<types.INexusEvents>;
 
+  private mBaseData: IRequestArgs;
   private mBaseURL = param.API_URL;
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
   private mRateLimit: { daily: number, hourly: number } = { daily: 1000, hourly: 100 };
+  private mOAuthCredentials: types.IOAuthCredentials;
+  private mOAuthConfig: types.IOAuthConfig;
+  private mJwtRefreshTries: number = 0;
 
   //#region Constructor and maintenance
 
@@ -170,13 +213,13 @@ class Nexus {
     this.mBaseData = {
       headers: {
         'Content-Type': 'application/json',
-        APIKEY: undefined,
         'Protocol-Version': param.PROTOCOL_VERSION,
         'Application-Name': appName,
         'Application-Version': appVersion,
         'User-Agent': `NexusApiClient/${param.PROTOCOL_VERSION} (${os.type()} ${os.release()}; ${process.arch})`
                     + ` Node/${process.versions.node}`,
       },
+      cookies: {},
       path: {
         gameId: defaultGame,
       },
@@ -205,6 +248,14 @@ class Nexus {
   public static async create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
     res.mValidationResult = await res.setKey(apiKey);
+    return res;
+  }
+
+  public static async createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
+    const res = new Nexus(appName, appVersion, defaultGame, timeout);
+    res.oAuthCredentials = credentials;
+    res.mOAuthConfig = config;
+    res.oAuthCredentials = await res.handleJwtRefresh();
     return res;
   }
 
@@ -641,6 +692,7 @@ class Nexus {
       return await rest(url, args, (daily: number, hourly: number) => {
         this.mRateLimit = { daily, hourly };
         this.mQuota.updateLimit(Math.max(daily, hourly));
+        this.mJwtRefreshTries = 0;
       }, method);
     } catch (err) {
       if (err instanceof RateLimitError) {
@@ -649,8 +701,42 @@ class Nexus {
           return this.request(url, args, method);
         }
       }
+      if (err instanceof JwtExpiredError && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+        this.mJwtRefreshTries++;
+        this.oAuthCredentials = await this.handleJwtRefresh();
+        return this.request(url, args, method);
+      }
+      this.mJwtRefreshTries = 0;
       throw err;
     }
+  }
+
+  private set oAuthCredentials(credentials: types.IOAuthCredentials) {
+    this.mOAuthCredentials = credentials;
+    this.mBaseData.headers['Authorization'] = `Bearer ${credentials.token}`;
+    this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
+    this.mValidationResult = transformJwtToValidationResult(this.mOAuthCredentials);
+  }
+
+  private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
+    const refreshResult = await this.request(`${param.USER_SERVICE_API_URL}/oauth/token`, this.args({
+      data: {
+        client_id: this.mOAuthConfig.id,
+        client_secret: this.mOAuthConfig.secret,
+        refresh_token: this.mOAuthCredentials.refreshToken,
+        grant_type: 'refresh_token',
+      }
+    }));
+
+    const newOAuthCredentials = {
+      token: refreshResult.access_token,
+      refreshToken: refreshResult.refresh_token,
+      fingerprint: refreshResult.jwt_fingerprint,
+    };
+
+    this.events.emit('oauth-credentials-updated', newOAuthCredentials);
+
+    return newOAuthCredentials;
   }
 
   private filter(obj: any): any {

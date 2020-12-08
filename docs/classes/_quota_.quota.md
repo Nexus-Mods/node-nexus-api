@@ -24,7 +24,7 @@
 
 \+ **new Quota**(`init`: number, `max`: number, `msPerIncrement`: number): *[Quota](_quota_.quota.md)*
 
-Defined in src/Quota.ts:17
+*Defined in [src/Quota.ts:17](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L17)*
 
 **Parameters:**
 
@@ -42,7 +42,7 @@ Name | Type |
 
 ▸ **block**(): *boolean*
 
-Defined in src/Quota.ts:35
+*Defined in [src/Quota.ts:35](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L35)*
 
 signal that the request was blocked by the server with an error code that
 indicates client is sending too many requests
@@ -57,7 +57,7 @@ ___
 
 ▸ **updateLimit**(`limit`: number): *void*
 
-Defined in src/Quota.ts:25
+*Defined in [src/Quota.ts:25](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L25)*
 
 **Parameters:**
 
@@ -73,6 +73,6 @@ ___
 
 ▸ **wait**(): *Promise‹void›*
 
-Defined in src/Quota.ts:47
+*Defined in [src/Quota.ts:47](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L47)*
 
 **Returns:** *Promise‹void›*

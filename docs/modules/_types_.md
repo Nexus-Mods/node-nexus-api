@@ -23,6 +23,9 @@
 * [IModFiles](../interfaces/_types_.imodfiles.md)
 * [IModInfo](../interfaces/_types_.imodinfo.md)
 * [IModInfoEx](../interfaces/_types_.imodinfoex.md)
+* [INexusEvents](../interfaces/_types_.inexusevents.md)
+* [IOAuthConfig](../interfaces/_types_.ioauthconfig.md)
+* [IOAuthCredentials](../interfaces/_types_.ioauthcredentials.md)
 * [ITrackResponse](../interfaces/_types_.itrackresponse.md)
 * [ITrackedMod](../interfaces/_types_.itrackedmod.md)
 * [IUpdateEntry](../interfaces/_types_.iupdateentry.md)
@@ -41,7 +44,7 @@
 
 Ƭ **EndorsedStatus**: *"Undecided" | "Abstained" | "Endorsed"*
 
-Defined in src/types.ts:41
+*Defined in [src/types.ts:41](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L41)*
 
 ___
 
@@ -49,7 +52,7 @@ ___
 
 Ƭ **ModStatus**: *"under_moderation" | "published" | "not_published" | "publish_with_game" | "removed" | "wastebinned" | "hidden"*
 
-Defined in src/types.ts:46
+*Defined in [src/types.ts:46](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L46)*
 
 possible states the mod can be in
 
@@ -59,6 +62,6 @@ ___
 
 Ƭ **UpdatePeriod**: *"1d" | "1w" | "1m"*
 
-Defined in src/types.ts:487
+*Defined in [src/types.ts:487](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L487)*
 
 range of updates to query

@@ -22,3 +22,6 @@ export declare class NexusError extends Error {
 export declare class ParameterInvalid extends Error {
     constructor(message: any);
 }
+export declare class JwtExpiredError extends Error {
+    constructor();
+}

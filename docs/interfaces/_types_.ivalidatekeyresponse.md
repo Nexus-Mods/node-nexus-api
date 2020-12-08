@@ -26,7 +26,7 @@ result of the validateKey request
 
 • **email**: *string*
 
-Defined in src/types.ts:28
+*Defined in [src/types.ts:28](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L28)*
 
 email address of the user
 
@@ -36,7 +36,7 @@ ___
 
 • **is_premium**: *boolean*
 
-Defined in src/types.ts:20
+*Defined in [src/types.ts:20](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L20)*
 
 user is premium
 
@@ -46,7 +46,7 @@ ___
 
 • **is_supporter**: *boolean*
 
-Defined in src/types.ts:24
+*Defined in [src/types.ts:24](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L24)*
 
 user is supporter
 
@@ -56,7 +56,7 @@ ___
 
 • **key**: *string*
 
-Defined in src/types.ts:12
+*Defined in [src/types.ts:12](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L12)*
 
 the api key
 
@@ -66,7 +66,7 @@ ___
 
 • **name**: *string*
 
-Defined in src/types.ts:16
+*Defined in [src/types.ts:16](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L16)*
 
 User Name
 
@@ -76,7 +76,7 @@ ___
 
 • **profile_url**: *string*
 
-Defined in src/types.ts:32
+*Defined in [src/types.ts:32](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L32)*
 
 url of the user image
 
@@ -86,6 +86,6 @@ ___
 
 • **user_id**: *number*
 
-Defined in src/types.ts:8
+*Defined in [src/types.ts:8](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L8)*
 
 nexus user id

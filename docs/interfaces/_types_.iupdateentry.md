@@ -22,7 +22,7 @@ an entry in the update list
 
 • **latest_file_update**: *number*
 
-Defined in src/types.ts:494
+*Defined in [src/types.ts:494](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L494)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **latest_mod_activity**: *number*
 
-Defined in src/types.ts:495
+*Defined in [src/types.ts:495](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L495)*
 
 ___
 
@@ -38,4 +38,4 @@ ___
 
 • **mod_id**: *number*
 
-Defined in src/types.ts:493
+*Defined in [src/types.ts:493](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L493)*

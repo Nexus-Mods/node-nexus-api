@@ -24,6 +24,9 @@
 * [IModFiles](_index_.md#imodfiles)
 * [IModInfo](_index_.md#imodinfo)
 * [IModInfoEx](_index_.md#imodinfoex)
+* [INexusEvents](_index_.md#inexusevents)
+* [IOAuthConfig](_index_.md#ioauthconfig)
+* [IOAuthCredentials](_index_.md#ioauthcredentials)
 * [ITrackResponse](_index_.md#itrackresponse)
 * [ITrackedMod](_index_.md#itrackedmod)
 * [IUpdateEntry](_index_.md#iupdateentry)
@@ -143,6 +146,24 @@ ___
 ###  IModInfoEx
 
 • **IModInfoEx**:
+
+___
+
+###  INexusEvents
+
+• **INexusEvents**:
+
+___
+
+###  IOAuthConfig
+
+• **IOAuthConfig**:
+
+___
+
+###  IOAuthCredentials
+
+• **IOAuthCredentials**:
 
 ___
 

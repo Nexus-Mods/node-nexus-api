@@ -21,7 +21,7 @@ Result from a md5 lookup
 
 • **file_details**: *[IFileInfo](_types_.ifileinfo.md)*
 
-Defined in src/types.ts:382
+*Defined in [src/types.ts:382](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L382)*
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 • **mod**: *[IModInfoEx](_types_.imodinfoex.md)*
 
-Defined in src/types.ts:381
+*Defined in [src/types.ts:381](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L381)*

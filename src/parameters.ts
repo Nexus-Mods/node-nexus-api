@@ -16,6 +16,8 @@ export const DELAY_AFTER_429_MS: number = 1000;
 
 export const API_URL: string = 'https://api.nexusmods.com/v1';
 
+export const USER_SERVICE_API_URL: string = 'https://users.nexusmods.com';
+
 // used so the server can provide compatibility behaviour with older protocols.
 // Please don't mess with this unless you're in contact with NexusMods
 export const PROTOCOL_VERSION: string = require('../package.json').version.split('-')[0];
@@ -26,3 +28,5 @@ export const SECURITY_PROTOCOL_VERSION: string = 'TLSv1_2_method';
 
 // server will reject feedback if attachments are > 20mb large
 export const MAX_FILE_SIZE: number = 20 * 1024 * 1024;
+
+export const MAX_JWT_REFRESH_TRIES: number = 3;

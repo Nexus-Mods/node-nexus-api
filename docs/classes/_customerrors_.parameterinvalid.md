@@ -29,7 +29,7 @@ API called with an invalid parameter
 
 \+ **new ParameterInvalid**(`message`: any): *[ParameterInvalid](_customerrors_.parameterinvalid.md)*
 
-Defined in src/customErrors.ts:71
+*Defined in [src/customErrors.ts:71](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L71)*
 
 **Parameters:**
 
