@@ -103,7 +103,7 @@ function lib(inputUrl: string): typeof http | typeof https {
 function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   return new Promise<any>((resolve, reject) => {
     const finalURL = format(inputUrl, args.path || {});
-    lib(inputUrl).get({
+    const req = lib(inputUrl).get({
       ...url.parse(finalURL),
       headers: args.headers,
       timeout: args.requestConfig.timeout,
@@ -133,6 +133,9 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
         .on('end', () => {
           handleRestResult(resolve, reject, inputUrl, null, res, rawData, onUpdateLimit);
         });
+    });
+    req.on('error', err => {
+      reject(err);
     });
   });
 }
@@ -178,6 +181,10 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
 
           handleRestResult(resolve, reject, inputUrl, err, res, rawData, onUpdateLimit);
         });
+    });
+
+    req.on('error', err => {
+      reject(err);
     });
 
     req.write(body);
