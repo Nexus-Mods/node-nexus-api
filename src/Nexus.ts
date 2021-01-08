@@ -641,9 +641,12 @@ class Nexus {
     const res = await this.requestGraph<types.ICollection>(
       'collections',
       {
-        game: { type: 'String', optional: false },
+        gameDomain: { type: 'String', optional: false },
         count: { type: 'Int', optional: true },
-        page: { type: 'Int', optional: true },
+        offset: { type: 'Int', optional: true },
+        // categoryId
+        // sortBy
+        // sortDirection
       },
       query, { game: gameId || this.mBaseData.path.game, count, page },
       this.args({ path: this.filter({}) }));

@@ -258,7 +258,7 @@ export interface IFileUpdate {
 /**
  * Nexus Mods category
  */
-export interface ICategory {
+export interface IModCategory {
   /**
    * numerical id
    */
@@ -331,7 +331,7 @@ export interface IGameInfo extends IGameListEntry {
   /**
    * list of categories for this game
    */
-  categories: ICategory[];
+  categories: IModCategory[];
 }
 
 /**
@@ -494,14 +494,27 @@ export interface IUpdateEntry {
   latest_mod_activity: number;
 }
 
+
+// GraphQL classes
+
+export interface IDateTime {
+  day: number;
+  month: number;
+  year: number;
+  hour: number;
+  minute: number;
+  second: number;
+  formatted: string;
+}
+
 export interface ITimestamped {
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: IDateTime;
+  createdAt: IDateTime;
 }
 
 export interface ICollectionMetadata extends ITimestamped {
-  summary: string;
   description: string;
+  summary: string;
 }
 
 export interface IGame {
@@ -510,47 +523,96 @@ export interface IGame {
   name: string;
 }
 
+export interface ICategory {
+  approved: boolean;
+  approvedBy?: number;
+  categoryGames: IGame[];
+  createdAt: IDateTime;
+  description: string;
+  discardedAt?: IDateTime;
+  id: number;
+  name: string;
+  parentId: number;
+  suggestedBy: number;
+  updatedAt: IDateTime;
+}
+
+export interface ITagCategory extends ITimestamped {
+  discardedAt?: IDateTime;
+  id: string;
+  name: string;
+  tags: ITag[];
+}
+
+export interface ITag extends ITimestamped {
+  adult: boolean;
+  category?: ITagCategory;
+  discardedAt: IDateTime;
+  global: boolean;
+  id: string;
+  name: string;
+}
+
+/*
 export interface IImageType {
   description: string;
   id: number;
   rHorizontal: number;
   rVertical: number;
 }
+*/
 
-export interface IImage extends ITimestamped {
-  gameId: number;
-  imageType: IImageType;
-  imageTypeId: number;
-  imageableId: number;
-  imageableType: string;
-  position: boolean;
+export interface ICollectionImage extends ITimestamped {
+  altText: string;
+  collection: ICollection;
+  discardedAt?: IDateTime;
+  id: string;
+  position: number;
+  revision?: IRevision;
   title: string;
   url: string;
   user: IUser;
-  userId: number;
   verified: boolean;
 }
+
+export interface ICollectionVideo extends ITimestamped {
+  collection: ICollection;
+  description: string;
+  discardedAt?: IDateTime;
+  id: string;
+  position: number;
+  revision?: IRevision;
+  title: string;
+  url: string;
+  user: IUser;
+  verified: boolean;
+}
+
+export type ICollectionMedia = ICollectionImage & ICollectionVideo;
 
 /**
  * Base information about a collection
  */
 export interface ICollection extends ITimestamped {
-  id: number;
-  name: string;
-  category?: string;
+  category?: ICategory;
+  contentPreviewLink: string;
+  currentRevision: IRevision;
+  downloadLink: string;
+  enableDonations: boolean;
   endorsements: number;
-  tags: string[];
   game: IGame;
   gameId: number;
-  visible: boolean;
-  enableDonations: boolean;
-  // author/curator of this collection
+  headerImage?: ICollectionImage;
+  id: number;
+  media: ICollectionMedia[];
+  metadata?: ICollectionMetadata;
+  name: string;
+  revisions: IRevision[];
+  tags: ITag[];
+  tileImage?: ICollectionImage;
   user: IUser;
   userId: number;
-  images: IImage[];
-  metadata?: ICollectionMetadata;
-  currentRevision: IRevision;
-  revisions: IRevision[];
+  visible: boolean;
 }
 
 export interface IRevisionModInfo {
@@ -592,11 +654,14 @@ export interface ICollectionDownloadLink {
 }
 
 export interface IExternalResource {
-  collection_revision_id: number;
-  collection_id: number;
-  game_id: number;
-  resource_url: string;
-  update_policy: UpdatePolicy;
+  collectionRevisionId: number;
+  fileExpression: string;
+  id: number;
+  instructions: string;
+  name: string;
+  optional: boolean;
+  resourceType: string;
+  resourceUrl: string;
   version: string;
 }
 
@@ -608,11 +673,11 @@ export interface ICollectionSchema extends ITimestamped {
 }
 
 export interface ICollectionBugReport extends ITimestamped {
-  id: number;
-  collectionRevisionId: number;
   collectionBugStatusId: number;
-  title: string;
+  collectionRevisionId: number;
   description: string;
+  id: number;
+  title: string;
   user: IUser;
   userId: number;
 }
@@ -668,12 +733,11 @@ export interface IModFile {
 }
 
 export interface ICollectionRevisionMod {
-  id: number;
-  collectionId: number;
   collectionRevisionId: number;
   file?: IModFile;
   fileId: number;
   gameId: number;
+  id: number;
   optional: boolean;
   updatePolicy: string;
   version: string;
@@ -683,22 +747,23 @@ export interface ICollectionRevisionMod {
  * a specific revision of a collection
  */
 export interface IRevision extends ITimestamped {
-  id: number;
   adultContent: string;
   bugReports: ICollectionBugReport[];
   collection: ICollection;
   collectionId: number;
   collectionSchema: ICollectionSchema;
   collectionSchemaId: number;
-  downloadUri: string;
+  contentPreviewLink: string;
+  downloadLink: string;
   externalResources: IExternalResource[];
   fileSize: number;
+  id: number;
   installationInfo?: string;
   latest: boolean;
   modFiles: ICollectionRevisionMod[];
   rating: number;
   revision: number;
-  revisionStatusId: number;
+  revisionStatus: string;
   status: string;
   votes: number;
 }
@@ -727,7 +792,7 @@ export interface ICollectionManifestMod {
   name: string;
   version: string;
   optional: boolean;
-  domain_name: string;
+  domainName: string;
   source: ICollectionManifestModSource;
   author?: string;
 }
