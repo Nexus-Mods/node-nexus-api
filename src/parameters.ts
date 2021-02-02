@@ -16,8 +16,9 @@ export const DELAY_AFTER_429_MS: number = 1000;
 
 const API_SUBDOMAIN = process.env['API_SUBDOMAIN'] || 'api';
 const NEXUS_DOMAIN = process.env['NEXUS_DOMAIN'] || 'nexusmods.com';
-export const API_URL: string = `https://${API_SUBDOMAIN}.${NEXUS_DOMAIN}/v1`;
-export const GRAPHQL_URL: string = `https://${API_SUBDOMAIN}.${NEXUS_DOMAIN}/v2/graphql`;
+export const BASE_URL: string = `https://${API_SUBDOMAIN}.${NEXUS_DOMAIN}`;
+export const API_URL: string = `${BASE_URL}/v1`;
+export const GRAPHQL_URL: string = `${BASE_URL}/v2/graphql`;
 
 // can be used to redirect requests for in-development requests to a different server and separate
 // api key

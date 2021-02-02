@@ -1,5 +1,5 @@
-import { ICollection, IRevision } from './types';
-export declare type PODs = number | string | boolean;
+import { ICollection, IDateTime, IRevision } from './types';
+export declare type PODs = number | string | boolean | IDateTime;
 export interface IFilter {
     [key: string]: any;
 }
@@ -11,7 +11,7 @@ export declare type QuerifyImpl<T> = {
 export declare type Querify<T> = QuerifyImpl<T> & {
     $filter?: IFilter;
 };
-export declare type GraphQLType = 'Int' | 'Float' | 'String' | 'Boolean' | string;
+export declare type GraphQLType = 'Int' | 'Float' | 'String' | 'Boolean' | 'DateTime' | string;
 export interface GraphQueryParameters {
     [key: string]: {
         type: GraphQLType;

@@ -594,6 +594,12 @@ class Nexus {
 
   //#region Collection
 
+  public async getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]> {
+    await this.mQuota.wait();
+    const res = await this.request(param.BASE_URL + downloadLink, this.args({}));
+    return res.download_links;
+  }
+
   public async createCollection(data: types.ICollectionPayload): Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
@@ -635,10 +641,14 @@ class Nexus {
     return res;
   }
 
-  public async getCollectionListGraph(query: graphQL.ICollectionQuery, gameId?: string, count?: number, page?: number): Promise<Partial<types.ICollection>> {
+  public async getCollectionListGraph(query: graphQL.ICollectionQuery, gameId?: string, count?: number, offset?: number): Promise<Partial<types.ICollection>[]> {
     await this.mQuota.wait();
 
-    const res = await this.requestGraph<types.ICollection>(
+    interface ICollectionList {
+      nodes: types.ICollection[];
+    }
+
+    const res = await this.requestGraph<ICollectionList>(
       'collections',
       {
         gameDomain: { type: 'String', optional: false },
@@ -648,10 +658,10 @@ class Nexus {
         // sortBy
         // sortDirection
       },
-      query, { game: gameId || this.mBaseData.path.game, count, page },
+      { nodes: query }, { gameDomain: gameId || this.mBaseData.path.game, count, offset },
       this.args({ path: this.filter({}) }));
 
-    return res;
+    return res.nodes;
   }
 
   public async getRevisionGraph(query: graphQL.IRevisionQuery, revisionId: number): Promise<Partial<types.IRevision>> {

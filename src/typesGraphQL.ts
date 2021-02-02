@@ -1,4 +1,4 @@
-import { ICollection, IRevision } from './types';
+import { ICollection, IDateTime, IRevision } from './types';
 
 // some helper types that convert an interface (with the proper data types)
 // into one that can be used to declare a graphql query.
@@ -6,7 +6,7 @@ import { ICollection, IRevision } from './types';
 // every object and array can also have a $filter field to send parameters to the
 // graphql getter
 
-export type PODs = number | string | boolean;
+export type PODs = number | string | boolean | IDateTime;
 
 export interface IFilter {
   [key: string]: any;
@@ -26,7 +26,7 @@ export type QuerifyImpl<T> = {
 
 export type Querify<T> = QuerifyImpl<T> & { $filter?: IFilter };
 
-export type GraphQLType = 'Int' | 'Float' | 'String' | 'Boolean' | string;
+export type GraphQLType = 'Int' | 'Float' | 'String' | 'Boolean' | 'DateTime' | string;
 
 export interface GraphQueryParameters {
   [key: string]: { type: GraphQLType, optional: boolean };

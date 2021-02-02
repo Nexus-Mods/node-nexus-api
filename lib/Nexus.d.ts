@@ -36,10 +36,11 @@ declare class Nexus {
     getFileInfo(modId: number, fileId: number, gameId?: string): Promise<types.IFileInfo>;
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
+    getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]>;
     createCollection(data: types.ICollectionPayload): Promise<types.ICreateCollectionResult>;
     updateCollection(data: types.ICollectionPayload, collectionId: number): Promise<types.ICreateCollectionResult>;
     getCollectionGraph(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>>;
-    getCollectionListGraph(query: graphQL.ICollectionQuery, gameId?: string, count?: number, page?: number): Promise<Partial<types.ICollection>>;
+    getCollectionListGraph(query: graphQL.ICollectionQuery, gameId?: string, count?: number, offset?: number): Promise<Partial<types.ICollection>[]>;
     getRevisionGraph(query: graphQL.IRevisionQuery, revisionId: number): Promise<Partial<types.IRevision>>;
     endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<any>;
     rateRevision(revisionId: number, rating: number, gameId?: string): Promise<any>;
