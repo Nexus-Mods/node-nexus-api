@@ -934,7 +934,7 @@ class Nexus {
       variables: data,
     }
     const res = await this.request(this.mGraphBaseURL, args, 'POST');
-    if (res.data) {
+    if (!!(res.data?.[name])) {
       return res.data[name];
     } else {
       throw new Error(res.errors.map(err => err.message).join(', '));
