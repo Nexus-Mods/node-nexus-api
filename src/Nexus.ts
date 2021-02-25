@@ -610,6 +610,7 @@ class Nexus {
       },
       { collectionData: data },
       this.args({ path: this.filter({}) }),
+      ['collectionId', 'revisionId', 'success'],
     );
   }
 
@@ -624,7 +625,37 @@ class Nexus {
       },
       { collectionData: data, collectionId },
       this.args({ path: this.filter({}) }),
+      ['collectionId', 'revisionId', 'success'],
     );
+  }
+
+  public async publishRevision(revisionId: number): Promise<boolean> {
+    await this.mQuota.wait();
+
+    return (await this.mutateGraph<{success: boolean}>(
+      'publishRevision',
+      {
+        revisionId: { type: 'Int', optional: false },
+      },
+      { revisionId },
+      this.args({ path: this.filter({}) }),
+      ['success'],
+    )).success;
+  }
+
+  public async attachCollectionsToCategory(categoryId: number, collectionIds: number[]): Promise<boolean> {
+    await this.mQuota.wait();
+
+    return (await this.mutateGraph<{success: boolean}>(
+      'attachCollectionsToCategory',
+      {
+        id: { type: 'ID', optional: false },
+        collectionIds: { type: '[Int!]', optional: false },
+      },
+      { id: categoryId, collectionIds },
+      this.args({ path: this.filter({}) }),
+      ['success'],
+    )).success;
   }
 
   public async getCollectionGraph(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>> {
@@ -906,9 +937,11 @@ class Nexus {
       + '}';
   }
 
-  private makeMutation<T>(name: string, parameters: graphQL.GraphQueryParameters, data: any) {
+  private makeMutation<T>(name: string,
+                          parameters: graphQL.GraphQueryParameters,
+                          retValues: Array<keyof T>): string {
     return `mutation ${name}(${this.makeParameters(parameters)}) {\n`
-      + `  ${name}(${this.makeFilter(parameters)}) { collectionId, revisionId, success }`
+      + `  ${name}(${this.makeFilter(parameters)}) { ${retValues} }`
       + '}';
   }
 
@@ -928,9 +961,10 @@ class Nexus {
   }
 
   private async mutateGraph<T>(name: string, parameters: graphQL.GraphQueryParameters,
-                               data: any, args: IRequestArgs): Promise<T> {
+                               data: any, args: IRequestArgs,
+                               retValues: Array<keyof T>): Promise<T> {
     args.data = {
-      query: this.makeMutation<T>(name, parameters, data),
+      query: this.makeMutation<T>(name, parameters, retValues),
       variables: data,
     }
     const res = await this.request(this.mGraphBaseURL, args, 'POST');
