@@ -1,5 +1,6 @@
 import * as types from './types';
 import * as graphQL from './typesGraphQL';
+import { LogFunc } from './types';
 declare class Nexus {
     private mBaseData;
     private mBaseURL;
@@ -7,8 +8,10 @@ declare class Nexus {
     private mQuota;
     private mValidationResult;
     private mRateLimit;
+    private mLogCB;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
+    setLogger(logCB: LogFunc): void;
     setGame(gameId: string): void;
     getValidationResult(): types.IValidateKeyResponse;
     setKey(apiKey: string): Promise<types.IValidateKeyResponse>;

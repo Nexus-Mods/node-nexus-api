@@ -444,3 +444,5 @@ export interface ICreateCollectionResult {
     revisionId?: number;
     success: boolean;
 }
+export declare type LogLevel = 'info' | 'error';
+export declare type LogFunc = (level: LogLevel, message: string, meta: any) => void;

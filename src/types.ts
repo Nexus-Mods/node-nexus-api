@@ -818,3 +818,6 @@ export interface ICreateCollectionResult {
   revisionId?: number;
   success: boolean;
 }
+
+export type LogLevel = 'info' | 'error';
+export type LogFunc = (level: LogLevel, message: string, meta: any) => void;

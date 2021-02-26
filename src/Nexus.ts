@@ -12,6 +12,7 @@ import * as querystring from 'querystring';
 import * as url from 'url';
 import format = require('string-template');
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError } from './customErrors';
+import { LogFunc } from './types';
 
 type REST_METHOD = 'DELETE' | 'POST';
 
@@ -213,6 +214,7 @@ class Nexus {
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
   private mRateLimit: { daily: number, hourly: number } = { daily: 1000, hourly: 100 };
+  private mLogCB: LogFunc = () => undefined;
 
   //#region Constructor and maintenance
 
@@ -263,6 +265,10 @@ class Nexus {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
     res.mValidationResult = await res.setKey(apiKey);
     return res;
+  }
+  
+  public setLogger(logCB: LogFunc): void {
+    this.mLogCB = logCB;
   }
 
   /**
@@ -883,6 +889,7 @@ class Nexus {
   }
 
   private async request(url: string, args: IRequestArgs, method?: REST_METHOD): Promise<any> {
+    this.mLogCB('info', 'sending request', { url, args });
     try {
       return await rest(url, args, (daily: number, hourly: number) => {
         this.mRateLimit = { daily, hourly };
