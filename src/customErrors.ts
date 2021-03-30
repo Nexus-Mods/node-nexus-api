@@ -33,12 +33,19 @@ export class RateLimitError extends Error {
  * Error thrown if an HTTP error is reported (HTTP code 4xx or 5xx)
  */
 export class HTTPError extends Error {
+  private mStatusCode: number;
   private mBody: string;
   constructor(statusCode: number, message: string, body: string) {
     super(`HTTP (${statusCode}) - ${message}`);
+    this.mStatusCode = statusCode;
     this.name = this.constructor.name;
     this.mBody = body;
   }
+
+  public get statusCode() {
+    return this.mStatusCode;
+  }
+
   public get body(): string {
     return this.mBody;
   }
