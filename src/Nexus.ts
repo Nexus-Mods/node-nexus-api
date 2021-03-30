@@ -336,7 +336,7 @@ class Nexus {
       return this.request(this.mBaseURL + '/user/tracked_mods', this.args({
         data: {
           domain_name: gameId || this.mBaseData.path.gameId,
-          mod_id: modId,
+          mod_id: parseInt(modId, 10),
         },
       }))
       .catch(err => (err.statusCode === 422)
