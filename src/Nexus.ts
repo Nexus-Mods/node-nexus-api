@@ -606,30 +606,37 @@ class Nexus {
     return res.download_links;
   }
 
-  public async createCollection(data: types.ICollectionPayload): Promise<types.ICreateCollectionResult> {
+  public async createCollection(data: types.ICollectionPayload,
+                                assetFileUUID: string)
+                                : Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
     return await this.mutateGraph(
       'createCollection',
       {
         collectionData: { type: 'CollectionPayload', optional: false },
+        uuid: { type: 'String', optional: false },
       },
-      { collectionData: data },
+      { collectionData: data, uuid: assetFileUUID },
       this.args({ path: this.filter({}) }),
       ['collectionId', 'revisionId', 'success'],
     );
   }
 
-  public async updateCollection(data: types.ICollectionPayload, collectionId: number): Promise<types.ICreateCollectionResult> {
+  public async updateCollection(data: types.ICollectionPayload,
+                                assetFileUUID: string,
+                                collectionId: number)
+                                : Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
     return await this.mutateGraph(
       'updateCollection',
       {
         collectionData: { type: 'CollectionPayload', optional: false },
+        uuid: { type: 'String', optional: false },
         collectionId: { type: 'Int', optional: false },
       },
-      { collectionData: data, collectionId },
+      { collectionData: data, uuid: assetFileUUID, collectionId },
       this.args({ path: this.filter({}) }),
       ['collectionId', 'revisionId', 'success'],
     );
@@ -710,6 +717,23 @@ class Nexus {
         id: { type: 'Int', optional: false },
       },
       query, { id: revisionId },
+      this.args({ path: this.filter({}) }));
+
+    return res;
+  }
+
+  public async getRevisionUploadUrl(): Promise<types.IPreSignedUrl> {
+    await this.mQuota.wait();
+
+    const res = await this.requestGraph<types.IPreSignedUrl>(
+      'collectionRevisionUploadUrl',
+      {
+      }, {
+        url: true,
+        uuid: true,
+      }, {
+
+      },
       this.args({ path: this.filter({}) }));
 
     return res;
@@ -926,20 +950,30 @@ class Nexus {
     const serParameter = (par: { type: graphQL.GraphQLType, optional: boolean }) => {
       return `${par.type}${par.optional ? '' : '!'}`;
     }
-    return Object.keys(parameters)
+    let parString = Object.keys(parameters)
       .map(key => `\$${key}: ${serParameter(parameters[key])}`)
       .join(', ');
+    if (parString.length > 0) {
+      parString = `(${parString})`;
+    }
+    return parString;
   }
 
   private makeFilter(parameters: graphQL.GraphQueryParameters) {
-    return Object.keys(parameters)
+    let filtString = Object.keys(parameters)
       .map(key => `${key}: \$${key}`)
       .join(', ');
+    if (filtString.length > 0) {
+      filtString = `(${filtString})`;
+    }
+    return filtString;
   }
 
   private makeQuery<T>(name: string, parameters: graphQL.GraphQueryParameters, query: any, variables: any) {
-    return `query ${name}(${this.makeParameters(parameters)}) {\n`
-      + `  ${name}(${this.makeFilter(parameters)}) {${this.makeQueryImpl(query, variables, '    ')}`
+    const pars = this.makeParameters(parameters);
+    const filters = this.makeFilter(parameters);
+    return `query ${name}${pars} {\n`
+      + `  ${name}${filters} {${this.makeQueryImpl(query, variables, '    ')}`
       + '  }\n'
       + '}';
   }
@@ -947,8 +981,10 @@ class Nexus {
   private makeMutation<T>(name: string,
                           parameters: graphQL.GraphQueryParameters,
                           retValues: Array<keyof T>): string {
-    return `mutation ${name}(${this.makeParameters(parameters)}) {\n`
-      + `  ${name}(${this.makeFilter(parameters)}) { ${retValues} }`
+    const pars = this.makeParameters(parameters);
+    const filters = this.makeFilter(parameters);
+    return `mutation ${name}${pars} {\n`
+      + `  ${name}${filters} { ${retValues} }`
       + '}';
   }
 

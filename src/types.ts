@@ -743,6 +743,11 @@ export interface ICollectionRevisionMod {
   version: string;
 }
 
+export interface IPreSignedUrl {
+  url: string;
+  uuid: string;
+}
+
 /**
  * a specific revision of a collection
  */
