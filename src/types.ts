@@ -815,8 +815,6 @@ export interface ICollectionManifest {
  */
 export interface ICollectionPayload {
   adultContent: boolean;
-  // serialized asset file
-  assetFile: string;
   collectionSchemaId: number;
   collectionManifest: ICollectionManifest;
 }
