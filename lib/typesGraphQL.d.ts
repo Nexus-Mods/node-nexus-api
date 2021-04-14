@@ -1,4 +1,4 @@
-import { ICollection, IDateTime, IRevision } from './types';
+import { ICollection, IDateTime, IMod, IModFile, IRevision } from './types';
 export declare type PODs = number | string | boolean | IDateTime;
 export interface IFilter {
     [key: string]: any;
@@ -20,3 +20,5 @@ export interface GraphQueryParameters {
 }
 export declare type ICollectionQuery = Querify<ICollection>;
 export declare type IRevisionQuery = Querify<IRevision>;
+export declare type IModQuery = Querify<IMod>;
+export declare type IModFileQuery = Querify<IModFile>;

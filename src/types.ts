@@ -695,17 +695,20 @@ export interface ITrackingState {
 }
 
 export interface IMod {
-  id: number;
   author?: string;
   category: string;
   description: string;
+  game: IGame;
   gameId: number;
+  id: number;
   ipAddress: string;
   modCategory: IModCategory;
   modId: number;
   name: string;
+  pictureUrl?: string;
   summary: string;
   trackingData: ITrackingState;
+  uid: number;
   uploader: IUser;
   version: string;
 }

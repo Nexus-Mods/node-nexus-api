@@ -598,6 +598,38 @@ class Nexus {
 
   //#endregion
 
+  //#region GraphQL convenience
+
+  public async modsByUid(query: graphQL.IModQuery, uids: number[]): Promise<Partial<types.IMod>[]> { 
+    await this.mQuota.wait();
+
+    const res = await this.requestGraph<{ nodes: types.IMod[] }>(
+      'modsByUid',
+      {
+        uids: { type: '[ID!]', optional: false },
+      },
+      { nodes: query }, { uids },
+      this.args({ path: this.filter({}) }));
+
+    return res.nodes;
+  }
+
+  public async modFilesByUid(query: graphQL.IModFileQuery, uids: number[]): Promise<Partial<types.IModFile>[]> { 
+    await this.mQuota.wait();
+
+    const res = await this.requestGraph<{ nodes: types.IModFile[] }>(
+      'modFilesByUid',
+      {
+        uids: { type: '[ID!]', optional: false },
+      },
+      { nodes: query }, { uids },
+      this.args({ path: this.filter({}) }));
+
+    return res.nodes;
+  }
+
+  //#endregion
+
   //#region Collection
 
   public async getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]> {
