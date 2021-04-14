@@ -442,7 +442,6 @@ export interface ICollectionManifest {
 }
 export interface ICollectionPayload {
     adultContent: boolean;
-    assetFile: string;
     collectionSchemaId: number;
     collectionManifest: ICollectionManifest;
 }
