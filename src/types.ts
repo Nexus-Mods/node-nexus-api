@@ -685,7 +685,7 @@ export interface ICollectionBugReport extends ITimestamped {
 export interface IModCategory {
   date?: number;
   gameId: number;
-  id: number;
+  id: string;
   name: string;
   tags?: string;
 }
@@ -731,6 +731,7 @@ export interface IModFile {
   scanned: number;
   size: number;
   uCount: number;
+  uid: number;
   uri: string;
   version: string;
 }

@@ -88,7 +88,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
       return reject(new NexusError('API currently not reachable, please try again later.', response.statusCode, url));
     }
     const ecMatch = body.match(/error code: ([0-9]+)/);
-    if (ecMatch == null) {
+    if (ecMatch !== null) {
       return reject(new ProtocolError(`Network error ${ecMatch[1]}`));
     }
     reject(new Error(`failed to parse server response for request "${url}": ${err.message}`));
@@ -600,7 +600,16 @@ class Nexus {
 
   //#region GraphQL convenience
 
-  public async modsByUid(query: graphQL.IModQuery, uids: number[]): Promise<Partial<types.IMod>[]> { 
+  /**
+   * retrieve mod information about a list of mods by their uid
+   * @param query the information to fetch
+   * @param uids list of uids to fetch
+   * @returns partial mod information
+   * @note uids are numericals but since they are 64bit values (first 32bit identify the game,
+   *       the second 32bit block identifies the mod) clients should use BigInt to do the math and
+   *       then pass them in as strings
+   */
+  public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> { 
     await this.mQuota.wait();
 
     const res = await this.requestGraph<{ nodes: types.IMod[] }>(
@@ -614,7 +623,16 @@ class Nexus {
     return res.nodes;
   }
 
-  public async modFilesByUid(query: graphQL.IModFileQuery, uids: number[]): Promise<Partial<types.IModFile>[]> { 
+  /**
+   * retrieve mod information about a list of mods by their uid
+   * @param query the information to fetch
+   * @param uids list of uids to fetch
+   * @returns partial mod information
+   * @note uids are numericals but since they are 64bit values (first 32bit identify the game,
+   *       the second 32bit block identifies the mod) clients should use BigInt to do the math and
+   *       then pass them in as strings
+   */
+  public async modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]> { 
     await this.mQuota.wait();
 
     const res = await this.requestGraph<{ nodes: types.IModFile[] }>(
@@ -635,7 +653,7 @@ class Nexus {
   public async getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]> {
     await this.mQuota.wait();
     const res = await this.request(param.BASE_URL + downloadLink, this.args({}));
-    return res.download_links;
+    return res.download_links ?? [res.download_link];
   }
 
   public async createCollection(data: types.ICollectionPayload,
