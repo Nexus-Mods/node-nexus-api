@@ -39,8 +39,8 @@ declare class Nexus {
     getFileInfo(modId: number, fileId: number, gameId?: string): Promise<types.IFileInfo>;
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
-    modsByUid(query: graphQL.IModQuery, uids: number[]): Promise<Partial<types.IMod>[]>;
-    modFilesByUid(query: graphQL.IModFileQuery, uids: number[]): Promise<Partial<types.IModFile>[]>;
+    modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]>;
+    modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]>;
     getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]>;
     createCollection(data: types.ICollectionPayload, assetFileUUID: string): Promise<types.ICreateCollectionResult>;
     updateCollection(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number): Promise<types.ICreateCollectionResult>;

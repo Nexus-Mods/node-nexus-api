@@ -145,12 +145,14 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     const finalURL = format(inputUrl, args.path);
-    const body = JSON.stringify(args.data, undefined, 2);
+    const body = JSON.stringify(args.data);
+    const buffer = new Buffer(body, 'utf8');
 
     const headers = {
       ...args.headers,
-      'Content-Length': body.length,
-    }
+      'Connection': 'keep-alive',
+      'Content-Length': buffer.byteLength,
+    };
 
     if (process.env.APIKEYMASTER !== undefined) {
       headers['apikeymaster'] = process.env.APIKEYMASTER;
@@ -164,6 +166,7 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
     }, (res: http.IncomingMessage) => {
       res.setEncoding('utf8');
       let rawData = '';
+
       res
         .on('data', (chunk) => { rawData += chunk; })
         .on('error', err => {
@@ -188,7 +191,7 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
       reject(err);
     });
 
-    req.write(body);
+    req.write(buffer);
     req.end();
   });
 }
@@ -661,6 +664,8 @@ class Nexus {
                                 : Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
+    let override = JSON.parse(fs.readFileSync('c:\\temp\\query.json', 'utf-8'));
+
     return await this.mutateGraph(
       'createCollection',
       {
@@ -963,7 +968,7 @@ class Nexus {
   }
 
   private async request(url: string, args: IRequestArgs, method?: REST_METHOD): Promise<any> {
-    this.mLogCB('info', 'sending request', { url, args });
+    this.mLogCB('info', 'sending request', { url, args: JSON.stringify(args) });
     try {
       return await rest(url, args, (daily: number, hourly: number) => {
         this.mRateLimit = { daily, hourly };
