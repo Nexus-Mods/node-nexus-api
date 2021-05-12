@@ -350,7 +350,7 @@ export interface IMod {
     pictureUrl?: string;
     summary: string;
     trackingData: ITrackingState;
-    uid: number;
+    uid: string;
     uploader: IUser;
     version: string;
 }
@@ -372,7 +372,7 @@ export interface IModFile {
     scanned: number;
     size: number;
     uCount: number;
-    uid: number;
+    uid: string;
     uri: string;
     version: string;
 }
