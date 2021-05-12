@@ -664,8 +664,6 @@ class Nexus {
                                 : Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
-    let override = JSON.parse(fs.readFileSync('c:\\temp\\query.json', 'utf-8'));
-
     return await this.mutateGraph(
       'createCollection',
       {
