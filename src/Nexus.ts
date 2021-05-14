@@ -691,7 +691,7 @@ class Nexus {
       },
       { collectionData: data, uuid: assetFileUUID, collectionId },
       this.args({ path: this.filter({}) }),
-      ['collectionId', 'revisionId', 'success'],
+      ['collectionId', 'revisionId', 'revisionNumber', 'success'],
     );
   }
 

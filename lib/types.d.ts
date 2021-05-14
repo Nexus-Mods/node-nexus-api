@@ -449,6 +449,7 @@ export interface ICollectionPayload {
 export interface ICreateCollectionResult {
     collectionId?: number;
     revisionId?: number;
+    revisionNumber?: number;
     success: boolean;
 }
 export declare type LogLevel = 'info' | 'error';
