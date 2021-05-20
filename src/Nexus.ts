@@ -695,6 +695,25 @@ class Nexus {
     );
   }
 
+  public async createOrUpdateRevision(data: types.ICollectionPayload,
+                                      assetFileUUID: string,
+                                      collectionId: number)
+                                      : Promise<types.ICreateCollectionResult> {
+    await this.mQuota.wait();
+
+    return await this.mutateGraph(
+      'createOrUpdateRevision',
+      {
+        collectionData: { type: 'CollectionPayload', optional: false },
+        uuid: { type: 'String', optional: false },
+        collectionId: { type: 'Int', optional: false },
+      },
+      { collectionData: data, uuid: assetFileUUID, collectionId },
+      this.args({ path: this.filter({}) }),
+      ['collectionId', 'revisionId', 'revisionNumber', 'success'],
+    );
+  }
+
   public async publishRevision(revisionId: number): Promise<boolean> {
     await this.mQuota.wait();
 

@@ -44,6 +44,7 @@ declare class Nexus {
     getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]>;
     createCollection(data: types.ICollectionPayload, assetFileUUID: string): Promise<types.ICreateCollectionResult>;
     updateCollection(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number): Promise<types.ICreateCollectionResult>;
+    createOrUpdateRevision(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number): Promise<types.ICreateCollectionResult>;
     publishRevision(revisionId: number): Promise<boolean>;
     attachCollectionsToCategory(categoryId: number, collectionIds: number[]): Promise<boolean>;
     getCollectionGraph(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>>;
