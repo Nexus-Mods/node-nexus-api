@@ -714,7 +714,7 @@ class Nexus {
     );
   }
 
-  public async editCollection(collectionId: string,
+  public async editCollection(collectionId: number,
                               name: string,
                               summary?: string,
                               description?: string,
