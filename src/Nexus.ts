@@ -714,6 +714,29 @@ class Nexus {
     );
   }
 
+  public async editCollection(collectionId: string,
+                              name: string,
+                              summary?: string,
+                              description?: string,
+                              category?: number)
+                              : Promise<boolean> {
+    await this.mQuota.wait();
+
+    return (await this.mutateGraph<{ collection: types.ICollection, success: boolean }>(
+      'editCollection',
+      {
+        collectionId: { type: 'Int', optional: false },
+        name: { type: 'String', optional: true },
+        summary: { type: 'String', optional: true },
+        description: { type: 'String', optional: true },
+        categoryId: { type: 'ID', optional: true },
+      },
+      { collectionId, name, summary, description, category },
+      this.args({ path: this.filter({}) }),
+      ['success'],
+    )).success;
+  }
+
   public async publishRevision(revisionId: number): Promise<boolean> {
     await this.mQuota.wait();
 
