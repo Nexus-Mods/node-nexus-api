@@ -827,5 +827,16 @@ export interface ICreateCollectionResult {
   success: boolean;
 }
 
+export interface IFileHash {
+  createdAt: IDateTime;
+  fileName: string;
+  fileSize: string;
+  fileType: string;
+  gameId: number;
+  md5: string;
+  modFile: IModFile;
+  modFileId: number;
+}
+
 export type LogLevel = 'info' | 'error';
 export type LogFunc = (level: LogLevel, message: string, meta: any) => void;

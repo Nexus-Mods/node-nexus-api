@@ -635,7 +635,9 @@ class Nexus {
    *       the second 32bit block identifies the mod) clients should use BigInt to do the math and
    *       then pass them in as strings
    */
-  public async modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]> { 
+  public async modFilesByUid(query: graphQL.IModFileQuery
+                             , uids: string[])
+                             : Promise<Partial<types.IModFile>[]> { 
     await this.mQuota.wait();
 
     const res = await this.requestGraph<{ nodes: types.IModFile[] }>(
@@ -647,6 +649,26 @@ class Nexus {
       this.args({ path: this.filter({}) }));
 
     return res.nodes;
+  }
+
+  /**
+   * retrieve mod information about a list of mods by their md5 hash
+   * @param query the information to fetch
+   * @param md5Hashes list of hashes to fetch
+   * @returns list of hash results
+   */
+  public async fileHashes(query: graphQL.IFileHashQuery
+                          , md5Hashes: string[])
+                          : Promise<Partial<types.IFileHash>[]> {
+    await this.mQuota.wait();
+
+    return await this.requestGraph<types.IFileHash[]>(
+      'fileHashes',
+      {
+        md5s: { type: '[String!]', optional: false },
+      },
+      query, { md5s: md5Hashes },
+      this.args({ path: this.filter({}) }));
   }
 
   //#endregion

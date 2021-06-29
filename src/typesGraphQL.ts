@@ -1,4 +1,4 @@
-import { ICollection, IDateTime, IMod, IModFile, IRevision } from './types';
+import { ICollection, IDateTime, IFileHash, IMod, IModFile, IRevision } from './types';
 
 // some helper types that convert an interface (with the proper data types)
 // into one that can be used to declare a graphql query.
@@ -37,3 +37,5 @@ export type IRevisionQuery = Querify<IRevision>;
 
 export type IModQuery = Querify<IMod>;
 export type IModFileQuery = Querify<IModFile>;
+
+export type IFileHashQuery = Querify<IFileHash>;

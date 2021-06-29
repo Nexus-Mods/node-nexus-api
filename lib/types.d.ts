@@ -452,5 +452,15 @@ export interface ICreateCollectionResult {
     revisionNumber?: number;
     success: boolean;
 }
+export interface IFileHash {
+    createdAt: IDateTime;
+    fileName: string;
+    fileSize: string;
+    fileType: string;
+    gameId: number;
+    md5: string;
+    modFile: IModFile;
+    modFileId: number;
+}
 export declare type LogLevel = 'info' | 'error';
 export declare type LogFunc = (level: LogLevel, message: string, meta: any) => void;
