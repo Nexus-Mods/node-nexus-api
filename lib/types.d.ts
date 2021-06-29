@@ -462,5 +462,12 @@ export interface IFileHash {
     modFile: IModFile;
     modFileId: number;
 }
+export interface IGraphQLError {
+    message: string;
+    extensions?: {
+        parameter?: any;
+        code?: string;
+    };
+}
 export declare type LogLevel = 'info' | 'error';
 export declare type LogFunc = (level: LogLevel, message: string, meta: any) => void;

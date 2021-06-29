@@ -1,6 +1,6 @@
 import * as types from './types';
 import * as graphQL from './typesGraphQL';
-import { LogFunc } from './types';
+import { IGraphQLError, LogFunc } from './types';
 declare class Nexus {
     private mBaseData;
     private mBaseURL;
@@ -41,7 +41,10 @@ declare class Nexus {
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
     modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]>;
     modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]>;
-    fileHashes(query: graphQL.IFileHashQuery, md5Hashes: string[]): Promise<Partial<types.IFileHash>[]>;
+    fileHashes(query: graphQL.IFileHashQuery, md5Hashes: string[]): Promise<{
+        data: Partial<types.IFileHash>[];
+        errors: IGraphQLError;
+    }>;
     getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]>;
     createCollection(data: types.ICollectionPayload, assetFileUUID: string): Promise<types.ICreateCollectionResult>;
     updateCollection(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number): Promise<types.ICreateCollectionResult>;
@@ -66,6 +69,7 @@ declare class Nexus {
     private makeQuery;
     private makeMutation;
     private requestGraph;
+    private requestGraphWithErrors;
     private mutateGraph;
     private filter;
     private args;

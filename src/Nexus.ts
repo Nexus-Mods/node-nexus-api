@@ -12,7 +12,7 @@ import * as querystring from 'querystring';
 import * as url from 'url';
 import format = require('string-template');
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError } from './customErrors';
-import { LogFunc } from './types';
+import { IGraphQLError, LogFunc } from './types';
 
 type REST_METHOD = 'DELETE' | 'POST';
 
@@ -659,10 +659,10 @@ class Nexus {
    */
   public async fileHashes(query: graphQL.IFileHashQuery
                           , md5Hashes: string[])
-                          : Promise<Partial<types.IFileHash>[]> {
+                          : Promise<{ data: Partial<types.IFileHash>[], errors: IGraphQLError }> {
     await this.mQuota.wait();
 
-    return await this.requestGraph<types.IFileHash[]>(
+    return await this.requestGraphWithErrors<types.IFileHash[]>(
       'fileHashes',
       {
         md5s: { type: '[String!]', optional: false },
@@ -1115,6 +1115,25 @@ class Nexus {
     const res = await this.request(this.mGraphBaseURL, args, 'POST');
     if (res.data) {
       return res.data[root];
+    } else {
+      throw new Error(res.errors.map(err => err.message).join(', '));
+    }
+  }
+
+  private async requestGraphWithErrors<T>(root: string
+                                          , parameters: graphQL.GraphQueryParameters
+                                          , query: any
+                                          , variables: any
+                                          , args: IRequestArgs)
+                                          : Promise<{ data: T, errors: IGraphQLError }> {
+    args.data = {
+      query: this.makeQuery<T>(root, parameters, query, variables),
+      variables,
+    };
+
+    const res = await this.request(this.mGraphBaseURL, args, 'POST');
+    if (res.data) {
+      return { data: res.data[root], errors: res.errors };
     } else {
       throw new Error(res.errors.map(err => err.message).join(', '));
     }

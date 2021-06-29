@@ -838,5 +838,13 @@ export interface IFileHash {
   modFileId: number;
 }
 
+export interface IGraphQLError {
+  message: string;
+  extensions?: {
+    parameter?: any;
+    code?: string;
+  }
+}
+
 export type LogLevel = 'info' | 'error';
 export type LogFunc = (level: LogLevel, message: string, meta: any) => void;
