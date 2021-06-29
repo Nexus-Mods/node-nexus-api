@@ -659,7 +659,7 @@ class Nexus {
    */
   public async fileHashes(query: graphQL.IFileHashQuery
                           , md5Hashes: string[])
-                          : Promise<{ data: Partial<types.IFileHash>[], errors: IGraphQLError }> {
+                          : Promise<{ data: Partial<types.IFileHash>[], errors: IGraphQLError[] }> {
     await this.mQuota.wait();
 
     return await this.requestGraphWithErrors<types.IFileHash[]>(
@@ -1125,7 +1125,7 @@ class Nexus {
                                           , query: any
                                           , variables: any
                                           , args: IRequestArgs)
-                                          : Promise<{ data: T, errors: IGraphQLError }> {
+                                          : Promise<{ data: T, errors: IGraphQLError[] }> {
     args.data = {
       query: this.makeQuery<T>(root, parameters, query, variables),
       variables,

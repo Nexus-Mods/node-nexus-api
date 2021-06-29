@@ -43,7 +43,7 @@ declare class Nexus {
     modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]>;
     fileHashes(query: graphQL.IFileHashQuery, md5Hashes: string[]): Promise<{
         data: Partial<types.IFileHash>[];
-        errors: IGraphQLError;
+        errors: IGraphQLError[];
     }>;
     getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]>;
     createCollection(data: types.ICollectionPayload, assetFileUUID: string): Promise<types.ICreateCollectionResult>;
