@@ -13,6 +13,7 @@ declare class Nexus {
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setLogger(logCB: LogFunc): void;
     setGame(gameId: string): void;
+    revalidate(): Promise<types.IValidateKeyResponse>;
     getValidationResult(): types.IValidateKeyResponse;
     setKey(apiKey: string): Promise<types.IValidateKeyResponse>;
     getRateLimits(): {

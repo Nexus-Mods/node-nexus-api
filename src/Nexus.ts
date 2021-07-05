@@ -283,6 +283,14 @@ class Nexus {
   }
 
   /**
+   * update fetch validation info (including premium state) with the same key
+   */
+  public async revalidate(): Promise<types.IValidateKeyResponse> {
+    this.mValidationResult = await this.setKey(this.mBaseData.headers?.APIKEY);
+    return this.mValidationResult;
+  }
+
+  /**
    * retrieve the result of the last key validation.
    * This is useful primarily after creating the object with Nexus.create
    */
