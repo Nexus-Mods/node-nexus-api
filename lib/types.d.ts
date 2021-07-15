@@ -390,6 +390,10 @@ export interface IPreSignedUrl {
     url: string;
     uuid: string;
 }
+export interface IRating {
+    average: number;
+    total: number;
+}
 export interface IRevision extends ITimestamped {
     adultContent: string;
     bugReports: ICollectionBugReport[];
@@ -405,11 +409,10 @@ export interface IRevision extends ITimestamped {
     installationInfo?: string;
     latest: boolean;
     modFiles: ICollectionRevisionMod[];
-    rating: number;
+    rating: IRating;
     revision: number;
     revisionStatus: string;
     status: string;
-    votes: number;
 }
 export interface ICollectionManifestInfo {
     author: string;

@@ -153,11 +153,11 @@ export interface IFileInfo {
    */
   file_id: number;
   /**
-   * File type as a number (1 = main, 2 = patch, 3 = optional, 4 = old, 6 = deleted)
+   * File type as a number (1 = main, 2 = patch, 3 = optional, 4 = old, 6 = deleted, 7 = archived)
    */
   category_id: number;
   /**
-   * File type as a string ('MAIN', 'PATCH', 'OPTION', 'OLD_VERSION', 'DELETED')
+   * File type as a string ('MAIN', 'PATCH', 'OPTION', 'OLD_VERSION', 'DELETED', 'ARCHIVED')
    */
   category_name: string;
   /**
@@ -752,6 +752,11 @@ export interface IPreSignedUrl {
   uuid: string;
 }
 
+export interface IRating {
+  average: number;
+  total: number;
+}
+
 /**
  * a specific revision of a collection
  */
@@ -770,11 +775,10 @@ export interface IRevision extends ITimestamped {
   installationInfo?: string;
   latest: boolean;
   modFiles: ICollectionRevisionMod[];
-  rating: number;
+  rating: IRating;
   revision: number;
   revisionStatus: string;
   status: string;
-  votes: number;
 }
 
 export interface ICollectionManifestInfo {
