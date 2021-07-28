@@ -113,15 +113,15 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
       const contentType = res.headers['content-type'];
 
       let err: string;
-      if (statusCode !== 200) {
-        err = `Request Failed. Status Code: ${statusCode}`;
+      if (statusCode >= 300) {
+        err = 'Request Failed';
       } else if (!/^application\/json/.test(contentType)) {
         err = `Invalid content-type ${contentType}`;
       }
 
       if (err !== undefined) {
         res.resume();
-        return reject(new Error(err));
+        return reject(new HTTPError(statusCode, err, ''));
       }
 
       res.setEncoding('utf8');

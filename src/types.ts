@@ -512,9 +512,8 @@ export interface ITimestamped {
   createdAt: IDateTime;
 }
 
-export interface ICollectionMetadata extends ITimestamped {
-  description: string;
-  summary: string;
+export interface ICollectionMetadata {
+  endorsementValue: number;
 }
 
 export interface IGame {
@@ -590,6 +589,29 @@ export interface ICollectionVideo extends ITimestamped {
 
 export type ICollectionMedia = ICollectionImage & ICollectionVideo;
 
+export interface IForumPost {
+  authorId: number;
+  authorName: string;
+  id: number;
+  post: string;
+  postDate: IDateTime;
+  user: IUser;
+}
+
+export interface IForumTopic {
+  approved: boolean;
+  description: string;
+  forumId: number;
+  id: number;
+  pinned: boolean;
+  posts: IForumPost[];
+  postsCount: number;
+  state: string;
+  title: string;
+  views: number;
+  visible: string;
+}
+
 /**
  * Base information about a collection
  */
@@ -600,6 +622,7 @@ export interface ICollection extends ITimestamped {
   downloadLink: string;
   enableDonations: boolean;
   endorsements: number;
+  forumTopic?: IForumTopic;
   game: IGame;
   gameId: number;
   headerImage?: ICollectionImage;
@@ -613,6 +636,8 @@ export interface ICollection extends ITimestamped {
   user: IUser;
   userId: number;
   visible: boolean;
+  description: string;
+  summary: string;
 }
 
 export interface IRevisionModInfo {

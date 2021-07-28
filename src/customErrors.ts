@@ -34,10 +34,15 @@ export class RateLimitError extends Error {
  */
 export class HTTPError extends Error {
   private mBody: string;
+  private mStatusCode: number;
   constructor(statusCode: number, message: string, body: string) {
     super(`HTTP (${statusCode}) - ${message}`);
     this.name = this.constructor.name;
+    this.mStatusCode = statusCode;
     this.mBody = body;
+  }
+  public get statusCode(): number {
+    return this.mStatusCode;
   }
   public get body(): string {
     return this.mBody;
