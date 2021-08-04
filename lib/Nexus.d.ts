@@ -69,6 +69,7 @@ declare class Nexus {
     private makeFilter;
     private makeQuery;
     private makeMutation;
+    private genError;
     private requestGraph;
     private requestGraphWithErrors;
     private mutateGraph;

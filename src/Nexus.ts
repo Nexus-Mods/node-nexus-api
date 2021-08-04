@@ -1113,6 +1113,19 @@ class Nexus {
       + '}';
   }
 
+  private genError(input: any[]): Error {
+    const ex = new Error(input.map(err => err.message).join(', '));
+    const callPath = input.find(iter => iter.path !== undefined);
+    if (callPath !== undefined) {
+      ex['call'] = callPath.path.join(', ');
+    }
+    const codeEx = input.find(iter => iter.extensions?.code !== undefined);
+    if (codeEx !== undefined) {
+      ex['code'] = codeEx.extensions.code;
+    }
+    return ex;
+  }
+
   private async requestGraph<T>(root: string, parameters: graphQL.GraphQueryParameters, query: any,
                                 variables: any, args: IRequestArgs): Promise<T> {
     args.data = {
@@ -1124,7 +1137,7 @@ class Nexus {
     if (res.data) {
       return res.data[root];
     } else {
-      throw new Error(res.errors.map(err => err.message).join(', '));
+      throw this.genError(res.errors);
     }
   }
 
@@ -1143,7 +1156,7 @@ class Nexus {
     if (res.data) {
       return { data: res.data[root], errors: res.errors };
     } else {
-      throw new Error(res.errors.map(err => err.message).join(', '));
+      throw this.genError(res.errors);
     }
   }
 
