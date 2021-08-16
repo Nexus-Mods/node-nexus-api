@@ -512,6 +512,12 @@ export interface ITimestamped {
   createdAt: IDateTime;
 }
 
+export interface IGraphUser {
+  avatar: string;
+  memberId: number;
+  name: string;
+}
+
 export interface ICollectionMetadata {
   endorsementValue: number;
 }
@@ -570,7 +576,7 @@ export interface ICollectionImage extends ITimestamped {
   revision?: IRevision;
   title: string;
   url: string;
-  user: IUser;
+  user: IGraphUser;
   verified: boolean;
 }
 
@@ -583,7 +589,7 @@ export interface ICollectionVideo extends ITimestamped {
   revision?: IRevision;
   title: string;
   url: string;
-  user: IUser;
+  user: IGraphUser;
   verified: boolean;
 }
 
@@ -595,7 +601,7 @@ export interface IForumPost {
   id: number;
   post: string;
   postDate: IDateTime;
-  user: IUser;
+  user: IGraphUser;
 }
 
 export interface IForumTopic {
@@ -633,49 +639,11 @@ export interface ICollection extends ITimestamped {
   revisions: IRevision[];
   tags: ITag[];
   tileImage?: ICollectionImage;
-  user: IUser;
+  user: IGraphUser;
   userId: number;
   visible: boolean;
   description: string;
   summary: string;
-}
-
-export interface IRevisionModInfo {
-  name: string;
-  summary: string;
-  picture_url: string;
-  author: string;
-  uploader: IUser;
-  mod_id: number;
-  game_id: number;
-  endorsement_count: number;
-  available: boolean;
-}
-
-/**
- * a single file as referenced by a collection
- */
-export interface IRevisionModFile {
-  file_id: number;
-  game_id: number;
-  name: string;
-  version: string;
-  category_id: number;
-  category_name: string;
-  size: number;
-  file_name: string;
-}
-
-export interface IRevisionMod {
-  game_id: number;
-  mod: IRevisionModInfo;
-  mod_file: IRevisionModFile;
-  collection_id: number;
-  collection_revision_id: number;
-}
-
-export interface ICollectionDownloadLink {
-  download_link: string;
 }
 
 export interface IExternalResource {
@@ -689,7 +657,6 @@ export interface IExternalResource {
   resourceUrl: string;
   version: string;
 }
-
 export type RevisionStatus = 'is_private' | 'is_public' | 'is_hidden' | 'is_testing' | 'is_nuked';
 
 export interface ICollectionSchema extends ITimestamped {
@@ -703,7 +670,7 @@ export interface ICollectionBugReport extends ITimestamped {
   description: string;
   id: number;
   title: string;
-  user: IUser;
+  user: IGraphUser;
   userId: number;
 }
 
@@ -734,7 +701,7 @@ export interface IMod {
   summary: string;
   trackingData: ITrackingState;
   uid: string;
-  uploader: IUser;
+  uploader: IGraphUser;
   version: string;
 }
 
@@ -749,7 +716,7 @@ export interface IModFile {
   mod: IMod;
   modId: number;
   name: string;
-  owner: IUser;
+  owner: IGraphUser;
   primary: number;
   reportLink: string;
   requirementsAlert: number;
