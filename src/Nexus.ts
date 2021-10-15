@@ -796,7 +796,7 @@ class Nexus {
     )).success;
   }
 
-  public async getCollectionGraph(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>> {
+  public async getCollectionGraphLegacy(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>> {
     await this.mQuota.wait();
 
     const res = await this.requestGraph<types.ICollection>(
@@ -805,6 +805,20 @@ class Nexus {
         id: { type: 'Int', optional: false },
       },
       query, { id: collectionId },
+      this.args({ path: this.filter({}) }));
+
+    return res;
+  }
+
+  public async getCollectionGraph(query: graphQL.ICollectionQuery, slug: string): Promise<Partial<types.ICollection>> {
+    await this.mQuota.wait();
+
+    const res = await this.requestGraph<types.ICollection>(
+      'collection',
+      {
+        slug: { type: 'String', optional: false },
+      },
+      query, { slug },
       this.args({ path: this.filter({}) }));
 
     return res;
@@ -842,6 +856,27 @@ class Nexus {
         id: { type: 'Int', optional: false },
       },
       query, { id: revisionId },
+      this.args({ path: this.filter({}) }));
+
+    return res;
+  }
+
+  public async getCollectionRevisionGraph(query: graphQL.IRevisionQuery,
+                                          collectionSlug: string,
+                                          revisionNumber: number): Promise<Partial<types.IRevision>> {
+    await this.mQuota.wait();
+
+    const queryUpdated = { ...query };
+
+    queryUpdated[`currentRevision(revision: ${revisionNumber})`] = queryUpdated.revision;
+    delete queryUpdated.revision;
+
+    const res = await this.requestGraph<types.IRevision>(
+      'collectionRevision',
+      {
+        slug: { type: 'String', optional: false },
+      },
+      query, { slug: collectionSlug },
       this.args({ path: this.filter({}) }));
 
     return res;
@@ -1056,10 +1091,17 @@ class Nexus {
   }
 
   private makeQueryImpl<T>(query: any, variables: any, indent: string) {
-    return Object.keys(query).reduce((prev, key) => {
+    return Object.keys(query).filter(key => key[0] !== '$').reduce((prev, key) => {
       if (query[key] !== false) {
         prev += (indent + key);
         if (typeof query[key] !== 'boolean') {
+          const filter = query[key]['$filter'];
+          if (filter !== undefined) {
+            const filterText = Object.keys(filter)
+              .map(key => `${key}: ${filter[key]}`)
+              .join(', ');
+            prev += `(${filterText})`;
+          }
           prev = prev +
             ' {\n'
             + this.makeQueryImpl(query[key], variables, indent + '  ')

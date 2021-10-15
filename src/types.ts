@@ -633,6 +633,7 @@ export interface ICollection extends ITimestamped {
   gameId: number;
   headerImage?: ICollectionImage;
   id: number;
+  slug: string;
   media: ICollectionMedia[];
   metadata?: ICollectionMetadata;
   name: string;
