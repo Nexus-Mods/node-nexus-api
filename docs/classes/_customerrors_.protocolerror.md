@@ -1,49 +1,43 @@
-[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](../modules/_customerrors_.md) › [HTTPError](_customerrors_.httperror.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](../modules/_customerrors_.md) › [ProtocolError](_customerrors_.protocolerror.md)
 
-# Class: HTTPError
+# Class: ProtocolError
 
-Error thrown if an HTTP error is reported (HTTP code 4xx or 5xx)
+Error thrown when a protocol error is reported.
 
 ## Hierarchy
 
 * [Error](_customerrors_.timeouterror.md#static-error)
 
-  ↳ **HTTPError**
+  ↳ **ProtocolError**
 
 ## Index
 
 ### Constructors
 
-* [constructor](_customerrors_.httperror.md#constructor)
+* [constructor](_customerrors_.protocolerror.md#constructor)
 
 ### Properties
 
-* [message](_customerrors_.httperror.md#message)
-* [name](_customerrors_.httperror.md#name)
-* [stack](_customerrors_.httperror.md#optional-stack)
-* [Error](_customerrors_.httperror.md#static-error)
-
-### Accessors
-
-* [body](_customerrors_.httperror.md#body)
+* [message](_customerrors_.protocolerror.md#message)
+* [name](_customerrors_.protocolerror.md#name)
+* [stack](_customerrors_.protocolerror.md#optional-stack)
+* [Error](_customerrors_.protocolerror.md#static-error)
 
 ## Constructors
 
 ###  constructor
 
-\+ **new HTTPError**(`statusCode`: number, `message`: string, `body`: string): *[HTTPError](_customerrors_.httperror.md)*
+\+ **new ProtocolError**(`message`: string): *[ProtocolError](_customerrors_.protocolerror.md)*
 
-*Defined in [src/customErrors.ts:36](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L36)*
+*Defined in [src/customErrors.ts:14](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L14)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`statusCode` | number |
 `message` | string |
-`body` | string |
 
-**Returns:** *[HTTPError](_customerrors_.httperror.md)*
+**Returns:** *[ProtocolError](_customerrors_.protocolerror.md)*
 
 ## Properties
 
@@ -84,13 +78,3 @@ ___
 ▪ **Error**: *ErrorConstructor*
 
 Defined in node_modules/typescript/lib/lib.es5.d.ts:984
-
-## Accessors
-
-###  body
-
-• **get body**(): *string*
-
-*Defined in [src/customErrors.ts:42](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L42)*
-
-**Returns:** *string*

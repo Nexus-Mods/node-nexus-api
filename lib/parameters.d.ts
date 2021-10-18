@@ -8,5 +8,7 @@ export declare const API_URL: string;
 export declare const GRAPHQL_URL: string;
 export declare const API_DEV_URL: string;
 export declare const APIKEY_DEV: string;
+export declare const USER_SERVICE_API_URL: string;
 export declare const PROTOCOL_VERSION: string;
 export declare const MAX_FILE_SIZE: number;
+export declare const MAX_JWT_REFRESH_TRIES: number;

@@ -36,6 +36,8 @@ export interface IModInfo {
     created_time: string;
     updated_timestamp: number;
     updated_time: string;
+    allow_rating: boolean;
+    endorsement_count: number;
     endorsement?: {
         endorse_status: EndorsedStatus;
         timestamp: number;
@@ -47,10 +49,12 @@ export interface IFileInfo {
     category_id: number;
     category_name: string;
     changelog_html: string;
+    content_preview_link: string;
     name: string;
     description: string;
     version: string;
     size: number;
+    size_kb: number;
     file_name: string;
     uploaded_timestamp: number;
     uploaded_time: string;
@@ -472,3 +476,15 @@ export interface IGraphQLError {
 }
 export declare type LogLevel = 'info' | 'error';
 export declare type LogFunc = (level: LogLevel, message: string, meta: any) => void;
+export interface IOAuthCredentials {
+    token: string;
+    refreshToken: string;
+    fingerprint: string;
+}
+export interface IOAuthConfig {
+    id: string;
+    secret: string;
+}
+export interface INexusEvents {
+    'oauth-credentials-updated': (credentials: IOAuthCredentials) => void;
+}

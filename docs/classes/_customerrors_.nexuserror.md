@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["customErrors"](../modules/_customerrors_.md) > [NexusError](../classes/_customerrors_.nexuserror.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["customErrors"](../modules/_customerrors_.md) › [NexusError](_customerrors_.nexuserror.md)
 
 # Class: NexusError
 
@@ -6,9 +6,9 @@ Error reported by the nexus api
 
 ## Hierarchy
 
- `Error`
+* [Error](_customerrors_.timeouterror.md#static-error)
 
-**↳ NexusError**
+  ↳ **NexusError**
 
 ## Index
 
@@ -20,85 +20,88 @@ Error reported by the nexus api
 
 * [message](_customerrors_.nexuserror.md#message)
 * [name](_customerrors_.nexuserror.md#name)
-* [stack](_customerrors_.nexuserror.md#stack)
-* [Error](_customerrors_.nexuserror.md#error)
+* [stack](_customerrors_.nexuserror.md#optional-stack)
+* [Error](_customerrors_.nexuserror.md#static-error)
 
 ### Accessors
 
 * [request](_customerrors_.nexuserror.md#request)
 * [statusCode](_customerrors_.nexuserror.md#statuscode)
 
----
-
 ## Constructors
-
-<a id="constructor"></a>
 
 ###  constructor
 
-⊕ **new NexusError**(message: *`string`*, statusCode: *`number`*, url: *`string`*): [NexusError](_customerrors_.nexuserror.md)
+\+ **new NexusError**(`message`: string, `statusCode`: number, `url`: string): *[NexusError](_customerrors_.nexuserror.md)*
+
+*Defined in [src/customErrors.ts:52](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L52)*
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| message | `string` |
-| statusCode | `number` |
-| url | `string` |
+Name | Type |
+------ | ------ |
+`message` | string |
+`statusCode` | number |
+`url` | string |
 
-**Returns:** [NexusError](_customerrors_.nexuserror.md)
-
-___
+**Returns:** *[NexusError](_customerrors_.nexuserror.md)*
 
 ## Properties
 
-<a id="message"></a>
-
 ###  message
 
-**● message**: *`string`*
+• **message**: *string*
+
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[message](_customerrors_.timeouterror.md#message)*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:974
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
+
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[name](_customerrors_.timeouterror.md#name)*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:973
 
 ___
-<a id="stack"></a>
 
-### `<Optional>` stack
+### `Optional` stack
 
-**● stack**: *`string`*
+• **stack**? : *string*
 
-___
-<a id="error"></a>
+*Inherited from [TimeoutError](_customerrors_.timeouterror.md).[stack](_customerrors_.timeouterror.md#optional-stack)*
 
-### `<Static>` Error
+*Overrides [TimeoutError](_customerrors_.timeouterror.md).[stack](_customerrors_.timeouterror.md#optional-stack)*
 
-**● Error**: *`ErrorConstructor`*
+Defined in node_modules/typescript/lib/lib.es5.d.ts:975
 
 ___
+
+### `Static` Error
+
+▪ **Error**: *ErrorConstructor*
+
+Defined in node_modules/typescript/lib/lib.es5.d.ts:984
 
 ## Accessors
 
-<a id="request"></a>
-
 ###  request
 
-getrequest(): `string`
+• **get request**(): *string*
 
-**Returns:** `string`
+*Defined in [src/customErrors.ts:63](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L63)*
+
+**Returns:** *string*
 
 ___
-<a id="statuscode"></a>
 
 ###  statusCode
 
-getstatusCode(): `number`
+• **get statusCode**(): *number*
 
-**Returns:** `number`
+*Defined in [src/customErrors.ts:59](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L59)*
 
-___
-
+**Returns:** *number*

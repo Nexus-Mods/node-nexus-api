@@ -25,9 +25,13 @@ export const GRAPHQL_URL: string = `${BASE_URL}/v2/graphql`;
 export const API_DEV_URL: string = '';
 export const APIKEY_DEV: string = '';
 
+export const USER_SERVICE_API_URL: string = 'https://users.nexusmods.com';
+
 // used so the server can provide compatibility behaviour with older protocols.
 // Please don't mess with this unless you're in contact with NexusMods
 export const PROTOCOL_VERSION: string = require('../package.json').version.split('-')[0];
 
 // server will reject feedback if attachments are > 20mb large
 export const MAX_FILE_SIZE: number = 20 * 1024 * 1024;
+
+export const MAX_JWT_REFRESH_TRIES: number = 3;

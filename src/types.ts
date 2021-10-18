@@ -80,7 +80,7 @@ export interface IModInfo {
    */
   summary?: string;
   /**
-   * long description
+   * long description (bbcode)
    */
   description?: string;
   /**
@@ -135,6 +135,14 @@ export interface IModInfo {
    */
   updated_time: string;
   /**
+   * whether this mod allows endorsements
+   */
+  allow_rating: boolean;
+  /**
+   * endorsement count
+   */
+  endorsement_count: number;
+  /**
    * obsolete - will be removed in the near future
    */
   endorsement?: {
@@ -166,6 +174,10 @@ export interface IFileInfo {
    */
   changelog_html: string;
   /**
+   * url of the content preview (json file containing list of files)
+   */
+  content_preview_link: string;
+  /**
    * readable file name
    */
   name: string;
@@ -181,6 +193,10 @@ export interface IFileInfo {
    * File size in kilobytes
    */
   size: number;
+  /**
+   * File size. also in kilobytes. Because - ugh, don't ask
+   */
+  size_kb: number;
   /**
    * actual file name (derived from name with id and version appended)
    */
@@ -845,3 +861,18 @@ export interface IGraphQLError {
 
 export type LogLevel = 'info' | 'error';
 export type LogFunc = (level: LogLevel, message: string, meta: any) => void;
+
+export interface IOAuthCredentials {
+  token: string,
+  refreshToken: string,
+  fingerprint: string,
+}
+
+export interface IOAuthConfig {
+  id: string,
+  secret: string,
+}
+
+export interface INexusEvents {
+  'oauth-credentials-updated': (credentials: IOAuthCredentials) => void,
+}

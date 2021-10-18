@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFileInfo](../interfaces/_types_.ifileinfo.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IFileInfo](_types_.ifileinfo.md)
 
 # Interface: IFileInfo
 
@@ -6,9 +6,7 @@ Information about a specific mod file
 
 ## Hierarchy
 
-**IFileInfo**
-
-↳  [IFileInfoEx](_types_.ifileinfoex.md)
+* **IFileInfo**
 
 ## Index
 
@@ -17,6 +15,8 @@ Information about a specific mod file
 * [category_id](_types_.ifileinfo.md#category_id)
 * [category_name](_types_.ifileinfo.md#category_name)
 * [changelog_html](_types_.ifileinfo.md#changelog_html)
+* [content_preview_link](_types_.ifileinfo.md#content_preview_link)
+* [description](_types_.ifileinfo.md#description)
 * [external_virus_scan_url](_types_.ifileinfo.md#external_virus_scan_url)
 * [file_id](_types_.ifileinfo.md#file_id)
 * [file_name](_types_.ifileinfo.md#file_name)
@@ -24,129 +24,170 @@ Information about a specific mod file
 * [mod_version](_types_.ifileinfo.md#mod_version)
 * [name](_types_.ifileinfo.md#name)
 * [size](_types_.ifileinfo.md#size)
+* [size_kb](_types_.ifileinfo.md#size_kb)
 * [uploaded_time](_types_.ifileinfo.md#uploaded_time)
 * [uploaded_timestamp](_types_.ifileinfo.md#uploaded_timestamp)
 * [version](_types_.ifileinfo.md#version)
 
----
-
 ## Properties
-
-<a id="category_id"></a>
 
 ###  category_id
 
-**● category_id**: *`number`*
+• **category_id**: *number*
+
+*Defined in [src/types.ts:165](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L165)*
 
 File type as a number (1 = main, 2 = patch, 3 = optional, 4 = old, 6 = deleted)
 
 ___
-<a id="category_name"></a>
 
 ###  category_name
 
-**● category_name**: *`string`*
+• **category_name**: *string*
 
-File type as a string ('MAIN', 'PATCH', 'OPTION', 'OLD\_VERSION', 'DELETED')
+*Defined in [src/types.ts:169](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L169)*
+
+File type as a string ('MAIN', 'PATCH', 'OPTION', 'OLD_VERSION', 'DELETED')
 
 ___
-<a id="changelog_html"></a>
 
 ###  changelog_html
 
-**● changelog_html**: *`string`*
+• **changelog_html**: *string*
 
-html encoded changelog (matched via file version) null if there is none
+*Defined in [src/types.ts:174](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L174)*
+
+html encoded changelog (matched via file version)
+null if there is none
 
 ___
-<a id="external_virus_scan_url"></a>
+
+###  content_preview_link
+
+• **content_preview_link**: *string*
+
+*Defined in [src/types.ts:178](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L178)*
+
+url of the content preview (json file containing list of files)
+
+___
+
+###  description
+
+• **description**: *string*
+
+*Defined in [src/types.ts:186](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L186)*
+
+file description
+
+___
 
 ###  external_virus_scan_url
 
-**● external_virus_scan_url**: *`string`*
+• **external_virus_scan_url**: *string*
 
-link to the virus scan results null if there is none
+*Defined in [src/types.ts:219](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L219)*
+
+link to the virus scan results
+null if there is none
 
 ___
-<a id="file_id"></a>
 
 ###  file_id
 
-**● file_id**: *`number`*
+• **file_id**: *number*
+
+*Defined in [src/types.ts:161](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L161)*
 
 file id
 
 ___
-<a id="file_name"></a>
 
 ###  file_name
 
-**● file_name**: *`string`*
+• **file_name**: *string*
+
+*Defined in [src/types.ts:202](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L202)*
 
 actual file name (derived from name with id and version appended)
 
 ___
-<a id="is_primary"></a>
 
 ###  is_primary
 
-**● is_primary**: *`boolean`*
+• **is_primary**: *boolean*
 
-whether this is the primary download for the mod (the one that users download through the link in the top right of the mod page)
+*Defined in [src/types.ts:224](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L224)*
+
+whether this is the primary download for the mod
+(the one that users download through the link in the top right of the mod page)
 
 ___
-<a id="mod_version"></a>
 
 ###  mod_version
 
-**● mod_version**: *`string`*
+• **mod_version**: *string*
+
+*Defined in [src/types.ts:214](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L214)*
 
 version of the mod (at the time this was uploaded?)
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
+
+*Defined in [src/types.ts:182](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L182)*
 
 readable file name
 
 ___
-<a id="size"></a>
 
 ###  size
 
-**● size**: *`number`*
+• **size**: *number*
 
-File size in bytes
+*Defined in [src/types.ts:194](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L194)*
+
+File size in kilobytes
 
 ___
-<a id="uploaded_time"></a>
+
+###  size_kb
+
+• **size_kb**: *number*
+
+*Defined in [src/types.ts:198](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L198)*
+
+File size. also in kilobytes. Because - ugh, don't ask
+
+___
 
 ###  uploaded_time
 
-**● uploaded_time**: *`string`*
+• **uploaded_time**: *string*
+
+*Defined in [src/types.ts:210](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L210)*
 
 readable representation of the file time
 
 ___
-<a id="uploaded_timestamp"></a>
 
 ###  uploaded_timestamp
 
-**● uploaded_timestamp**: *`number`*
+• **uploaded_timestamp**: *number*
+
+*Defined in [src/types.ts:206](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L206)*
 
 unix timestamp of the time this file was uploaded
 
 ___
-<a id="version"></a>
 
 ###  version
 
-**● version**: *`string`*
+• **version**: *string*
+
+*Defined in [src/types.ts:190](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L190)*
 
 File version (doesn't actually have to match any mod version)
-
-___
-

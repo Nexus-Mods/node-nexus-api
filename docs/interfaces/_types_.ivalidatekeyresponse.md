@@ -1,4 +1,4 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IValidateKeyResponse](_types_.ivalidatekeyresponse.md)
 
 # Interface: IValidateKeyResponse
 
@@ -6,7 +6,7 @@ result of the validateKey request
 
 ## Hierarchy
 
-**IValidateKeyResponse**
+* **IValidateKeyResponse**
 
 ## Index
 
@@ -20,71 +20,72 @@ result of the validateKey request
 * [profile_url](_types_.ivalidatekeyresponse.md#profile_url)
 * [user_id](_types_.ivalidatekeyresponse.md#user_id)
 
----
-
 ## Properties
-
-<a id="email"></a>
 
 ###  email
 
-**● email**: *`string`*
+• **email**: *string*
+
+*Defined in [src/types.ts:28](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L28)*
 
 email address of the user
 
 ___
-<a id="is_premium"></a>
 
 ###  is_premium
 
-**● is_premium**: *`boolean`*
+• **is_premium**: *boolean*
+
+*Defined in [src/types.ts:20](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L20)*
 
 user is premium
 
 ___
-<a id="is_supporter"></a>
 
 ###  is_supporter
 
-**● is_supporter**: *`boolean`*
+• **is_supporter**: *boolean*
+
+*Defined in [src/types.ts:24](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L24)*
 
 user is supporter
 
 ___
-<a id="key"></a>
 
 ###  key
 
-**● key**: *`string`*
+• **key**: *string*
+
+*Defined in [src/types.ts:12](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L12)*
 
 the api key
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
+
+*Defined in [src/types.ts:16](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L16)*
 
 User Name
 
 ___
-<a id="profile_url"></a>
 
 ###  profile_url
 
-**● profile_url**: *`string`*
+• **profile_url**: *string*
+
+*Defined in [src/types.ts:32](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L32)*
 
 url of the user image
 
 ___
-<a id="user_id"></a>
 
 ###  user_id
 
-**● user_id**: *`number`*
+• **user_id**: *number*
+
+*Defined in [src/types.ts:8](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L8)*
 
 nexus user id
-
-___
-

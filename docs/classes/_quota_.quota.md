@@ -1,10 +1,10 @@
-[nexus-api](../README.md) > ["Quota"](../modules/_quota_.md) > [Quota](../classes/_quota_.quota.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["Quota"](../modules/_quota_.md) › [Quota](_quota_.quota.md)
 
 # Class: Quota
 
 ## Hierarchy
 
-**Quota**
+* **Quota**
 
 ## Index
 
@@ -14,65 +14,65 @@
 
 ### Methods
 
-* [reset](_quota_.quota.md#reset)
-* [setMax](_quota_.quota.md#setmax)
+* [block](_quota_.quota.md#block)
+* [updateLimit](_quota_.quota.md#updatelimit)
 * [wait](_quota_.quota.md#wait)
-
----
 
 ## Constructors
 
-<a id="constructor"></a>
-
 ###  constructor
 
-⊕ **new Quota**(init: *`number`*, max: *`number`*, msPerIncrement: *`number`*): [Quota](_quota_.quota.md)
+\+ **new Quota**(`init`: number, `max`: number, `msPerIncrement`: number): *[Quota](_quota_.quota.md)*
+
+*Defined in [src/Quota.ts:17](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L17)*
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| init | `number` |
-| max | `number` |
-| msPerIncrement | `number` |
+Name | Type |
+------ | ------ |
+`init` | number |
+`max` | number |
+`msPerIncrement` | number |
 
-**Returns:** [Quota](_quota_.quota.md)
-
-___
+**Returns:** *[Quota](_quota_.quota.md)*
 
 ## Methods
 
-<a id="reset"></a>
+###  block
 
-###  reset
+▸ **block**(): *boolean*
 
-▸ **reset**(): `void`
+*Defined in [src/Quota.ts:35](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L35)*
 
-**Returns:** `void`
+signal that the request was blocked by the server with an error code that
+indicates client is sending too many requests
+returns true if the rate limit is actually used up so we won't be able to
+make requests for a while, false if it's likely a temporary problem.
+
+**Returns:** *boolean*
 
 ___
-<a id="setmax"></a>
 
-###  setMax
+###  updateLimit
 
-▸ **setMax**(newMax: *`number`*): `void`
+▸ **updateLimit**(`limit`: number): *void*
+
+*Defined in [src/Quota.ts:25](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L25)*
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| newMax | `number` |
+Name | Type |
+------ | ------ |
+`limit` | number |
 
-**Returns:** `void`
+**Returns:** *void*
 
 ___
-<a id="wait"></a>
 
 ###  wait
 
-▸ **wait**(): `Promise`<`void`>
+▸ **wait**(): *Promise‹void›*
 
-**Returns:** `Promise`<`void`>
+*Defined in [src/Quota.ts:47](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Quota.ts#L47)*
 
-___
-
+**Returns:** *Promise‹void›*

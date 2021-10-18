@@ -1,12 +1,13 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IFeedbackResponse](../interfaces/_types_.ifeedbackresponse.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IFeedbackResponse](_types_.ifeedbackresponse.md)
 
 # Interface: IFeedbackResponse
 
-response to a feedback request INTERNAL USE ONLY
+response to a feedback request
+INTERNAL USE ONLY
 
 ## Hierarchy
 
-**IFeedbackResponse**
+* **IFeedbackResponse**
 
 ## Index
 
@@ -22,71 +23,74 @@ response to a feedback request INTERNAL USE ONLY
 * [updated_at](_types_.ifeedbackresponse.md#updated_at)
 * [user_blacklisted](_types_.ifeedbackresponse.md#user_blacklisted)
 
----
-
 ## Properties
-
-<a id="count"></a>
 
 ###  count
 
-**● count**: *`number`*
+• **count**: *number*
+
+*Defined in [src/types.ts:423](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L423)*
 
 ___
-<a id="created_at"></a>
 
 ###  created_at
 
-**● created_at**: *`string`*
+• **created_at**: *string*
+
+*Defined in [src/types.ts:417](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L417)*
 
 ___
-<a id="github_issue"></a>
 
 ###  github_issue
 
-**● github_issue**: *[IGithubIssue](_types_.igithubissue.md)*
+• **github_issue**: *[IGithubIssue](_types_.igithubissue.md)*
+
+*Defined in [src/types.ts:421](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L421)*
 
 ___
-<a id="grouping_key"></a>
 
 ###  grouping_key
 
-**● grouping_key**: *`string`*
+• **grouping_key**: *string*
+
+*Defined in [src/types.ts:420](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L420)*
 
 ___
-<a id="id"></a>
 
 ###  id
 
-**● id**: *`number`*
+• **id**: *number*
+
+*Defined in [src/types.ts:415](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L415)*
 
 ___
-<a id="reference"></a>
 
 ###  reference
 
-**● reference**: *`string`*
+• **reference**: *string*
+
+*Defined in [src/types.ts:419](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L419)*
 
 ___
-<a id="status"></a>
 
 ###  status
 
-**● status**: *`number`*
+• **status**: *number*
+
+*Defined in [src/types.ts:416](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L416)*
 
 ___
-<a id="updated_at"></a>
 
 ###  updated_at
 
-**● updated_at**: *`string`*
+• **updated_at**: *string*
+
+*Defined in [src/types.ts:418](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L418)*
 
 ___
-<a id="user_blacklisted"></a>
 
 ###  user_blacklisted
 
-**● user_blacklisted**: *`boolean`*
+• **user_blacklisted**: *boolean*
 
-___
-
+*Defined in [src/types.ts:422](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L422)*

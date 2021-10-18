@@ -1,7 +1,9 @@
 import * as types from './types';
 import * as graphQL from './typesGraphQL';
+import TypedEmitter from 'typed-emitter';
 import { IGraphQLError, LogFunc } from './types';
 declare class Nexus {
+    events: TypedEmitter<types.INexusEvents>;
     private mBaseData;
     private mBaseURL;
     private mGraphBaseURL;
@@ -9,9 +11,13 @@ declare class Nexus {
     private mValidationResult;
     private mRateLimit;
     private mLogCB;
+    private mOAuthCredentials;
+    private mOAuthConfig;
+    private mJwtRefreshTries;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setLogger(logCB: LogFunc): void;
+    static createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setGame(gameId: string): void;
     revalidate(): Promise<types.IValidateKeyResponse>;
     getValidationResult(): types.IValidateKeyResponse;
@@ -75,6 +81,8 @@ declare class Nexus {
     private requestGraph;
     private requestGraphWithErrors;
     private mutateGraph;
+    private set oAuthCredentials(value);
+    private handleJwtRefresh;
     private filter;
     private args;
 }

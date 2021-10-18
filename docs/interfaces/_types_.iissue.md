@@ -1,12 +1,13 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IIssue](../interfaces/_types_.iissue.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IIssue](_types_.iissue.md)
 
 # Interface: IIssue
 
-Info about a Feedback report INTERNAL USE ONLY
+Info about a Feedback report
+INTERNAL USE ONLY
 
 ## Hierarchy
 
-**IIssue**
+* **IIssue**
 
 ## Index
 
@@ -17,36 +18,34 @@ Info about a Feedback report INTERNAL USE ONLY
 * [issue_state](_types_.iissue.md#issue_state)
 * [issue_title](_types_.iissue.md#issue_title)
 
----
-
 ## Properties
-
-<a id="id"></a>
 
 ###  id
 
-**● id**: *`number`*
+• **id**: *number*
+
+*Defined in [src/types.ts:390](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L390)*
 
 ___
-<a id="issue_number"></a>
 
 ###  issue_number
 
-**● issue_number**: *`number`*
+• **issue_number**: *number*
+
+*Defined in [src/types.ts:391](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L391)*
 
 ___
-<a id="issue_state"></a>
 
 ###  issue_state
 
-**● issue_state**: *`string`*
+• **issue_state**: *string*
+
+*Defined in [src/types.ts:392](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L392)*
 
 ___
-<a id="issue_title"></a>
 
 ###  issue_title
 
-**● issue_title**: *`string`*
+• **issue_title**: *string*
 
-___
-
+*Defined in [src/types.ts:393](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L393)*

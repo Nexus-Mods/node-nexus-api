@@ -1,214 +1,321 @@
-[nexus-api](../README.md) > ["types"](../modules/_types_.md) > [IModInfoEx](../interfaces/_types_.imodinfoex.md)
+[@nexusmods/nexus-api](../README.md) › [Globals](../globals.md) › ["types"](../modules/_types_.md) › [IModInfoEx](_types_.imodinfoex.md)
 
 # Interface: IModInfoEx
 
 ## Hierarchy
 
- [IModInfo](_types_.imodinfo.md)
+* [IModInfo](_types_.imodinfo.md)
 
-**↳ IModInfoEx**
+  ↳ **IModInfoEx**
 
 ## Index
 
 ### Properties
 
+* [allow_rating](_types_.imodinfoex.md#allow_rating)
 * [author](_types_.imodinfoex.md#author)
+* [available](_types_.imodinfoex.md#available)
 * [category_id](_types_.imodinfoex.md#category_id)
 * [contains_adult_content](_types_.imodinfoex.md#contains_adult_content)
 * [created_time](_types_.imodinfoex.md#created_time)
 * [created_timestamp](_types_.imodinfoex.md#created_timestamp)
-* [description](_types_.imodinfoex.md#description)
-* [endorsement](_types_.imodinfoex.md#endorsement)
+* [description](_types_.imodinfoex.md#optional-description)
+* [domain_name](_types_.imodinfoex.md#domain_name)
+* [endorsement](_types_.imodinfoex.md#optional-endorsement)
+* [endorsement_count](_types_.imodinfoex.md#endorsement_count)
 * [game_id](_types_.imodinfoex.md#game_id)
 * [mod_id](_types_.imodinfoex.md#mod_id)
-* [name](_types_.imodinfoex.md#name)
-* [picture_url](_types_.imodinfoex.md#picture_url)
-* [primary_file](_types_.imodinfoex.md#primary_file)
-* [summary](_types_.imodinfoex.md#summary)
-* [type](_types_.imodinfoex.md#type)
+* [name](_types_.imodinfoex.md#optional-name)
+* [picture_url](_types_.imodinfoex.md#optional-picture_url)
+* [status](_types_.imodinfoex.md#status)
+* [summary](_types_.imodinfoex.md#optional-summary)
 * [updated_time](_types_.imodinfoex.md#updated_time)
 * [updated_timestamp](_types_.imodinfoex.md#updated_timestamp)
 * [uploaded_by](_types_.imodinfoex.md#uploaded_by)
 * [uploaded_users_profile_url](_types_.imodinfoex.md#uploaded_users_profile_url)
-* [version](_types_.imodinfoex.md#version-1)
-
----
+* [user](_types_.imodinfoex.md#user)
+* [version](_types_.imodinfoex.md#version)
 
 ## Properties
 
-<a id="author"></a>
+###  allow_rating
+
+• **allow_rating**: *boolean*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[allow_rating](_types_.imodinfo.md#allow_rating)*
+
+*Defined in [src/types.ts:139](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L139)*
+
+whether this mod allows endorsements
+
+___
 
 ###  author
 
-**● author**: *`string`*
+• **author**: *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[author](_types_.imodinfo.md#author)*
+
+*Defined in [src/types.ts:92](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L92)*
 
 Author of the mod
 
 ___
-<a id="category_id"></a>
+
+###  available
+
+• **available**: *boolean*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[available](_types_.imodinfo.md#available)*
+
+*Defined in [src/types.ts:115](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L115)*
+
+whether the mod is currently available/visible to users
+If a mod isn't available the api returns very limited information, essentially
+hiding all textual info that could contain offensive content but certain "maintenance" info
+is still provided.
+
+___
 
 ###  category_id
 
-**● category_id**: *`number`*
+• **category_id**: *number*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[category_id](_types_.imodinfo.md#category_id)*
+
+*Defined in [src/types.ts:67](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L67)*
 
 id of the category
 
 ___
-<a id="contains_adult_content"></a>
 
 ###  contains_adult_content
 
-**● contains_adult_content**: *`number`*
+• **contains_adult_content**: *boolean*
 
-whether this mod is tagged as adult (1 = true, 0 = false)
+*Inherited from [IModInfo](_types_.imodinfo.md).[contains_adult_content](_types_.imodinfo.md#contains_adult_content)*
+
+*Defined in [src/types.ts:71](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L71)*
+
+whether this mod is tagged as adult
 
 ___
-<a id="created_time"></a>
 
 ###  created_time
 
-**● created_time**: *`string`*
+• **created_time**: *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[created_time](_types_.imodinfo.md#created_time)*
+
+*Defined in [src/types.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L127)*
 
 readable time of when the mod was created
 
 ___
-<a id="created_timestamp"></a>
 
 ###  created_timestamp
 
-**● created_timestamp**: *`number`*
+• **created_timestamp**: *number*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[created_timestamp](_types_.imodinfo.md#created_timestamp)*
+
+*Defined in [src/types.ts:123](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L123)*
 
 unix timestamp of when the mod was created
 
 ___
-<a id="description"></a>
 
-###  description
+### `Optional` description
 
-**● description**: *`string`*
+• **description**? : *string*
 
-long description
+*Inherited from [IModInfo](_types_.imodinfo.md).[description](_types_.imodinfo.md#optional-description)*
+
+*Defined in [src/types.ts:84](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L84)*
+
+long description (bbcode)
 
 ___
-<a id="endorsement"></a>
 
-### `<Optional>` endorsement
+###  domain_name
 
-**● endorsement**: *`object`*
+• **domain_name**: *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[domain_name](_types_.imodinfo.md#domain_name)*
+
+*Defined in [src/types.ts:63](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L63)*
+
+domain name (as used in urls and as the game id in all other requests)
+
+___
+
+### `Optional` endorsement
+
+• **endorsement**? : *object*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[endorsement](_types_.imodinfo.md#optional-endorsement)*
+
+*Defined in [src/types.ts:147](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L147)*
 
 obsolete - will be removed in the near future
 
-#### Type declaration
+#### Type declaration:
 
- endorse_status: [EndorsedStatus](../modules/_types_.md#endorsedstatus)
+* **endorse_status**: *[EndorsedStatus](../modules/_types_.md#endorsedstatus)*
 
- timestamp: `number`
+* **timestamp**: *number*
 
- version: `number`
+* **version**: *number*
 
 ___
-<a id="game_id"></a>
+
+###  endorsement_count
+
+• **endorsement_count**: *number*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[endorsement_count](_types_.imodinfo.md#endorsement_count)*
+
+*Defined in [src/types.ts:143](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L143)*
+
+endorsement count
+
+___
 
 ###  game_id
 
-**● game_id**: *`number`*
+• **game_id**: *number*
+
+*Overrides [IModInfo](_types_.imodinfo.md).[game_id](_types_.imodinfo.md#game_id)*
+
+*Defined in [src/types.ts:374](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L374)*
 
 ___
-<a id="mod_id"></a>
 
 ###  mod_id
 
-**● mod_id**: *`number`*
+• **mod_id**: *number*
+
+*Overrides [IModInfo](_types_.imodinfo.md).[mod_id](_types_.imodinfo.md#mod_id)*
+
+*Defined in [src/types.ts:373](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L373)*
 
 ___
-<a id="name"></a>
 
-###  name
+### `Optional` name
 
-**● name**: *`string`*
+• **name**? : *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[name](_types_.imodinfo.md#optional-name)*
+
+*Defined in [src/types.ts:76](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L76)*
 
 Name of the mod
+(not present if the file is under moderation)
 
 ___
-<a id="picture_url"></a>
 
-###  picture_url
+### `Optional` picture_url
 
-**● picture_url**: *`string`*
+• **picture_url**? : *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[picture_url](_types_.imodinfo.md#optional-picture_url)*
+
+*Defined in [src/types.ts:119](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L119)*
 
 url of the primary screenshot
 
 ___
-<a id="primary_file"></a>
 
-### `<Optional>` primary_file
+###  status
 
-**● primary_file**: *[IFileInfo](_types_.ifileinfo.md)*
+• **status**: *[ModStatus](../modules/_types_.md#modstatus)*
 
-the primary file for this mod
+*Inherited from [IModInfo](_types_.imodinfo.md).[status](_types_.imodinfo.md#status)*
+
+*Defined in [src/types.ts:108](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L108)*
+
+current status of the mod
 
 ___
-<a id="summary"></a>
 
-###  summary
+### `Optional` summary
 
-**● summary**: *`string`*
+• **summary**? : *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[summary](_types_.imodinfo.md#optional-summary)*
+
+*Defined in [src/types.ts:80](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L80)*
 
 short description
 
 ___
-<a id="type"></a>
-
-###  type
-
-**● type**: *`number`*
-
-mod type
-
-___
-<a id="updated_time"></a>
 
 ###  updated_time
 
-**● updated_time**: *`string`*
+• **updated_time**: *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[updated_time](_types_.imodinfo.md#updated_time)*
+
+*Defined in [src/types.ts:135](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L135)*
 
 readable time of when the mod was updated
 
 ___
-<a id="updated_timestamp"></a>
 
 ###  updated_timestamp
 
-**● updated_timestamp**: *`number`*
+• **updated_timestamp**: *number*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[updated_timestamp](_types_.imodinfo.md#updated_timestamp)*
+
+*Defined in [src/types.ts:131](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L131)*
 
 unix timestamp of when the mod was updated
 
 ___
-<a id="uploaded_by"></a>
 
 ###  uploaded_by
 
-**● uploaded_by**: *`string`*
+• **uploaded_by**: *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[uploaded_by](_types_.imodinfo.md#uploaded_by)*
+
+*Defined in [src/types.ts:100](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L100)*
 
 name of the user who uploaded this mod
 
 ___
-<a id="uploaded_users_profile_url"></a>
 
 ###  uploaded_users_profile_url
 
-**● uploaded_users_profile_url**: *`string`*
+• **uploaded_users_profile_url**: *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[uploaded_users_profile_url](_types_.imodinfo.md#uploaded_users_profile_url)*
+
+*Defined in [src/types.ts:104](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L104)*
 
 url of the profile image of the uploader
 
 ___
-<a id="version-1"></a>
 
-###  version
+###  user
 
-**● version**: *`string`*
+• **user**: *[IUser](_types_.iuser.md)*
 
-mod version
+*Inherited from [IModInfo](_types_.imodinfo.md).[user](_types_.imodinfo.md#user)*
+
+*Defined in [src/types.ts:96](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L96)*
+
+more detailed info about the author
 
 ___
 
+###  version
+
+• **version**: *string*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[version](_types_.imodinfo.md#version)*
+
+*Defined in [src/types.ts:88](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L88)*
+
+mod version

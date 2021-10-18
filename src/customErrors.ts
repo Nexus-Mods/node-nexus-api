@@ -33,10 +33,11 @@ export class RateLimitError extends Error {
  * Error thrown if an HTTP error is reported (HTTP code 4xx or 5xx)
  */
 export class HTTPError extends Error {
-  private mBody: string;
   private mStatusCode: number;
+  private mBody: string;
   constructor(statusCode: number, message: string, body: string) {
     super(`HTTP (${statusCode}) - ${message}`);
+    this.mStatusCode = statusCode;
     this.name = this.constructor.name;
     this.mStatusCode = statusCode;
     this.mBody = body;
@@ -76,6 +77,17 @@ export class NexusError extends Error {
 export class ParameterInvalid extends Error {
   constructor(message) {
     super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+/**
+ * Error thrown when the JWT has expired
+ * You should not see this error in your application as a refresh is performed when encountering it
+ */
+export class JwtExpiredError extends Error {
+  constructor() {
+    super('JWT has expired');
     this.name = this.constructor.name;
   }
 }
