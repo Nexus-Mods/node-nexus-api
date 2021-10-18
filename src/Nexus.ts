@@ -3,6 +3,7 @@ import * as types from './types';
 import * as graphQL from './typesGraphQL';
 import Quota from './Quota';
 
+import * as FormData from 'form-data';
 import * as fs from 'fs';
 import * as http from 'http';
 import * as https from 'https';
@@ -1050,20 +1051,20 @@ class Nexus {
     }
     return this.checkFileSize(fileBundle)
       .then(() => new Promise<types.IFeedbackResponse>((resolve, reject) => {
-        const formData = {
-          feedback_text: message,
-          feedback_title: title.substr(0, 255),
-        };
+        const form = new FormData();
+        form.append("feedback_text", message);
+        form.append("feedback_title", title.substr(0, 255));
+
         if (fileBundle !== undefined) {
-          formData['feedback_file'] = fs.createReadStream(fileBundle);
+          form.append('feedback_file', fs.createReadStream(fileBundle));
         }
         if (groupingKey !== undefined) {
-          formData['grouping_key'] = groupingKey;
+          form.append('grouping_key', groupingKey);
         }
         if (id !== undefined) {
-          formData['reference'] = id;
+          form.append('reference', id);
         }
-        const headers = { ...this.mBaseData.headers };
+        const headers = { ...this.mBaseData.headers, ...form.getHeaders() };
 
         if (anonymous) {
           delete headers['APIKEY'];
@@ -1095,8 +1096,8 @@ class Nexus {
             });
         });
 
-        req.write(querystring.stringify(formData));
-        req.end();
+        form.pipe(req);
+        // req.end();
       }));
   }
 
