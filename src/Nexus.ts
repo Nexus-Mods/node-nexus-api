@@ -918,20 +918,21 @@ class Nexus {
                                           revisionNumber: number): Promise<Partial<types.IRevision>> {
     await this.mQuota.wait();
 
-    const queryUpdated = { ...query };
+    const queryUpdated = {};
+    queryUpdated[`currentRevision(revision: ${revisionNumber})`] = query;
 
-    queryUpdated[`currentRevision(revision: ${revisionNumber})`] = queryUpdated.revision;
-    delete queryUpdated.revision;
+    // queryUpdated[`currentRevision(revision: ${revisionNumber})`] = queryUpdated.currentRevision;
+    // delete queryUpdated.currentRevision;
 
-    const res = await this.requestGraph<types.IRevision>(
-      'collectionRevision',
+    const res = await this.requestGraph<types.ICollection>(
+      'collection',
       {
         slug: { type: 'String', optional: false },
       },
-      query, { slug: collectionSlug },
+      queryUpdated, { slug: collectionSlug },
       this.args({ path: this.filter({}) }));
 
-    return res;
+    return res.currentRevision;
   }
 
   public async getRevisionUploadUrl(): Promise<types.IPreSignedUrl> {
