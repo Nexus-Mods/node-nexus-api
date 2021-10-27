@@ -53,9 +53,9 @@ declare class Nexus {
         errors: IGraphQLError[];
     }>;
     getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]>;
-    createCollection(data: types.ICollectionPayload, assetFileUUID: string): Promise<types.ICreateCollectionResult>;
-    updateCollection(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number): Promise<types.ICreateCollectionResult>;
-    createOrUpdateRevision(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number): Promise<types.ICreateCollectionResult>;
+    createCollection(data: types.ICollectionPayload, assetFileUUID: string, retQuery?: graphQL.ICreateCollectionQuery): Promise<types.ICreateCollectionResult>;
+    updateCollection(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number, retQuery?: graphQL.ICreateCollectionQuery): Promise<types.ICreateCollectionResult>;
+    createOrUpdateRevision(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number, retQuery?: graphQL.ICreateCollectionQuery): Promise<types.ICreateCollectionResult>;
     editCollection(collectionId: number, name: string, summary?: string, description?: string, category?: number): Promise<boolean>;
     publishRevision(revisionId: number): Promise<boolean>;
     attachCollectionsToCategory(categoryId: number, collectionIds: number[]): Promise<boolean>;
@@ -70,6 +70,7 @@ declare class Nexus {
     getCollectionVideo(collectionId: number, videoId: string): Promise<any[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;
+    private defaultCreateQuery;
     private checkFileSize;
     private request;
     private makeQueryImpl;

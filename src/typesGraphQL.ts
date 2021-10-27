@@ -1,3 +1,4 @@
+import { ICreateCollectionResult } from '.';
 import { ICollection, IDateTime, IFileHash, IMod, IModFile, IRevision } from './types';
 
 // some helper types that convert an interface (with the proper data types)
@@ -34,6 +35,7 @@ export interface GraphQueryParameters {
 
 export type ICollectionQuery = Querify<ICollection>;
 export type IRevisionQuery = Querify<IRevision>;
+export type ICreateCollectionQuery = Querify<ICreateCollectionResult>;
 
 export type IModQuery = Querify<IMod>;
 export type IModFileQuery = Querify<IModFile>;

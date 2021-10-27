@@ -452,9 +452,8 @@ export interface ICollectionPayload {
     collectionManifest: ICollectionManifest;
 }
 export interface ICreateCollectionResult {
-    collectionId?: number;
-    revisionId?: number;
-    revisionNumber?: number;
+    collection?: Partial<ICollection>;
+    revision?: Partial<IRevision>;
     success: boolean;
 }
 export interface IFileHash {

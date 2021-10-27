@@ -742,7 +742,8 @@ class Nexus {
   }
 
   public async createCollection(data: types.ICollectionPayload,
-                                assetFileUUID: string)
+                                assetFileUUID: string,
+                                retQuery?: graphQL.ICreateCollectionQuery)
                                 : Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
@@ -754,13 +755,15 @@ class Nexus {
       },
       { collectionData: data, uuid: assetFileUUID },
       this.args({ path: this.filter({}) }),
-      ['collectionId', 'revisionId', 'success'],
+      retQuery ?? this.defaultCreateQuery(),
+      // ['collection { id, slug }' as any, 'revision { id, revision }', 'success'],
     );
   }
 
   public async updateCollection(data: types.ICollectionPayload,
                                 assetFileUUID: string,
-                                collectionId: number)
+                                collectionId: number,
+                                retQuery?: graphQL.ICreateCollectionQuery)
                                 : Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
@@ -773,13 +776,14 @@ class Nexus {
       },
       { collectionData: data, uuid: assetFileUUID, collectionId },
       this.args({ path: this.filter({}) }),
-      ['collectionId', 'revisionId', 'revisionNumber', 'success'],
+      retQuery ?? this.defaultCreateQuery(),
     );
   }
 
   public async createOrUpdateRevision(data: types.ICollectionPayload,
                                       assetFileUUID: string,
-                                      collectionId: number)
+                                      collectionId: number,
+                                      retQuery?: graphQL.ICreateCollectionQuery)
                                       : Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
@@ -792,7 +796,7 @@ class Nexus {
       },
       { collectionData: data, uuid: assetFileUUID, collectionId },
       this.args({ path: this.filter({}) }),
-      ['collectionId', 'revisionId', 'revisionNumber', 'success'],
+      retQuery ?? this.defaultCreateQuery(),
     );
   }
 
@@ -815,7 +819,7 @@ class Nexus {
       },
       { collectionId, name, summary, description, category },
       this.args({ path: this.filter({}) }),
-      ['success'],
+      { success: true },
     )).success;
   }
 
@@ -829,7 +833,7 @@ class Nexus {
       },
       { revisionId },
       this.args({ path: this.filter({}) }),
-      ['success'],
+      { success: true },
     )).success;
   }
 
@@ -844,7 +848,7 @@ class Nexus {
       },
       { id: categoryId, collectionIds },
       this.args({ path: this.filter({}) }),
-      ['success'],
+      { success: true },
     )).success;
   }
 
@@ -1106,6 +1110,14 @@ class Nexus {
 
   //#region Implementation
 
+  private defaultCreateQuery() {
+    return {
+      collection: { id: true, slug: true },
+      revision: { id: true, revision: true },
+      success: true,
+    };
+  }
+
   private checkFileSize(filePath: string): Promise<void> {
     if (filePath === undefined) {
       return Promise.resolve();
@@ -1207,11 +1219,11 @@ class Nexus {
 
   private makeMutation<T>(name: string,
                           parameters: graphQL.GraphQueryParameters,
-                          retValues: Array<keyof T>): string {
+                          retValues: any): string {
     const pars = this.makeParameters(parameters);
     const filters = this.makeFilter(parameters);
     return `mutation ${name}${pars} {\n`
-      + `  ${name}${filters} { ${retValues} }`
+      + `  ${name}${filters} { ${this.makeQueryImpl(retValues, {}, '    ')} }`
       + '}';
   }
 
@@ -1264,7 +1276,7 @@ class Nexus {
 
   private async mutateGraph<T>(name: string, parameters: graphQL.GraphQueryParameters,
                                data: any, args: IRequestArgs,
-                               retValues: Array<keyof T>): Promise<T> {
+                               retValues: any): Promise<T> {
     args.data = {
       query: this.makeMutation<T>(name, parameters, retValues),
       variables: data,
