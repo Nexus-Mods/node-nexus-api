@@ -2,6 +2,7 @@ import * as types from './types';
 import * as graphQL from './typesGraphQL';
 import TypedEmitter from 'typed-emitter';
 import { IGraphQLError, LogFunc } from './types';
+import { RatingOptions } from '.';
 declare class Nexus {
     events: TypedEmitter<types.INexusEvents>;
     private mBaseData;
@@ -66,7 +67,7 @@ declare class Nexus {
     getCollectionRevisionGraph(query: graphQL.IRevisionQuery, collectionSlug: string, revisionNumber: number): Promise<Partial<types.IRevision>>;
     getRevisionUploadUrl(): Promise<types.IPreSignedUrl>;
     endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<any>;
-    rateRevision(revisionId: number, rating: number, gameId?: string): Promise<any>;
+    rateRevision(revisionId: number, rating: RatingOptions): Promise<boolean>;
     getCollectionVideo(collectionId: number, videoId: string): Promise<any[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
     sendFeedback(title: string, message: string, fileBundle: string, anonymous: boolean, groupingKey?: string, id?: string): Promise<types.IFeedbackResponse>;

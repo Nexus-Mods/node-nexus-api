@@ -396,6 +396,9 @@ export interface IRating {
     average: number;
     total: number;
 }
+export interface IRevisionMetadata {
+    ratingValue: RatingOptions;
+}
 export interface IRevision extends ITimestamped {
     adultContent: string;
     bugReports: ICollectionBugReport[];
@@ -410,6 +413,7 @@ export interface IRevision extends ITimestamped {
     id: number;
     installationInfo?: string;
     latest: boolean;
+    metadata: IRevisionMetadata;
     modFiles: ICollectionRevisionMod[];
     rating: IRating;
     revision: number;
@@ -466,6 +470,7 @@ export interface IFileHash {
     modFile: IModFile;
     modFileId: number;
 }
+export declare type RatingOptions = 'positive' | 'negative' | 'abstained';
 export interface IGraphQLError {
     message: string;
     extensions?: {

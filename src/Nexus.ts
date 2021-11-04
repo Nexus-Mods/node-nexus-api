@@ -18,6 +18,7 @@ import { EventEmitter } from 'events';
 import TypedEmitter from 'typed-emitter';
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError } from './customErrors';
 import { IGraphQLError, LogFunc } from './types';
+import { RatingOptions } from '.';
 
 type REST_METHOD = 'DELETE' | 'POST';
 
@@ -985,12 +986,22 @@ class Nexus {
    * @param rating the rating, between -10 (didn't work at all) and +10 (worked perfectly)
    * @param gameId id of the game
    */
-  public async rateRevision(revisionId: number, rating: number, gameId?: string) {
-    if ((rating < -10) || (rating > 10)) {
-      return Promise.reject('valid ratings are -10 to 10');
-    }
+  public async rateRevision(revisionId: number, rating: RatingOptions) {
     await this.mQuota.wait();
 
+    return (await this.mutateGraph<{success: boolean}>(
+      'rate',
+      {
+        id: { type: 'ID', optional: false },
+        type: { type: 'Ratable', optional: false },
+        rating: { type: 'RatingOptions', optional: false },
+      },
+      { id: revisionId, type: 'CollectionRevision', rating },
+      this.args({ path: this.filter({}) }),
+      { success: true },
+    )).success;
+
+     /*
     return await this.request(this.mBaseURL + '/ratings', this.args({
       data: {
         rating,
@@ -999,6 +1010,7 @@ class Nexus {
         rateable_id: revisionId,
       },
     }), 'POST');
+    */
   }
 
   //#endregion
