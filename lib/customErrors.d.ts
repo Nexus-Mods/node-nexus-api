@@ -10,9 +10,11 @@ export declare class RateLimitError extends Error {
 export declare class HTTPError extends Error {
     private mStatusCode;
     private mBody;
-    constructor(statusCode: number, message: string, body: string);
+    private mURL;
+    constructor(statusCode: number, message: string, body?: string, url?: string);
     get statusCode(): number;
     get body(): string;
+    get url(): string;
 }
 export declare class NexusError extends Error {
     private mStatusCode;

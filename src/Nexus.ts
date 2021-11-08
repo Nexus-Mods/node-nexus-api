@@ -9,7 +9,6 @@ import * as http from 'http';
 import * as https from 'https';
 import * as os from 'os';
 import * as process from 'process';
-import * as querystring from 'querystring';
 import * as url from 'url';
 import * as setCookieParser from 'set-cookie-parser';
 import * as format from 'string-template';
@@ -140,7 +139,7 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
 
       if (err !== undefined) {
         res.resume();
-        return reject(new HTTPError(statusCode, err, ''));
+        return reject(new HTTPError(statusCode, err, '', finalURL));
       }
 
       res.setEncoding('utf8');
@@ -197,7 +196,7 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
 
           let err: Error = null;
           if (statusCode !== 200) {
-            err = new HTTPError(res.statusCode, res.statusMessage, rawData);
+            err = new HTTPError(res.statusCode, res.statusMessage, rawData, finalURL);
           } else if (!/^application\/json/.test(contentType)) {
             err = new Error(`Invalid content-type ${contentType}`);
           }
@@ -910,7 +909,7 @@ class Nexus {
     const res = await this.requestGraph<types.IRevision>(
       'collectionRevision',
       {
-        id: { type: 'Int', optional: false },
+        id: { type: 'Int', optional: true },
       },
       query, { id: revisionId },
       this.args({ path: this.filter({}) }));
@@ -923,21 +922,16 @@ class Nexus {
                                           revisionNumber: number): Promise<Partial<types.IRevision>> {
     await this.mQuota.wait();
 
-    const queryUpdated = {};
-    queryUpdated[`currentRevision(revision: ${revisionNumber})`] = query;
-
-    // queryUpdated[`currentRevision(revision: ${revisionNumber})`] = queryUpdated.currentRevision;
-    // delete queryUpdated.currentRevision;
-
-    const res = await this.requestGraph<types.ICollection>(
-      'collection',
+    const res = await this.requestGraph<types.IRevision>(
+      'collectionRevision',
       {
-        slug: { type: 'String', optional: false },
+        slug: { type: 'String', optional: true },
+        revision: { type: 'Int', optional: true },
       },
-      queryUpdated, { slug: collectionSlug },
+      query, { slug: collectionSlug, revision: revisionNumber },
       this.args({ path: this.filter({}) }));
 
-    return res.currentRevision;
+    return res;
   }
 
   public async getRevisionUploadUrl(): Promise<types.IPreSignedUrl> {
@@ -1106,7 +1100,7 @@ class Nexus {
             })
             .on('end', () => {
               if (res.statusCode >= 400) {
-                return reject(new HTTPError(res.statusCode, res.statusMessage, rawData));
+                return reject(new HTTPError(res.statusCode, res.statusMessage, rawData, inputUrl));
               } else {
                 return resolve(JSON.parse(rawData));
               }
