@@ -3,6 +3,7 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
+        "lib": ["ES2016"],
         "moduleResolution": "node",
         "noImplicitAny": false,
         "removeComments": true,

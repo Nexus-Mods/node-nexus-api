@@ -195,7 +195,7 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
           const contentType = res.headers['content-type'];
 
           let err: Error = null;
-          if (statusCode !== 200) {
+          if (![200, 201].includes(statusCode)) {
             err = new HTTPError(res.statusCode, res.statusMessage, rawData, finalURL);
           } else if (!/^application\/json/.test(contentType)) {
             err = new Error(`Invalid content-type ${contentType}`);
