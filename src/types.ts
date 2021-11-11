@@ -715,6 +715,7 @@ export interface IMod {
   modId: number;
   name: string;
   pictureUrl?: string;
+  status: string;
   summary: string;
   trackingData: ITrackingState;
   uid: string;
@@ -739,6 +740,7 @@ export interface IModFile {
   requirementsAlert: number;
   scanned: number;
   size: number;
+  sizeInBytes?: string;
   uCount: number;
   uid: string;
   uri: string;
