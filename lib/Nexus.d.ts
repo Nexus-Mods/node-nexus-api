@@ -66,7 +66,9 @@ declare class Nexus {
     getRevisionGraph(query: graphQL.IRevisionQuery, revisionId: number): Promise<Partial<types.IRevision>>;
     getCollectionRevisionGraph(query: graphQL.IRevisionQuery, collectionSlug: string, revisionNumber: number, ignoreAdultBlock?: boolean): Promise<Partial<types.IRevision>>;
     getRevisionUploadUrl(): Promise<types.IPreSignedUrl>;
-    endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<any>;
+    endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<{
+        success: boolean;
+    }>;
     rateRevision(revisionId: number, rating: RatingOptions): Promise<boolean>;
     getCollectionVideo(collectionId: number, videoId: string): Promise<any[]>;
     getOwnIssues(): Promise<types.IIssue[]>;

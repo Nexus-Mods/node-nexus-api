@@ -992,14 +992,17 @@ class Nexus {
 
     await this.mQuota.wait();
 
-    return await this.request(this.mBaseURL + '/endorsements', this.args({
-      data: {
-        rating: endorseStatus === 'endorse' ? 10 : 0,
-        game_id: gameId || this.mBaseData.path.gameId,
-        rateable_type: 'collection',
-        rateable_id: collectionId,
+    return (await this.mutateGraph<{ success: boolean }>(
+      'endorse',
+      {
+        abstain: { type: 'Boolean', optional: true },
+        modelId: { type: 'Int', optional: false },
+        modelType: { type: 'String', optional: false },
       },
-    }), 'POST');
+      { abstain: endorseStatus === 'abstain', modelId: collectionId, modelType: 'Collection' },
+      this.args({ path: this.filter({}) }),
+      { success: true, endorsement: { status: true } },
+    ));
   }
 
   /**
