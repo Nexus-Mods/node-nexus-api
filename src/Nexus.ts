@@ -866,15 +866,29 @@ class Nexus {
     return res;
   }
 
-  public async getCollectionGraph(query: graphQL.ICollectionQuery, slug: string): Promise<Partial<types.ICollection>> {
+  /**
+   * get meta information about a collection
+   * @param query selects the information to fetch
+   * @param slug the text-id of the collection to fetch
+   * @param ignoreAdultBlock if false this query will obey the users choice regarding showing
+   *                         adult content. We assume most applications deal mostly with collections
+   *                         that were already downloaded so this makes little sence, hence this
+   *                         defaults to true
+   * @returns the requested meta information about the collection
+   */
+  public async getCollectionGraph(query: graphQL.ICollectionQuery,
+                                  slug: string,
+                                  ignoreAdultBlock: boolean = true)
+                                  : Promise<Partial<types.ICollection>> {
     await this.mQuota.wait();
 
     const res = await this.requestGraph<types.ICollection>(
       'collection',
       {
         slug: { type: 'String', optional: false },
+        viewAdultContent: { type: 'Boolean', optional: true }
       },
-      query, { slug },
+      query, { slug, viewAdultContent: ignoreAdultBlock },
       this.args({ path: this.filter({}) }));
 
     return res;
@@ -917,18 +931,32 @@ class Nexus {
     return res;
   }
 
+  /**
+   * get meta information about a collection revision
+   * @param query selects the information to fetch
+   * @param collectionSlug text id identifying the collection
+   * @param revisionNumber the revision number ("version") to fetch
+   * @param ignoreAdultBlock if false this query will obey the users choice regarding showing
+   *                         adult content. We assume most applications deal mostly with collections
+   *                         that were already downloaded so this makes little sence, hence this
+   *                         defaults to true
+   * @returns the requested information about the revision
+   */
   public async getCollectionRevisionGraph(query: graphQL.IRevisionQuery,
                                           collectionSlug: string,
-                                          revisionNumber: number): Promise<Partial<types.IRevision>> {
+                                          revisionNumber: number,
+                                          ignoreAdultBlock: boolean = true)
+                                          : Promise<Partial<types.IRevision>> {
     await this.mQuota.wait();
 
     const res = await this.requestGraph<types.IRevision>(
       'collectionRevision',
       {
-        slug: { type: 'String', optional: true },
-        revision: { type: 'Int', optional: true },
+        slug: { type: 'String', optional: false },
+        revision: { type: 'Int', optional: false },
+        viewAdultContent: { type: 'Boolean', optional: true },
       },
-      query, { slug: collectionSlug, revision: revisionNumber },
+      query, { slug: collectionSlug, revision: revisionNumber, viewAdultContent: ignoreAdultBlock },
       this.args({ path: this.filter({}) }));
 
     return res;

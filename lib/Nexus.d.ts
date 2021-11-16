@@ -61,10 +61,10 @@ declare class Nexus {
     publishRevision(revisionId: number): Promise<boolean>;
     attachCollectionsToCategory(categoryId: number, collectionIds: number[]): Promise<boolean>;
     getCollectionGraphLegacy(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>>;
-    getCollectionGraph(query: graphQL.ICollectionQuery, slug: string): Promise<Partial<types.ICollection>>;
+    getCollectionGraph(query: graphQL.ICollectionQuery, slug: string, ignoreAdultBlock?: boolean): Promise<Partial<types.ICollection>>;
     getCollectionListGraph(query: graphQL.ICollectionQuery, gameId?: string, count?: number, offset?: number): Promise<Partial<types.ICollection>[]>;
     getRevisionGraph(query: graphQL.IRevisionQuery, revisionId: number): Promise<Partial<types.IRevision>>;
-    getCollectionRevisionGraph(query: graphQL.IRevisionQuery, collectionSlug: string, revisionNumber: number): Promise<Partial<types.IRevision>>;
+    getCollectionRevisionGraph(query: graphQL.IRevisionQuery, collectionSlug: string, revisionNumber: number, ignoreAdultBlock?: boolean): Promise<Partial<types.IRevision>>;
     getRevisionUploadUrl(): Promise<types.IPreSignedUrl>;
     endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string): Promise<any>;
     rateRevision(revisionId: number, rating: RatingOptions): Promise<boolean>;
