@@ -37,9 +37,28 @@ interface IRequestArgs {
   };
 }
 
+function translateMessage(message: string): string {
+  return {
+    'TOO_SOON_AFTER_DOWNLOAD': 'You have to wait 15 minutes before endorsing a mod.',
+    'NOT_DOWNLOADED_MOD': 'You have not downloaded this mod (with this account).',
+  }[message] ?? message;
+}
+
 function handleRestResult(resolve, reject, url: string, error: any,
                           response: http.IncomingMessage, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
+    if ([403, 404].includes(error.statusCode)) {
+      // might be a nexus error with body actually
+      try {
+        const data = JSON.parse(body);
+        if (data.message !== undefined) {
+          return reject(new NexusError(translateMessage(data.message), response.statusCode, url, data.message));
+        }
+      } catch (_e) {
+        // nop, just allow other error handling code to run
+      }
+    }
+
     if ((error.code === 'ETIMEDOUT') || (error.code === 'ESOCKETTIMEOUT')) {
       return reject(new TimeoutError('request timed out: ' + url));
     } else if (error.code === 'EPROTO') {
@@ -62,7 +81,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
     if ((response.statusCode === 521)
         || (body === 'Bad Gateway')) {
       // in this case the body isn't something the api sent so it probably can't be parsed
-      return reject(new NexusError('API currently offline', response.statusCode, url));
+      return reject(new NexusError('API currently offline', response.statusCode, url, body));
     }
 
     if (response.statusCode === 429) {
@@ -87,8 +106,8 @@ function handleRestResult(resolve, reject, url: string, error: any,
     }
 
     if ((response.statusCode < 200) || (response.statusCode >= 300)) {
-      return reject(new NexusError(data.message || data.error || response.statusMessage,
-                                   response.statusCode, url));
+      const message = data.message || data.error || response.statusMessage;
+      return reject(new NexusError(message, response.statusCode, url, message));
     }
 
     // Append response headers to data
@@ -103,7 +122,8 @@ function handleRestResult(resolve, reject, url: string, error: any,
       // if the body starts with a < it's probably an html page (which is always the case in previous cases)
       // if it is an html page, it has to be coming from a load balancer or firewall or something that apparently doesn't
       // give a shit about the content type we asked for, so the API is apparently not reachable atm.
-      return reject(new NexusError('API currently not reachable, please try again later.', response.statusCode, url));
+      return reject(new NexusError('API currently not reachable, please try again later.',
+                                   response.statusCode, url, 'API_UNREACHABLE'));
     }
     const ecMatch = body.match(/error code: ([0-9]+)/);
     if (ecMatch !== null) {
@@ -1008,7 +1028,7 @@ class Nexus {
   /**
    * rate a collection revision (how well it worked, not whether the user liked the content, use endorsements for that!)
    * @param collectionId collection id
-   * @param rating the rating, between -10 (didn't work at all) and +10 (worked perfectly)
+   * @param rating the rating: positive, negative or abstained
    * @param gameId id of the game
    */
   public async rateRevision(revisionId: number, rating: RatingOptions) {

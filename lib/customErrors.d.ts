@@ -19,9 +19,11 @@ export declare class HTTPError extends Error {
 export declare class NexusError extends Error {
     private mStatusCode;
     private mRequest;
-    constructor(message: string, statusCode: number, url: string);
+    private mCode;
+    constructor(message: string, statusCode: number, url: string, code: string);
     get statusCode(): number;
     get request(): string;
+    get code(): string;
 }
 export declare class ParameterInvalid extends Error {
     constructor(message: any);

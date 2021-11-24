@@ -61,10 +61,12 @@ export class HTTPError extends Error {
 export class NexusError extends Error {
   private mStatusCode: number;
   private mRequest: string;
-  constructor(message: string, statusCode: number, url: string) {
+  private mCode: string;
+  constructor(message: string, statusCode: number, url: string, code: string) {
     super(message);
     this.mStatusCode = statusCode;
     this.mRequest = url;
+    this.mCode = code;
   }
 
   public get statusCode() {
@@ -73,6 +75,10 @@ export class NexusError extends Error {
 
   public get request() {
     return this.mRequest;
+  }
+
+  public get code() {
+    return this.mCode;
   }
 }
 
