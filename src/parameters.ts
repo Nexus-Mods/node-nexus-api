@@ -35,3 +35,5 @@ export const PROTOCOL_VERSION: string = require('../package.json').version.split
 export const MAX_FILE_SIZE: number = 20 * 1024 * 1024;
 
 export const MAX_JWT_REFRESH_TRIES: number = 3;
+
+export const MAX_BATCH_SIZE: number = 500;

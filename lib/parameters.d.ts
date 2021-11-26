@@ -12,3 +12,4 @@ export declare const USER_SERVICE_API_URL: string;
 export declare const PROTOCOL_VERSION: string;
 export declare const MAX_FILE_SIZE: number;
 export declare const MAX_JWT_REFRESH_TRIES: number;
+export declare const MAX_BATCH_SIZE: number;

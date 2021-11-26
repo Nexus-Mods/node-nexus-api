@@ -44,6 +44,15 @@ function translateMessage(message: string): string {
   }[message] ?? message;
 }
 
+function chunkify<T>(input: T[], maxSize: number): T[][] {
+  const res: T[][] = [];
+  for (let i = 0; i < input.length; i += maxSize) {
+      const chunk = input.slice(i, i + maxSize);
+      res.push(chunk);
+  }
+  return res;
+}
+
 function handleRestResult(resolve, reject, url: string, error: any,
                           response: http.IncomingMessage, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
@@ -693,17 +702,20 @@ class Nexus {
    *       then pass them in as strings
    */
   public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> { 
-    await this.mQuota.wait();
+    const res: Partial<types.IMod>[] = [];
+    for (const chunk of chunkify(uids, param.MAX_BATCH_SIZE)) {
+      await this.mQuota.wait();
 
-    const res = await this.requestGraph<{ nodes: types.IMod[] }>(
-      'modsByUid',
-      {
-        uids: { type: '[ID!]', optional: false },
-      },
-      { nodes: query }, { uids },
-      this.args({ path: this.filter({}) }));
+      res.push(...(await this.requestGraph<{ nodes: types.IMod[] }>(
+        'modsByUid',
+        {
+          uids: { type: '[ID!]', optional: false },
+        },
+        { nodes: chunk }, { uids },
+        this.args({ path: this.filter({}) }))).nodes);
+    }
 
-    return res.nodes;
+    return res;
   }
 
   /**
@@ -718,17 +730,20 @@ class Nexus {
   public async modFilesByUid(query: graphQL.IModFileQuery
                              , uids: string[])
                              : Promise<Partial<types.IModFile>[]> { 
-    await this.mQuota.wait();
+    const res: Partial<types.IModFile>[] = [];
+    for (const chunk of chunkify(uids, param.MAX_BATCH_SIZE)) {
+      await this.mQuota.wait();
 
-    const res = await this.requestGraph<{ nodes: types.IModFile[] }>(
-      'modFilesByUid',
-      {
-        uids: { type: '[ID!]', optional: false },
-      },
-      { nodes: query }, { uids },
-      this.args({ path: this.filter({}) }));
+      res.push(...(await this.requestGraph<{ nodes: types.IModFile[] }>(
+        'modFilesByUid',
+        {
+          uids: { type: '[ID!]', optional: false },
+        },
+        { nodes: query }, { uids },
+        this.args({ path: this.filter({}) }))).nodes);
+    }
 
-    return res.nodes;
+    return res;
   }
 
   /**
@@ -740,15 +755,30 @@ class Nexus {
   public async fileHashes(query: graphQL.IFileHashQuery
                           , md5Hashes: string[])
                           : Promise<{ data: Partial<types.IFileHash>[], errors: IGraphQLError[] }> {
-    await this.mQuota.wait();
+    const results: { data: Partial<types.IFileHash>[], errors: IGraphQLError[] } = {
+      data: [], errors: undefined,
+    };
 
-    return await this.requestGraphWithErrors<types.IFileHash[]>(
-      'fileHashes',
-      {
-        md5s: { type: '[String!]', optional: false },
-      },
-      query, { md5s: md5Hashes },
-      this.args({ path: this.filter({}) }));
+    for (const chunk of chunkify(md5Hashes, param.MAX_BATCH_SIZE)) {
+      await this.mQuota.wait();
+
+      const inner = await this.requestGraphWithErrors<types.IFileHash[]>(
+        'fileHashes',
+        {
+          md5s: { type: '[String!]', optional: false },
+        },
+        query, { md5s: chunk },
+        this.args({ path: this.filter({}) }));
+      results.data.push(...inner.data);
+      if (inner.errors !== undefined) {
+        if (results.errors === undefined) {
+          results.errors = [];
+        }
+        results.errors.push(...inner.errors);
+      }
+    }
+
+    return results;
   }
 
   //#endregion
