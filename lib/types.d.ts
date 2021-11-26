@@ -473,11 +473,21 @@ export interface IFileHash {
     modFileId: number;
 }
 export declare type RatingOptions = 'positive' | 'negative' | 'abstained';
+export declare type GraphErrorCode = 'REVISION_INVALID';
+export declare type GraphErrorAttribute = 'modId' | 'fileId';
+export declare type GraphErrorItemCode = 'NOT_AVAILABLE' | 'NOT_FOUND' | 'DELETED';
+export declare type GraphErrorEntity = 'Mod' | 'ModFile';
+export declare type GraphErrorType = 'LOCATE_ERROR';
 export interface IGraphQLError {
     message: string;
     extensions?: {
+        attribute?: GraphErrorAttribute;
+        code?: GraphErrorItemCode;
+        entity?: GraphErrorEntity;
+        message?: string;
+        type?: GraphErrorType;
+        value?: any;
         parameter?: any;
-        code?: string;
     };
 }
 export declare type LogLevel = 'info' | 'error';

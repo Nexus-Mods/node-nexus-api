@@ -1,3 +1,5 @@
+import { GraphErrorAttribute, GraphErrorCode, GraphErrorEntity, GraphErrorItemCode, GraphErrorType } from "./types";
+
 /**
  * Error thrown if a request timed out
  */
@@ -79,6 +81,33 @@ export class NexusError extends Error {
 
   public get code() {
     return this.mCode;
+  }
+}
+
+export interface IGraphErrorDetail {
+  attribute: GraphErrorAttribute;
+  code: GraphErrorItemCode;
+  entity: GraphErrorEntity;
+  message: string;
+  type: GraphErrorType;
+  value: any;
+}
+
+export class GraphError extends Error {
+  private mCode: GraphErrorCode;
+  private mDetails: IGraphErrorDetail[];
+  constructor(code: GraphErrorCode, details: IGraphErrorDetail[]) {
+    super(code);
+    this.mCode = code;
+    this.mDetails = details;
+  }
+
+  public get code(): GraphErrorCode {
+    return this.mCode;
+  }
+
+  public get details(): IGraphErrorDetail[] {
+    return this.mDetails;
   }
 }
 

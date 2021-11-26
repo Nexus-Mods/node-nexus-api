@@ -84,6 +84,7 @@ declare class Nexus {
     private genError;
     private requestGraph;
     private requestGraphWithErrors;
+    private convertErrDetail;
     private mutateGraph;
     private set oAuthCredentials(value);
     private handleJwtRefresh;

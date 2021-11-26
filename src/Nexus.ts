@@ -15,7 +15,7 @@ import * as format from 'string-template';
 import * as jwt from 'jsonwebtoken';
 import { EventEmitter } from 'events';
 import TypedEmitter from 'typed-emitter';
-import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError } from './customErrors';
+import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError, GraphError, IGraphErrorDetail } from './customErrors';
 import { IGraphQLError, LogFunc } from './types';
 import { RatingOptions } from '.';
 
@@ -1361,6 +1361,17 @@ class Nexus {
     }
   }
 
+  private convertErrDetail(det: any): IGraphErrorDetail {
+    return {
+      attribute: det.attribute,
+      code: det.code,
+      entity: det.entity,
+      message: det.message,
+      type: det.type,
+      value: det.value,
+    };
+  }
+
   private async mutateGraph<T>(name: string, parameters: graphQL.GraphQueryParameters,
                                data: any, args: IRequestArgs,
                                retValues: any): Promise<T> {
@@ -1372,7 +1383,12 @@ class Nexus {
     if (!!(res.data?.[name])) {
       return res.data[name];
     } else {
-      throw new Error(res.errors.map(err => err.message).join(', '));
+      const ext = res.errors?.[0]?.extensions;
+      if (ext?.code === undefined) {
+        throw new Error(res.errors.map(err => err.message).join(', '));
+      } else {
+        throw new GraphError(ext.code, ext.detail.map(this.convertErrDetail));
+      }
     }
   }
 

@@ -859,11 +859,22 @@ export interface IFileHash {
 
 export type RatingOptions = 'positive' | 'negative' | 'abstained';
 
+export type GraphErrorCode = 'REVISION_INVALID';
+export type GraphErrorAttribute = 'modId' | 'fileId';
+export type GraphErrorItemCode = 'NOT_AVAILABLE' | 'NOT_FOUND' | 'DELETED';
+export type GraphErrorEntity = 'Mod' | 'ModFile';
+export type GraphErrorType = 'LOCATE_ERROR';
+
 export interface IGraphQLError {
   message: string;
   extensions?: {
+    attribute?: GraphErrorAttribute;
+    code?: GraphErrorItemCode;
+    entity?: GraphErrorEntity;
+    message?: string;
+    type?: GraphErrorType;
+    value?: any;
     parameter?: any;
-    code?: string;
   }
 }
 

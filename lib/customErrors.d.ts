@@ -1,3 +1,4 @@
+import { GraphErrorAttribute, GraphErrorCode, GraphErrorEntity, GraphErrorItemCode, GraphErrorType } from "./types";
 export declare class TimeoutError extends Error {
     constructor(message: any);
 }
@@ -24,6 +25,21 @@ export declare class NexusError extends Error {
     get statusCode(): number;
     get request(): string;
     get code(): string;
+}
+export interface IGraphErrorDetail {
+    attribute: GraphErrorAttribute;
+    code: GraphErrorItemCode;
+    entity: GraphErrorEntity;
+    message: string;
+    type: GraphErrorType;
+    value: any;
+}
+export declare class GraphError extends Error {
+    private mCode;
+    private mDetails;
+    constructor(code: GraphErrorCode, details: IGraphErrorDetail[]);
+    get code(): GraphErrorCode;
+    get details(): IGraphErrorDetail[];
 }
 export declare class ParameterInvalid extends Error {
     constructor(message: any);
