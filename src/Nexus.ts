@@ -1384,10 +1384,10 @@ class Nexus {
       return res.data[name];
     } else {
       const ext = res.errors?.[0]?.extensions;
-      if ((ext?.code === undefined) || (ext?.detail === undefined)) {
+      if (ext?.code === undefined) {
         throw new Error(res.errors.map(err => err.message).join(', '));
       } else {
-        throw new GraphError(ext.code, ext.detail.map(this.convertErrDetail));
+        throw new GraphError(ext.code, (ext.detail ?? []).map(this.convertErrDetail));
       }
     }
   }
