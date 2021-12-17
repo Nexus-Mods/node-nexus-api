@@ -1387,7 +1387,9 @@ class Nexus {
       if (ext?.code === undefined) {
         throw new Error(res.errors.map(err => err.message).join(', '));
       } else {
-        throw new GraphError(ext.code, (ext.detail ?? []).map(this.convertErrDetail));
+        throw new GraphError(res.errors[0].message,
+                             ext.code,
+                             (ext.detail ?? []).map(this.convertErrDetail));
       }
     }
   }

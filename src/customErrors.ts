@@ -96,8 +96,8 @@ export interface IGraphErrorDetail {
 export class GraphError extends Error {
   private mCode: GraphErrorCode;
   private mDetails: IGraphErrorDetail[];
-  constructor(code: GraphErrorCode, details: IGraphErrorDetail[]) {
-    super(code);
+  constructor(message: string, code: GraphErrorCode, details: IGraphErrorDetail[]) {
+    super(message);
     this.mCode = code;
     this.mDetails = details;
   }

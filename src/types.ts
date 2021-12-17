@@ -802,7 +802,9 @@ export interface ICollectionManifestInfo {
   authorUrl?: string;
   name: string;
   description?: string;
+  summary?: string;
   domainName: string;
+  gameVersions?: string[];
 }
 
 export interface ICollectionManifestModSource {

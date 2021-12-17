@@ -37,7 +37,7 @@ export interface IGraphErrorDetail {
 export declare class GraphError extends Error {
     private mCode;
     private mDetails;
-    constructor(code: GraphErrorCode, details: IGraphErrorDetail[]);
+    constructor(message: string, code: GraphErrorCode, details: IGraphErrorDetail[]);
     get code(): GraphErrorCode;
     get details(): IGraphErrorDetail[];
 }
