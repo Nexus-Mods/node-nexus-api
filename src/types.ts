@@ -791,7 +791,7 @@ export interface IRevision extends ITimestamped {
   downloadLink: string;
   externalResources: IExternalResource[];
   fileSize: number;
-  gameVersion: IGameVersion[];
+  gameVersions: IGameVersion[];
   id: number;
   installationInfo?: string;
   latest: boolean;
