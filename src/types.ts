@@ -772,6 +772,11 @@ export interface IRevisionMetadata {
   ratingValue: RatingOptions;
 }
 
+export interface IGameVersion {
+  id: number;
+  reference: string;
+}
+
 /**
  * a specific revision of a collection
  */
@@ -786,6 +791,7 @@ export interface IRevision extends ITimestamped {
   downloadLink: string;
   externalResources: IExternalResource[];
   fileSize: number;
+  gameVersion: IGameVersion[];
   id: number;
   installationInfo?: string;
   latest: boolean;

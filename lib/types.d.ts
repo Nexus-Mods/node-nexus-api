@@ -401,6 +401,10 @@ export interface IRating {
 export interface IRevisionMetadata {
     ratingValue: RatingOptions;
 }
+export interface IGameVersion {
+    id: number;
+    reference: string;
+}
 export interface IRevision extends ITimestamped {
     adultContent: string;
     bugReports: ICollectionBugReport[];
@@ -412,6 +416,7 @@ export interface IRevision extends ITimestamped {
     downloadLink: string;
     externalResources: IExternalResource[];
     fileSize: number;
+    gameVersion: IGameVersion[];
     id: number;
     installationInfo?: string;
     latest: boolean;
