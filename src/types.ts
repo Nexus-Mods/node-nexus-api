@@ -823,6 +823,7 @@ export interface ICollectionManifestModSource {
   logicalFilename?: string;
   fileExpression?: string;
   url?: string;
+  adultContent?: boolean;
 }
 
 export interface ICollectionManifestMod {
