@@ -902,20 +902,6 @@ class Nexus {
     )).success;
   }
 
-  public async getCollectionGraphLegacy(query: graphQL.ICollectionQuery, collectionId: number): Promise<Partial<types.ICollection>> {
-    await this.mQuota.wait();
-
-    const res = await this.requestGraph<types.ICollection>(
-      'collection',
-      {
-        id: { type: 'Int', optional: false },
-      },
-      query, { id: collectionId },
-      this.args({ path: this.filter({}) }));
-
-    return res;
-  }
-
   /**
    * get meta information about a collection
    * @param query selects the information to fetch
@@ -965,20 +951,6 @@ class Nexus {
       this.args({ path: this.filter({}) }));
 
     return res.nodes;
-  }
-
-  public async getRevisionGraph(query: graphQL.IRevisionQuery, revisionId: number): Promise<Partial<types.IRevision>> {
-    await this.mQuota.wait();
-
-    const res = await this.requestGraph<types.IRevision>(
-      'collectionRevision',
-      {
-        id: { type: 'Int', optional: true },
-      },
-      query, { id: revisionId },
-      this.args({ path: this.filter({}) }));
-
-    return res;
   }
 
   /**
