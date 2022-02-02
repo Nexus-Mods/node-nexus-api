@@ -193,7 +193,7 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
   return new Promise<any>((resolve, reject) => {
     const finalURL = format(inputUrl, args.path);
     const body = JSON.stringify(args.data);
-    const buffer = new Buffer(body, 'utf8');
+    const buffer = Buffer.from(body, 'utf8');
 
     const headers = {
       ...args.headers,
@@ -1036,7 +1036,7 @@ class Nexus {
   public async rateRevision(revisionId: number, rating: RatingOptions) {
     await this.mQuota.wait();
 
-    return (await this.mutateGraph<{success: boolean}>(
+    return (await this.mutateGraph<{success: boolean, averageRating: types.IRating }>(
       'rate',
       {
         id: { type: 'ID', optional: false },
@@ -1045,8 +1045,8 @@ class Nexus {
       },
       { id: revisionId, type: 'CollectionRevision', rating },
       this.args({ path: this.filter({}) }),
-      { success: true },
-    )).success;
+      { success: true, averageRating: { average: true, positive: true, total: true } },
+    ));
 
      /*
     return await this.request(this.mBaseURL + '/ratings', this.args({
@@ -1197,7 +1197,6 @@ class Nexus {
   }
 
   private async request(url: string, args: IRequestArgs, method?: REST_METHOD): Promise<any> {
-    this.mLogCB('info', 'sending request', { url, args: JSON.stringify(args) });
     try {
       return await rest(url, args, (daily: number, hourly: number) => {
         this.mRateLimit = { daily, hourly };

@@ -396,6 +396,7 @@ export interface IPreSignedUrl {
 }
 export interface IRating {
     average: number;
+    positive: number;
     total: number;
 }
 export interface IRevisionMetadata {
@@ -405,10 +406,19 @@ export interface IGameVersion {
     id: number;
     reference: string;
 }
+export interface ICollectionChangelog {
+    collectionRevisionId: number;
+    createdAt: IDateTime;
+    description: string;
+    id: number;
+    revisionNumber: number;
+    updatedAt: IDateTime;
+}
 export interface IRevision extends ITimestamped {
     adultContent: string;
     bugReports: ICollectionBugReport[];
     collection: ICollection;
+    collectionChangelog: ICollectionChangelog;
     collectionId: number;
     collectionSchema: ICollectionSchema;
     collectionSchemaId: number;

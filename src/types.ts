@@ -762,9 +762,10 @@ export interface IPreSignedUrl {
   url: string;
   uuid: string;
 }
-
 export interface IRating {
+
   average: number;
+  positive: number;
   total: number;
 }
 
@@ -777,6 +778,15 @@ export interface IGameVersion {
   reference: string;
 }
 
+export interface ICollectionChangelog {
+  collectionRevisionId: number;
+  createdAt: IDateTime;
+  description: string;
+  id: number;
+  revisionNumber: number;
+  updatedAt: IDateTime;
+}
+
 /**
  * a specific revision of a collection
  */
@@ -784,6 +794,7 @@ export interface IRevision extends ITimestamped {
   adultContent: string;
   bugReports: ICollectionBugReport[];
   collection: ICollection;
+  collectionChangelog: ICollectionChangelog;
   collectionId: number;
   collectionSchema: ICollectionSchema;
   collectionSchemaId: number;
