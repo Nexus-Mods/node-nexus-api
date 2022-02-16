@@ -513,15 +513,8 @@ export interface IUpdateEntry {
 
 // GraphQL classes
 
-export interface IDateTime {
-  day: number;
-  month: number;
-  year: number;
-  hour: number;
-  minute: number;
-  second: number;
-  formatted: string;
-}
+// just a string in format YYYY-MM-DDTHH:MM:SSZ, see RFC3339
+export type IDateTime = string;
 
 export interface ITimestamped {
   updatedAt: IDateTime;
