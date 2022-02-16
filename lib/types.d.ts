@@ -179,15 +179,7 @@ export interface IUpdateEntry {
     latest_file_update: number;
     latest_mod_activity: number;
 }
-export interface IDateTime {
-    day: number;
-    month: number;
-    year: number;
-    hour: number;
-    minute: number;
-    second: number;
-    formatted: string;
-}
+export declare type IDateTime = string;
 export interface ITimestamped {
     updatedAt: IDateTime;
     createdAt: IDateTime;

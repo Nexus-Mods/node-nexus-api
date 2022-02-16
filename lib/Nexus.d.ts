@@ -69,7 +69,7 @@ declare class Nexus {
     }>;
     rateRevision(revisionId: number, rating: RatingOptions): Promise<{
         success: boolean;
-        rating: types.IRating;
+        averageRating: types.IRating;
     }>;
     getCollectionVideo(collectionId: number, videoId: string): Promise<any[]>;
     getOwnIssues(): Promise<types.IIssue[]>;
