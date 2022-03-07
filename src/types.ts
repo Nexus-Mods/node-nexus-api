@@ -654,6 +654,7 @@ export interface ICollection extends ITimestamped {
   visible: boolean;
   description: string;
   summary: string;
+  commentLink: string;
 }
 
 export interface IExternalResource {
