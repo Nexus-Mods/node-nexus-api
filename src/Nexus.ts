@@ -151,9 +151,13 @@ function lib(inputUrl: string): typeof http | typeof https {
 function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   return new Promise<any>((resolve, reject) => {
     const finalURL = format(inputUrl, args.path || {});
+    const headers = parseRequestCookies(args).headers;
+    if (headers?.hasOwnProperty?.('APIKEY') && (headers['APIKEY'] === undefined)) {
+      delete headers['APIKEY'];
+    }
     const req = lib(inputUrl).get({
       ...url.parse(finalURL),
-      headers: parseRequestCookies(args).headers,
+      headers,
       timeout: args.requestConfig.timeout,
     }, (res: http.IncomingMessage) => {
       const { statusCode } = res;
@@ -385,7 +389,12 @@ class Nexus {
    * @returns A promise that resolves to the user info on success or null if the apikey was undefined
    */
   public async setKey(apiKey: string): Promise<types.IValidateKeyResponse> {
-    this.mBaseData.headers.APIKEY = apiKey;
+    this.mLogCB('info', 'assigning api key', { isUndefined: apiKey === undefined });
+    if (apiKey === undefined) {
+      delete this.mBaseData.headers.APIKEY;
+    } else {
+      this.mBaseData.headers.APIKEY = apiKey;
+    }
     if (apiKey !== undefined) {
       try {
         this.mValidationResult = await this.validateKey(apiKey);
@@ -632,6 +641,9 @@ class Nexus {
   public async getFileInfo(modId: number,
                            fileId: number,
                            gameId?: string): Promise<types.IFileInfo> {
+    if (this.mBaseData?.headers?.['APIKEY'] === undefined) {
+      throw new Error('no api key set');
+    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}', this.args({
       path: this.filter({ modId, fileId, gameId }),
