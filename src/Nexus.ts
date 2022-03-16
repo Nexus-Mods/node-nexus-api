@@ -584,7 +584,7 @@ class Nexus {
   public async endorseMod(modId: number, modVersion: string,
                           endorseStatus: 'endorse' | 'abstain', gameId?: string): Promise<types.IEndorseResponse> {
     if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
-      return Promise.reject('invalid endorse status, should be "endorse" or "abstain"');
+      return Promise.reject(new Error('invalid endorse status, should be "endorse" or "abstain"'));
     }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/{endorseStatus}', this.args({
@@ -1021,7 +1021,7 @@ class Nexus {
    */
   public async endorseCollection(collectionId: number, endorseStatus: 'abstain' | 'endorse', gameId?: string) {
     if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
-      return Promise.reject('invalid endorse status, should be "endorse" or "abstain"');
+      return Promise.reject(new Error('invalid endorse status, should be "endorse" or "abstain"'));
     }
 
     await this.mQuota.wait();
