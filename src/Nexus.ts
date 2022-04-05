@@ -371,7 +371,11 @@ class Nexus {
    * update fetch validation info (including premium state) with the same key
    */
   public async revalidate(): Promise<types.IValidateKeyResponse> {
-    this.mValidationResult = await this.setKey(this.mBaseData.headers?.APIKEY);
+    const key = this.mBaseData.headers?.APIKEY;
+    this.mLogCB('info', 'revalidate', { isUndefined: key === undefined });
+    if (key !== undefined) {
+      this.mValidationResult = await this.setKey(key);
+    }
     return this.mValidationResult;
   }
 
