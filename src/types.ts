@@ -803,7 +803,7 @@ export interface IRevision extends ITimestamped {
   metadata: IRevisionMetadata;
   modFiles: ICollectionRevisionMod[];
   rating: IRating;
-  revision: number;
+  revisionNumber: number;
   revisionStatus: string;
   status: string;
 }
