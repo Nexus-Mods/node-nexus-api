@@ -56,16 +56,15 @@ function chunkify<T>(input: T[], maxSize: number): T[][] {
 function handleRestResult(resolve, reject, url: string, error: any,
                           response: http.IncomingMessage, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
-    if ([403, 404].includes(error.statusCode)) {
-      // might be a nexus error with body actually
-      try {
-        const data = JSON.parse(body);
-        if (data.message !== undefined) {
-          return reject(new NexusError(translateMessage(data.message), response.statusCode, url, data.message));
-        }
-      } catch (_e) {
-        // nop, just allow other error handling code to run
+    // might be a nexus error with body actually
+    try {
+      const data = JSON.parse(body);
+      const message = data.message ?? data.error;
+      if (message) {
+        return reject(new NexusError(translateMessage(message), response.statusCode, url, message));
       }
+    } catch (_e) {
+      // nop, just allow other error handling code to run
     }
 
     if ((error.code === 'ETIMEDOUT') || (error.code === 'ESOCKETTIMEOUT')) {
@@ -196,11 +195,11 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
   const stackErr = new Error();
   return new Promise<any>((resolve, reject) => {
     const finalURL = format(inputUrl, args.path);
-    const body = JSON.stringify(args.data);
+    const body = JSON.stringify(args.data) + '\r\n';
     const buffer = Buffer.from(body, 'utf8');
 
     const headers = {
-      ...args.headers,
+      ...parseRequestCookies(args).headers,
       'Connection': 'keep-alive',
       'Content-Length': buffer.byteLength,
     };
@@ -248,11 +247,11 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
 }
 
 function parseRequestCookies(args: IRequestArgs): IRequestArgs {
-  if (!args.cookies) {
-    return args;
+  const cookieString = Object.keys(args.cookies ?? {}).map( (key) => `${key}=${args.cookies[key]}`).join('; ');
+  if (cookieString) {
+    args.headers['Cookie'] = cookieString;
   }
 
-  args.headers['Cookie'] = Object.keys(args.cookies).map( (key) => `${key}=${args.cookies[key]}`).join('; ');
   return args;
 }
 
