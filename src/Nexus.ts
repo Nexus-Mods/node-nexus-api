@@ -211,7 +211,7 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
     const req = lib(inputUrl).request({
       ...url.parse(finalURL),
       method,
-      headers: parseRequestCookies(args).headers,
+      headers,
       timeout: args.requestConfig.timeout,
     }, (res: http.IncomingMessage) => {
       res.setEncoding('utf8');
