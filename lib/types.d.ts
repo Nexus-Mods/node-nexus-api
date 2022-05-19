@@ -38,6 +38,7 @@ export interface IModInfo {
     updated_time: string;
     allow_rating: boolean;
     endorsement_count: number;
+    mod_downloads: number;
     endorsement?: {
         endorse_status: EndorsedStatus;
         timestamp: number;
