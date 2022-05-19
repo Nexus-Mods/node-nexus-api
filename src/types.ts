@@ -142,6 +142,10 @@ export interface IModInfo {
    */
   endorsement_count: number;
   /**
+   * number of downloads
+   */
+  mod_downloads: number;
+  /**
    * obsolete - will be removed in the near future
    */
   endorsement?: {
