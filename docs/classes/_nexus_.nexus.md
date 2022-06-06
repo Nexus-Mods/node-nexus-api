@@ -55,7 +55,7 @@ Main class of the api
 
 \+ **new Nexus**(`appName`: string, `appVersion`: string, `defaultGame`: string, `timeout?`: number): *[Nexus](_nexus_.nexus.md)*
 
-*Defined in [src/Nexus.ts:200](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L200)*
+*Defined in [src/Nexus.ts:200](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L200)*
 
 Constructor
 please don't use this directly, use Nexus.create
@@ -77,7 +77,7 @@ Name | Type | Description |
 
 • **events**: *TypedEmitter‹[INexusEvents](../interfaces/_types_.inexusevents.md)›* = new EventEmitter() as TypedEmitter<types.INexusEvents>
 
-*Defined in [src/Nexus.ts:191](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L191)*
+*Defined in [src/Nexus.ts:191](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L191)*
 
 ## Methods
 
@@ -85,7 +85,7 @@ Name | Type | Description |
 
 ▸ **endorseMod**(`modId`: number, `modVersion`: string, `endorseStatus`: "endorse" | "abstain", `gameId?`: string): *Promise‹[IEndorseResponse](../interfaces/_types_.iendorseresponse.md)›*
 
-*Defined in [src/Nexus.ts:471](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L471)*
+*Defined in [src/Nexus.ts:471](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L471)*
 
 Endorse/Unendorse a mod
 
@@ -106,7 +106,7 @@ ___
 
 ▸ **getChangelogs**(`modId`: number, `gameId?`: string): *Promise‹[IChangelogs](../interfaces/_types_.ichangelogs.md)›*
 
-*Defined in [src/Nexus.ts:500](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L500)*
+*Defined in [src/Nexus.ts:500](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L500)*
 
 retrieve all changelogs for a mod
 
@@ -125,7 +125,7 @@ ___
 
 ▸ **getColorschemes**(): *Promise‹[IColourScheme](../interfaces/_types_.icolourscheme.md)[]›*
 
-*Defined in [src/Nexus.ts:428](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L428)*
+*Defined in [src/Nexus.ts:428](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L428)*
 
 get list of colorschemes
 
@@ -137,7 +137,7 @@ ___
 
 ▸ **getColourschemes**(): *Promise‹[IColourScheme](../interfaces/_types_.icolourscheme.md)[]›*
 
-*Defined in [src/Nexus.ts:420](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L420)*
+*Defined in [src/Nexus.ts:420](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L420)*
 
 get list of colourschemes
 
@@ -149,7 +149,7 @@ ___
 
 ▸ **getDownloadURLs**(`modId`: number, `fileId`: number, `key?`: string, `expires?`: number, `gameId?`: string): *Promise‹[IDownloadURL](../interfaces/_types_.idownloadurl.md)[]›*
 
-*Defined in [src/Nexus.ts:547](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L547)*
+*Defined in [src/Nexus.ts:547](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L547)*
 
 generate download links for a file
 If the user isn't premium on Nexus Mods, this requires a key that can only
@@ -173,7 +173,7 @@ ___
 
 ▸ **getEndorsements**(): *Promise‹[IEndorsement](../interfaces/_types_.iendorsement.md)[]›*
 
-*Defined in [src/Nexus.ts:412](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L412)*
+*Defined in [src/Nexus.ts:412](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L412)*
 
 get list of endorsements the user has given
 
@@ -185,7 +185,7 @@ ___
 
 ▸ **getFileByMD5**(`hash`: string, `gameId?`: string): *Promise‹[IMD5Result](../interfaces/_types_.imd5result.md)[]›*
 
-*Defined in [src/Nexus.ts:572](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L572)*
+*Defined in [src/Nexus.ts:572](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L572)*
 
 find information about a file based on its md5 hash
 This can be used to find info about a file when you don't have its modid and fileid
@@ -210,7 +210,7 @@ ___
 
 ▸ **getFileInfo**(`modId`: number, `fileId`: number, `gameId?`: string): *Promise‹[IFileInfo](../interfaces/_types_.ifileinfo.md)›*
 
-*Defined in [src/Nexus.ts:528](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L528)*
+*Defined in [src/Nexus.ts:528](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L528)*
 
 get details about a file
 
@@ -230,7 +230,7 @@ ___
 
 ▸ **getGameInfo**(`gameId?`: string): *Promise‹[IGameInfo](../interfaces/_types_.igameinfo.md)›*
 
-*Defined in [src/Nexus.ts:440](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L440)*
+*Defined in [src/Nexus.ts:440](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L440)*
 
 retrieve details about a specific game
 
@@ -248,7 +248,7 @@ ___
 
 ▸ **getGames**(): *Promise‹[IGameListEntry](../interfaces/_types_.igamelistentry.md)[]›*
 
-*Defined in [src/Nexus.ts:371](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L371)*
+*Defined in [src/Nexus.ts:371](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L371)*
 
 retrieve a list of all games currently supported by Nexus Mods
 
@@ -262,7 +262,7 @@ ___
 
 ▸ **getLatestAdded**(`gameId?`: string): *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
 
-*Defined in [src/Nexus.ts:380](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L380)*
+*Defined in [src/Nexus.ts:380](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L380)*
 
 get list of the latest added mods
 
@@ -280,7 +280,7 @@ ___
 
 ▸ **getLatestUpdated**(`gameId?`: string): *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
 
-*Defined in [src/Nexus.ts:391](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L391)*
+*Defined in [src/Nexus.ts:391](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L391)*
 
 get list of the latest updated mods
 
@@ -298,7 +298,7 @@ ___
 
 ▸ **getModFiles**(`modId`: number, `gameId?`: string): *Promise‹[IModFiles](../interfaces/_types_.imodfiles.md)›*
 
-*Defined in [src/Nexus.ts:512](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L512)*
+*Defined in [src/Nexus.ts:512](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L512)*
 
 get list of all files uploaded for a mod
 
@@ -317,7 +317,7 @@ ___
 
 ▸ **getModInfo**(`modId`: number, `gameId?`: string): *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)›*
 
-*Defined in [src/Nexus.ts:488](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L488)*
+*Defined in [src/Nexus.ts:488](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L488)*
 
 retrieve details about a mod
 
@@ -336,7 +336,7 @@ ___
 
 ▸ **getOwnIssues**(): *Promise‹[IIssue](../interfaces/_types_.iissue.md)[]›*
 
-*Defined in [src/Nexus.ts:598](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L598)*
+*Defined in [src/Nexus.ts:598](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L598)*
 
 get list of issues reported by this user
 FOR INTERNAL USE ONLY
@@ -349,7 +349,7 @@ ___
 
 ▸ **getRateLimits**(): *object*
 
-*Defined in [src/Nexus.ts:300](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L300)*
+*Defined in [src/Nexus.ts:300](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L300)*
 
 **Returns:** *object*
 
@@ -363,7 +363,7 @@ ___
 
 ▸ **getRecentlyUpdatedMods**(`period`: types.UpdatePeriod, `gameId?`: string): *Promise‹[IUpdateEntry](../interfaces/_types_.iupdateentry.md)[]›*
 
-*Defined in [src/Nexus.ts:453](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L453)*
+*Defined in [src/Nexus.ts:453](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L453)*
 
 retrieve list of mods for a game that has recently been updated
 
@@ -382,7 +382,7 @@ ___
 
 ▸ **getTrackedMods**(): *Promise‹[ITrackedMod](../interfaces/_types_.itrackedmod.md)[]›*
 
-*Defined in [src/Nexus.ts:323](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L323)*
+*Defined in [src/Nexus.ts:323](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L323)*
 
 Get list of all mods being tracked by the user
 
@@ -394,7 +394,7 @@ ___
 
 ▸ **getTrending**(`gameId?`: string): *Promise‹[IModInfo](../interfaces/_types_.imodinfo.md)[]›*
 
-*Defined in [src/Nexus.ts:402](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L402)*
+*Defined in [src/Nexus.ts:402](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L402)*
 
 get list of trending mods
 
@@ -412,7 +412,7 @@ ___
 
 ▸ **getValidationResult**(): *[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)*
 
-*Defined in [src/Nexus.ts:274](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L274)*
+*Defined in [src/Nexus.ts:274](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L274)*
 
 retrieve the result of the last key validation.
 This is useful primarily after creating the object with Nexus.create
@@ -425,7 +425,7 @@ ___
 
 ▸ **sendFeedback**(`title`: string, `message`: string, `fileBundle`: string, `anonymous`: boolean, `groupingKey?`: string, `id?`: string): *Promise‹[IFeedbackResponse](../interfaces/_types_.ifeedbackresponse.md)›*
 
-*Defined in [src/Nexus.ts:615](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L615)*
+*Defined in [src/Nexus.ts:615](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L615)*
 
 send a feedback message
 FOR INTERNAL USE ONLY
@@ -449,7 +449,7 @@ ___
 
 ▸ **setGame**(`gameId`: string): *void*
 
-*Defined in [src/Nexus.ts:266](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L266)*
+*Defined in [src/Nexus.ts:266](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L266)*
 
 change the default game id
 
@@ -467,7 +467,7 @@ ___
 
 ▸ **setKey**(`apiKey`: string): *Promise‹[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)›*
 
-*Defined in [src/Nexus.ts:283](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L283)*
+*Defined in [src/Nexus.ts:283](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L283)*
 
 change the API Key and validate it This can also be used to unset the key
 
@@ -487,7 +487,7 @@ ___
 
 ▸ **trackMod**(`modId`: string, `gameId?`: string): *Promise‹[ITrackResponse](../interfaces/_types_.itrackresponse.md)›*
 
-*Defined in [src/Nexus.ts:334](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L334)*
+*Defined in [src/Nexus.ts:334](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L334)*
 
 start tracking a mod
 
@@ -506,7 +506,7 @@ ___
 
 ▸ **untrackMod**(`modId`: string, `gameId?`: string): *Promise‹[ITrackResponse](../interfaces/_types_.itrackresponse.md)›*
 
-*Defined in [src/Nexus.ts:353](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L353)*
+*Defined in [src/Nexus.ts:353](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L353)*
 
 stop tracking a mod
 
@@ -525,7 +525,7 @@ ___
 
 ▸ **validateKey**(`key?`: string): *Promise‹[IValidateKeyResponse](../interfaces/_types_.ivalidatekeyresponse.md)›*
 
-*Defined in [src/Nexus.ts:314](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L314)*
+*Defined in [src/Nexus.ts:314](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L314)*
 
 validate a specific API key
 This does not update the request quota or the cached validation result so it's
@@ -545,7 +545,7 @@ ___
 
 ▸ **create**(`apiKey`: string, `appName`: string, `appVersion`: string, `defaultGame`: string, `timeout?`: number): *Promise‹[Nexus](_nexus_.nexus.md)›*
 
-*Defined in [src/Nexus.ts:248](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L248)*
+*Defined in [src/Nexus.ts:248](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L248)*
 
 create a Nexus instance and immediately verify the API Key
 
@@ -567,7 +567,7 @@ ___
 
 ▸ **createWithOAuth**(`credentials`: [IOAuthCredentials](../interfaces/_types_.ioauthcredentials.md), `config`: [IOAuthConfig](../interfaces/_types_.ioauthconfig.md), `appName`: string, `appVersion`: string, `defaultGame`: string, `timeout?`: number): *Promise‹[Nexus](_nexus_.nexus.md)›*
 
-*Defined in [src/Nexus.ts:254](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L254)*
+*Defined in [src/Nexus.ts:254](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L254)*
 
 **Parameters:**
 

@@ -29,7 +29,7 @@ INTERNAL USE ONLY
 
 • **count**: *number*
 
-*Defined in [src/types.ts:431](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L431)*
+*Defined in [src/types.ts:431](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L431)*
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 • **created_at**: *string*
 
-*Defined in [src/types.ts:425](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L425)*
+*Defined in [src/types.ts:425](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L425)*
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 • **github_issue**: *[IGithubIssue](_types_.igithubissue.md)*
 
-*Defined in [src/types.ts:429](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L429)*
+*Defined in [src/types.ts:429](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L429)*
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 • **grouping_key**: *string*
 
-*Defined in [src/types.ts:428](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L428)*
+*Defined in [src/types.ts:428](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L428)*
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 • **id**: *number*
 
-*Defined in [src/types.ts:423](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L423)*
+*Defined in [src/types.ts:423](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L423)*
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 • **reference**: *string*
 
-*Defined in [src/types.ts:427](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L427)*
+*Defined in [src/types.ts:427](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L427)*
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 • **status**: *number*
 
-*Defined in [src/types.ts:424](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L424)*
+*Defined in [src/types.ts:424](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L424)*
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 • **updated_at**: *string*
 
-*Defined in [src/types.ts:426](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L426)*
+*Defined in [src/types.ts:426](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L426)*
 
 ___
 
@@ -93,4 +93,4 @@ ___
 
 • **user_blacklisted**: *boolean*
 
-*Defined in [src/types.ts:430](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L430)*
+*Defined in [src/types.ts:430](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L430)*

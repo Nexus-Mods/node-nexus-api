@@ -31,7 +31,7 @@ basic information about a game
 
 • **approved_date**: *number*
 
-*Defined in [src/types.ts:347](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L347)*
+*Defined in [src/types.ts:347](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L347)*
 
 unix timestamp of when this game was added to nexuis mods
 
@@ -41,7 +41,7 @@ ___
 
 • **domain_name**: *string*
 
-*Defined in [src/types.ts:314](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L314)*
+*Defined in [src/types.ts:314](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L314)*
 
 domain name (as used in urls and as the game id in all other requests)
 
@@ -51,7 +51,7 @@ ___
 
 • **downloads**: *number*
 
-*Defined in [src/types.ts:343](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L343)*
+*Defined in [src/types.ts:343](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L343)*
 
 number of downloads from nexus for files for this game
 
@@ -61,7 +61,7 @@ ___
 
 • **file_count**: *number*
 
-*Defined in [src/types.ts:339](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L339)*
+*Defined in [src/types.ts:339](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L339)*
 
 number of files hosted on nexus for this game
 
@@ -71,7 +71,7 @@ ___
 
 • **forum_url**: *string*
 
-*Defined in [src/types.ts:322](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L322)*
+*Defined in [src/types.ts:322](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L322)*
 
 url for the corresponding forum section
 
@@ -81,7 +81,7 @@ ___
 
 • **genre**: *string*
 
-*Defined in [src/types.ts:331](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L331)*
+*Defined in [src/types.ts:331](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L331)*
 
 genre of the game
 (possible values?)
@@ -92,7 +92,7 @@ ___
 
 • **id**: *number*
 
-*Defined in [src/types.ts:310](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L310)*
+*Defined in [src/types.ts:310](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L310)*
 
 numerical id
 
@@ -102,7 +102,7 @@ ___
 
 • **mods**: *number*
 
-*Defined in [src/types.ts:335](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L335)*
+*Defined in [src/types.ts:335](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L335)*
 
 number of mods hosted on nexus for this game
 
@@ -112,7 +112,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [src/types.ts:318](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L318)*
+*Defined in [src/types.ts:318](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L318)*
 
 display name
 
@@ -122,6 +122,6 @@ ___
 
 • **nexusmods_url**: *string*
 
-*Defined in [src/types.ts:326](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L326)*
+*Defined in [src/types.ts:326](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L326)*
 
 url for the primary nexusmods page (should be https://www.nexusmods.com/<domain_name>)

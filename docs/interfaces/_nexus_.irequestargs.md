@@ -24,7 +24,7 @@
 
 • **cookies**? : *any*
 
-*Defined in [src/Nexus.ts:21](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L21)*
+*Defined in [src/Nexus.ts:21](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L21)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **data**? : *any*
 
-*Defined in [src/Nexus.ts:23](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L23)*
+*Defined in [src/Nexus.ts:23](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L23)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • **headers**? : *any*
 
-*Defined in [src/Nexus.ts:20](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L20)*
+*Defined in [src/Nexus.ts:20](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L20)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • **method**? : *[REST_METHOD](../modules/_nexus_.md#rest_method)*
 
-*Defined in [src/Nexus.ts:24](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L24)*
+*Defined in [src/Nexus.ts:24](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L24)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 • **path**? : *any*
 
-*Defined in [src/Nexus.ts:22](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L22)*
+*Defined in [src/Nexus.ts:22](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L22)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • **requestConfig**? : *object*
 
-*Defined in [src/Nexus.ts:25](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L25)*
+*Defined in [src/Nexus.ts:25](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L25)*
 
 #### Type declaration:
 
@@ -80,7 +80,7 @@ ___
 
 • **responseConfig**? : *object*
 
-*Defined in [src/Nexus.ts:30](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/Nexus.ts#L30)*
+*Defined in [src/Nexus.ts:30](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/Nexus.ts#L30)*
 
 #### Type declaration:
 

@@ -24,7 +24,7 @@ INTERNAL USE ONLY
 
 • **id**: *number*
 
-*Defined in [src/types.ts:398](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L398)*
+*Defined in [src/types.ts:398](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L398)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **issue_number**: *number*
 
-*Defined in [src/types.ts:399](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L399)*
+*Defined in [src/types.ts:399](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L399)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • **issue_state**: *string*
 
-*Defined in [src/types.ts:400](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L400)*
+*Defined in [src/types.ts:400](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L400)*
 
 ___
 
@@ -48,4 +48,4 @@ ___
 
 • **issue_title**: *string*
 
-*Defined in [src/types.ts:401](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L401)*
+*Defined in [src/types.ts:401](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L401)*

@@ -20,7 +20,7 @@
 
 • **member_group_id**: *number*
 
-*Defined in [src/types.ts:37](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L37)*
+*Defined in [src/types.ts:37](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L37)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **member_id**: *number*
 
-*Defined in [src/types.ts:36](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L36)*
+*Defined in [src/types.ts:36](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L36)*
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 • **name**: *string*
 
-*Defined in [src/types.ts:38](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L38)*
+*Defined in [src/types.ts:38](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L38)*

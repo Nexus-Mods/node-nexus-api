@@ -30,7 +30,7 @@ You should not see this error in your application as it is handled internally
 
 \+ **new RateLimitError**(): *[RateLimitError](_customerrors_.ratelimiterror.md)*
 
-*Defined in [src/customErrors.ts:25](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/customErrors.ts#L25)*
+*Defined in [src/customErrors.ts:25](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/customErrors.ts#L25)*
 
 **Returns:** *[RateLimitError](_customerrors_.ratelimiterror.md)*
 

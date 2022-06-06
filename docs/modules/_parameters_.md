@@ -24,7 +24,7 @@
 
 • **API_URL**: *string* = "https://api.nexusmods.com/v1"
 
-*Defined in [src/parameters.ts:17](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L17)*
+*Defined in [src/parameters.ts:17](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L17)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **DEFAULT_TIMEOUT_MS**: *number* = 30000
 
-*Defined in [src/parameters.ts:11](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L11)*
+*Defined in [src/parameters.ts:11](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L11)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • **DELAY_AFTER_429_MS**: *number* = 1000
 
-*Defined in [src/parameters.ts:15](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L15)*
+*Defined in [src/parameters.ts:15](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L15)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • **MAX_FILE_SIZE**: *number* = 20 * 1024 * 1024
 
-*Defined in [src/parameters.ts:30](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L30)*
+*Defined in [src/parameters.ts:30](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L30)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 • **MAX_JWT_REFRESH_TRIES**: *number* = 3
 
-*Defined in [src/parameters.ts:32](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L32)*
+*Defined in [src/parameters.ts:32](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L32)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • **PROTOCOL_VERSION**: *string* = require('../package.json').version.split('-')[0]
 
-*Defined in [src/parameters.ts:23](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L23)*
+*Defined in [src/parameters.ts:23](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L23)*
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • **QUOTA_MAX**: *number* = 50
 
-*Defined in [src/parameters.ts:7](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L7)*
+*Defined in [src/parameters.ts:7](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L7)*
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 • **QUOTA_MAX_PREMIUM**: *number* = 50
 
-*Defined in [src/parameters.ts:9](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L9)*
+*Defined in [src/parameters.ts:9](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L9)*
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 • **QUOTA_RATE_MS**: *number* = 1000
 
-*Defined in [src/parameters.ts:5](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L5)*
+*Defined in [src/parameters.ts:5](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L5)*
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 • **SECURITY_PROTOCOL_VERSION**: *string* = "TLSv1_2_method"
 
-*Defined in [src/parameters.ts:27](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L27)*
+*Defined in [src/parameters.ts:27](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L27)*
 
 ___
 
@@ -104,4 +104,4 @@ ___
 
 • **USER_SERVICE_API_URL**: *string* = "https://users.nexusmods.com"
 
-*Defined in [src/parameters.ts:19](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/parameters.ts#L19)*
+*Defined in [src/parameters.ts:19](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/parameters.ts#L19)*

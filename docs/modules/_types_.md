@@ -44,7 +44,7 @@
 
 Ƭ **EndorsedStatus**: *"Undecided" | "Abstained" | "Endorsed"*
 
-*Defined in [src/types.ts:41](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L41)*
+*Defined in [src/types.ts:41](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L41)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 Ƭ **ModStatus**: *"under_moderation" | "published" | "not_published" | "publish_with_game" | "removed" | "wastebinned" | "hidden"*
 
-*Defined in [src/types.ts:46](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L46)*
+*Defined in [src/types.ts:46](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L46)*
 
 possible states the mod can be in
 
@@ -62,6 +62,6 @@ ___
 
 Ƭ **UpdatePeriod**: *"1d" | "1w" | "1m"*
 
-*Defined in [src/types.ts:495](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L495)*
+*Defined in [src/types.ts:495](https://github.com/Nexus-Mods/node-nexus-api/blob/master/src/types.ts#L495)*
 
 range of updates to query
