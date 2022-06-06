@@ -21,7 +21,7 @@ response to a request for tracked mods
 
 • **domain_name**: *string*
 
-*Defined in [src/types.ts:438](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L438)*
+*Defined in [src/types.ts:446](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L446)*
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 • **mod_id**: *number*
 
-*Defined in [src/types.ts:437](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L437)*
+*Defined in [src/types.ts:445](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L445)*

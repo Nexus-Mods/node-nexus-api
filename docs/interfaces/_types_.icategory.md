@@ -22,7 +22,7 @@ Nexus Mods category
 
 • **category_id**: *number*
 
-*Defined in [src/types.ts:280](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L280)*
+*Defined in [src/types.ts:288](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L288)*
 
 numerical id
 
@@ -32,7 +32,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [src/types.ts:284](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L284)*
+*Defined in [src/types.ts:292](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L292)*
 
 display name
 
@@ -42,7 +42,7 @@ ___
 
 • **parent_category**: *number | false*
 
-*Defined in [src/types.ts:292](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L292)*
+*Defined in [src/types.ts:300](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L300)*
 
 id of the parent category or false if it's a top-level
 category.

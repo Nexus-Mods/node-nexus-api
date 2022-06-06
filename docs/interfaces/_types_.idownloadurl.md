@@ -24,7 +24,7 @@ useful to store it for more than a few minutes
 
 • **URI**: *string*
 
-*Defined in [src/types.ts:361](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L361)*
+*Defined in [src/types.ts:369](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L369)*
 
 the url itself
 
@@ -34,7 +34,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [src/types.ts:365](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L365)*
+*Defined in [src/types.ts:373](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L373)*
 
 Display name of the download server hosting the file
 
@@ -44,6 +44,6 @@ ___
 
 • **short_name**: *string*
 
-*Defined in [src/types.ts:369](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L369)*
+*Defined in [src/types.ts:377](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L377)*
 
 short name (id?) of the download server

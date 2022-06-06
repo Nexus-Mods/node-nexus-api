@@ -26,7 +26,9 @@ Details about a mod
 * [endorsement](_types_.imodinfo.md#optional-endorsement)
 * [endorsement_count](_types_.imodinfo.md#endorsement_count)
 * [game_id](_types_.imodinfo.md#game_id)
+* [mod_downloads](_types_.imodinfo.md#mod_downloads)
 * [mod_id](_types_.imodinfo.md#mod_id)
+* [mod_unique_downloads](_types_.imodinfo.md#mod_unique_downloads)
 * [name](_types_.imodinfo.md#optional-name)
 * [picture_url](_types_.imodinfo.md#optional-picture_url)
 * [status](_types_.imodinfo.md#status)
@@ -44,7 +46,7 @@ Details about a mod
 
 • **allow_rating**: *boolean*
 
-*Defined in [src/types.ts:139](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L139)*
+*Defined in [src/types.ts:147](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L147)*
 
 whether this mod allows endorsements
 
@@ -97,7 +99,7 @@ ___
 
 • **created_time**: *string*
 
-*Defined in [src/types.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L127)*
+*Defined in [src/types.ts:135](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L135)*
 
 readable time of when the mod was created
 
@@ -107,7 +109,7 @@ ___
 
 • **created_timestamp**: *number*
 
-*Defined in [src/types.ts:123](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L123)*
+*Defined in [src/types.ts:131](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L131)*
 
 unix timestamp of when the mod was created
 
@@ -137,7 +139,7 @@ ___
 
 • **endorsement**? : *object*
 
-*Defined in [src/types.ts:147](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L147)*
+*Defined in [src/types.ts:155](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L155)*
 
 obsolete - will be removed in the near future
 
@@ -155,7 +157,7 @@ ___
 
 • **endorsement_count**: *number*
 
-*Defined in [src/types.ts:143](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L143)*
+*Defined in [src/types.ts:151](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L151)*
 
 endorsement count
 
@@ -171,6 +173,16 @@ internal id of the game this mod belongs to
 
 ___
 
+###  mod_downloads
+
+• **mod_downloads**: *number*
+
+*Defined in [src/types.ts:123](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L123)*
+
+download count
+
+___
+
 ###  mod_id
 
 • **mod_id**: *number*
@@ -178,6 +190,16 @@ ___
 *Defined in [src/types.ts:55](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L55)*
 
 id of this mod (should be the same you queried for)
+
+___
+
+###  mod_unique_downloads
+
+• **mod_unique_downloads**: *number*
+
+*Defined in [src/types.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L127)*
+
+unique download count
 
 ___
 
@@ -226,7 +248,7 @@ ___
 
 • **updated_time**: *string*
 
-*Defined in [src/types.ts:135](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L135)*
+*Defined in [src/types.ts:143](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L143)*
 
 readable time of when the mod was updated
 
@@ -236,7 +258,7 @@ ___
 
 • **updated_timestamp**: *number*
 
-*Defined in [src/types.ts:131](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L131)*
+*Defined in [src/types.ts:139](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L139)*
 
 unix timestamp of when the mod was updated
 

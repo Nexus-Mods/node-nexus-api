@@ -24,7 +24,9 @@
 * [endorsement](_types_.imodinfoex.md#optional-endorsement)
 * [endorsement_count](_types_.imodinfoex.md#endorsement_count)
 * [game_id](_types_.imodinfoex.md#game_id)
+* [mod_downloads](_types_.imodinfoex.md#mod_downloads)
 * [mod_id](_types_.imodinfoex.md#mod_id)
+* [mod_unique_downloads](_types_.imodinfoex.md#mod_unique_downloads)
 * [name](_types_.imodinfoex.md#optional-name)
 * [picture_url](_types_.imodinfoex.md#optional-picture_url)
 * [status](_types_.imodinfoex.md#status)
@@ -44,7 +46,7 @@
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[allow_rating](_types_.imodinfo.md#allow_rating)*
 
-*Defined in [src/types.ts:139](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L139)*
+*Defined in [src/types.ts:147](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L147)*
 
 whether this mod allows endorsements
 
@@ -107,7 +109,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[created_time](_types_.imodinfo.md#created_time)*
 
-*Defined in [src/types.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L127)*
+*Defined in [src/types.ts:135](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L135)*
 
 readable time of when the mod was created
 
@@ -119,7 +121,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[created_timestamp](_types_.imodinfo.md#created_timestamp)*
 
-*Defined in [src/types.ts:123](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L123)*
+*Defined in [src/types.ts:131](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L131)*
 
 unix timestamp of when the mod was created
 
@@ -155,7 +157,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[endorsement](_types_.imodinfo.md#optional-endorsement)*
 
-*Defined in [src/types.ts:147](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L147)*
+*Defined in [src/types.ts:155](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L155)*
 
 obsolete - will be removed in the near future
 
@@ -175,7 +177,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[endorsement_count](_types_.imodinfo.md#endorsement_count)*
 
-*Defined in [src/types.ts:143](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L143)*
+*Defined in [src/types.ts:151](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L151)*
 
 endorsement count
 
@@ -187,7 +189,19 @@ ___
 
 *Overrides [IModInfo](_types_.imodinfo.md).[game_id](_types_.imodinfo.md#game_id)*
 
-*Defined in [src/types.ts:374](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L374)*
+*Defined in [src/types.ts:381](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L381)*
+
+___
+
+###  mod_downloads
+
+• **mod_downloads**: *number*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[mod_downloads](_types_.imodinfo.md#mod_downloads)*
+
+*Defined in [src/types.ts:123](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L123)*
+
+download count
 
 ___
 
@@ -197,7 +211,19 @@ ___
 
 *Overrides [IModInfo](_types_.imodinfo.md).[mod_id](_types_.imodinfo.md#mod_id)*
 
-*Defined in [src/types.ts:373](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L373)*
+*Defined in [src/types.ts:382](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L382)*
+
+___
+
+###  mod_unique_downloads
+
+• **mod_unique_downloads**: *number*
+
+*Inherited from [IModInfo](_types_.imodinfo.md).[mod_unique_downloads](_types_.imodinfo.md#mod_unique_downloads)*
+
+*Defined in [src/types.ts:127](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L127)*
+
+unique download count
 
 ___
 
@@ -256,7 +282,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[updated_time](_types_.imodinfo.md#updated_time)*
 
-*Defined in [src/types.ts:135](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L135)*
+*Defined in [src/types.ts:143](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L143)*
 
 readable time of when the mod was updated
 
@@ -268,7 +294,7 @@ ___
 
 *Inherited from [IModInfo](_types_.imodinfo.md).[updated_timestamp](_types_.imodinfo.md#updated_timestamp)*
 
-*Defined in [src/types.ts:131](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L131)*
+*Defined in [src/types.ts:139](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L139)*
 
 unix timestamp of when the mod was updated
 

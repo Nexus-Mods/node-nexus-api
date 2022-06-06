@@ -62,6 +62,6 @@ ___
 
 Ƭ **UpdatePeriod**: *"1d" | "1w" | "1m"*
 
-*Defined in [src/types.ts:487](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L487)*
+*Defined in [src/types.ts:495](https://github.com/Nexus-Mods/node-nexus-api/blob/af3f187/src/types.ts#L495)*
 
 range of updates to query
