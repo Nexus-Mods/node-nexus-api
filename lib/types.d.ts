@@ -31,6 +31,8 @@ export interface IModInfo {
     status: ModStatus;
     available: boolean;
     picture_url?: string;
+    mod_downloads: number;
+    mod_unique_downloads: number;
     created_timestamp: number;
     created_time: string;
     updated_timestamp: number;

@@ -118,6 +118,14 @@ export interface IModInfo {
    */
   picture_url?: string;
   /**
+   * downloads count
+   */
+  mod_downloads: number;
+  /**
+   * unique downloads count
+   */
+  mod_unique_downloads: number;
+  /**
    * unix timestamp of when the mod was created
    */
   created_timestamp: number;
