@@ -23,7 +23,7 @@
     "@types/ref-union": "^0.0.28",
     "@types/request": "^2.47.0",
     "@types/typescript": "^2.0.0",
-    "typedoc": "^0.17.0",
+    "typedoc": "^0.22.17",
     "typedoc-plugin-markdown": "^2.2.17",
     "typescript": "^3.8.3"
   },
