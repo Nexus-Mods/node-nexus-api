@@ -143,9 +143,13 @@ export interface IModInfo {
    */
   endorsement_count: number;
   /**
-   * number of downloads
+   * number of total downloads
    */
   mod_downloads: number;
+  /**
+   * number of unique downloads
+   */
+  mod_unique_downloads: number;
   /**
    * obsolete - will be removed in the near future
    */
