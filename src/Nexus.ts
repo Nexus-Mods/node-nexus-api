@@ -986,14 +986,20 @@ class Nexus {
                                           : Promise<Partial<types.IRevision>> {
     await this.mQuota.wait();
 
-    const res = await this.requestGraph<types.IRevision>(
-      'collectionRevision',
-      {
+    const parameters: graphQL.GraphQueryParameters = {
         slug: { type: 'String', optional: false },
-        revision: { type: 'Int', optional: false },
         viewAdultContent: { type: 'Boolean', optional: true },
-      },
-      query, { slug: collectionSlug, revision: revisionNumber, viewAdultContent: ignoreAdultBlock },
+      };
+
+    const variables = { slug: collectionSlug, viewAdultContent: ignoreAdultBlock };
+
+    if (!!revisionNumber) {
+      parameters['revision'] = { type: 'Int', optional: false };
+      variables['revision'] = revisionNumber;
+    }
+
+    const res = await this.requestGraph<types.IRevision>(
+      'collectionRevision', parameters, query, variables,
       this.args({ path: this.filter({}) }));
 
     return res;
