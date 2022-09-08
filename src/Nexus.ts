@@ -969,6 +969,42 @@ class Nexus {
   }
 
   /**
+   * get list of own curated collections, optionally paginated and/or filtered for a game
+   * @param query selects the information to fetch
+   * @param gameId if set, only collections for that game are returned.
+   *               Unlike most queries, we do not fall back to the "global" game if this is undefined,
+   *               instead _all_ collections are returned
+   * @param count maximum number of items to return
+   * @param offset offset of items to return, for pagination
+   * @returns list of collections
+   */
+  public async getMyCollections(query: graphQL.ICollectionQuery, gameId?: string, count?: number, offset?: number): Promise<Partial<types.ICollection>[]> {
+    await this.mQuota.wait();
+
+    interface ICollectionList {
+      nodes: types.ICollection[];
+    }
+
+    const res = await this.requestGraph<ICollectionList>(
+      'myCollections',
+      {
+        gameDomain: { type: 'String', optional: true },
+        count: { type: 'Int', optional: true },
+        offset: { type: 'Int', optional: true },
+        viewUnlisted: { type: 'Boolean', optional: false },
+        viewUnderModeration: { type: 'Boolean', optional: false },
+      },
+      { nodes: query }, {
+        gameDomain: gameId,
+        count, offset,
+        viewUnlisted: true,
+        viewUnderModeration: true,
+      },
+      this.args({ path: this.filter({}) }));
+    return res.nodes;
+  }
+
+  /**
    * get meta information about a collection revision
    * @param query selects the information to fetch
    * @param collectionSlug text id identifying the collection
