@@ -31,8 +31,8 @@ export const USER_SERVICE_API_URL: string = 'https://users.nexusmods.com';
 // Please don't mess with this unless you're in contact with NexusMods
 export const PROTOCOL_VERSION: string = require('../package.json').version.split('-')[0];
 
-// server will reject feedback if attachments are > 20mb large
-export const MAX_FILE_SIZE: number = 20 * 1024 * 1024;
+// server will reject feedback if attachments are > 40mb large
+export const MAX_FILE_SIZE: number = 40 * 1024 * 1024;
 
 export const MAX_JWT_REFRESH_TRIES: number = 3;
 
