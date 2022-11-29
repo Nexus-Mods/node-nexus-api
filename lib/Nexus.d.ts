@@ -1,10 +1,8 @@
 import * as types from './types';
 import * as graphQL from './typesGraphQL';
-import TypedEmitter from 'typed-emitter';
 import { IGraphQLError, LogFunc } from './types';
 import { RatingOptions } from '.';
 declare class Nexus {
-    events: TypedEmitter<types.INexusEvents>;
     private mBaseData;
     private mBaseURL;
     private mGraphBaseURL;
@@ -14,14 +12,16 @@ declare class Nexus {
     private mLogCB;
     private mOAuthCredentials;
     private mOAuthConfig;
+    private mJWTRefreshCallback;
     private mJwtRefreshTries;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setLogger(logCB: LogFunc): void;
-    static createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
+    static createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number, onJWTRefresh?: (credentials: types.IOAuthCredentials) => void): Promise<Nexus>;
     setGame(gameId: string): void;
     revalidate(): Promise<types.IValidateKeyResponse>;
     getValidationResult(): types.IValidateKeyResponse;
+    setOAuthCredentials(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, onJWTRefresh: (credentials: types.IOAuthCredentials) => void): Promise<types.IValidateKeyResponse>;
     setKey(apiKey: string): Promise<types.IValidateKeyResponse>;
     getRateLimits(): {
         daily: number;
@@ -47,6 +47,7 @@ declare class Nexus {
     getFileInfo(modId: number, fileId: number, gameId?: string): Promise<types.IFileInfo>;
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
+    userById(query: graphQL.IUserQuery, userId: number): Promise<types.IGraphUser>;
     modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]>;
     modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]>;
     fileHashes(query: graphQL.IFileHashQuery, md5Hashes: string[]): Promise<{

@@ -911,9 +911,5 @@ export interface IOAuthCredentials {
 
 export interface IOAuthConfig {
   id: string,
-  secret: string,
-}
-
-export interface INexusEvents {
-  'oauth-credentials-updated': (credentials: IOAuthCredentials) => void,
+  secret?: string
 }

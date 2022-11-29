@@ -100,9 +100,11 @@ The client handles dealing with expired tokens by calling a refresh token endpoi
 You can listen to credential refreshes and pass them to your app for storage and later re-use:
 
 ```
-const client = Nexus.createWithOAuth(credentials, config, appName, appVersion, defaultGame).then(nexus => {
-    nexus.events.on('oauth-credentials-updated', (credentials) => {
-        console.log(`We have received new credentials: ${credentials}. They should now be stored somewhere.`);
-    });
+const callback = () => {
+    console.log(`We have received new credentials: ${credentials}. They should now be stored somewhere.`);
+}
+
+const client = Nexus.createWithOAuth(credentials, config, appName, appVersion, defaultGame, timeout, callback).then(nexus => {
+    ...
 });
 ```

@@ -13,8 +13,6 @@ import * as url from 'url';
 import * as setCookieParser from 'set-cookie-parser';
 import * as format from 'string-template';
 import * as jwt from 'jsonwebtoken';
-import { EventEmitter } from 'events';
-import TypedEmitter from 'typed-emitter';
 import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError, GraphError, IGraphErrorDetail } from './customErrors';
 import { IGraphQLError, LogFunc } from './types';
 import { RatingOptions } from '.';
@@ -282,8 +280,6 @@ function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredential
  * @class Nexus
  */
 class Nexus {
-  public events: TypedEmitter<types.INexusEvents> = new EventEmitter() as TypedEmitter<types.INexusEvents>;
-
   private mBaseData: IRequestArgs;
   private mBaseURL = param.API_URL;
   private mGraphBaseURL = param.GRAPHQL_URL;
@@ -293,6 +289,7 @@ class Nexus {
   private mLogCB: LogFunc = () => undefined;
   private mOAuthCredentials: types.IOAuthCredentials;
   private mOAuthConfig: types.IOAuthConfig;
+  private mJWTRefreshCallback: (credentials: types.IOAuthCredentials) => void;
   private mJwtRefreshTries: number = 0;
 
   //#region Constructor and maintenance
@@ -350,11 +347,23 @@ class Nexus {
     this.mLogCB = logCB;
   }
 
-  public static async createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus> {
+  /**
+   * create a Nexus instance using OAUTH credentials
+   * @param credentials {types.IOAuthCredentials} the credentials
+   * @param config {types.IOAuthConfig} client config
+   * @param appName {string} name of the client application
+   * @param appVersion {string} Version number of the client application (Needs to be semantic format)
+   * @param defaultGame {string} (nexus) id of the game requests are made for. Can be overridden per request
+   * @param timeout {number} Request timeout in milliseconds. Defaults to 5000ms
+   * @param onJWTRefresh {callback} callback invoked when a JWT refresh was necessary so that the app can store the updated tokens.
+   * @returns 
+   */
+  public static async createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number, onJWTRefresh?: (credentials: types.IOAuthCredentials) => void): Promise<Nexus> {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
     res.oAuthCredentials = credentials;
     res.mOAuthConfig = config;
     res.oAuthCredentials = await res.handleJwtRefresh();
+    res.mJWTRefreshCallback = onJWTRefresh;
     return res;
   }
 
@@ -384,6 +393,26 @@ class Nexus {
    */
   public getValidationResult(): types.IValidateKeyResponse {
     return this.mValidationResult;
+  }
+
+  public async setOAuthCredentials(credentials: types.IOAuthCredentials,
+                                   config: types.IOAuthConfig,
+                                   onJWTRefresh: (credentials: types.IOAuthCredentials) => void)
+                                   : Promise<types.IValidateKeyResponse> {
+    this.oAuthCredentials = credentials;
+    this.mOAuthConfig = config;
+    this.mJWTRefreshCallback = onJWTRefresh;
+    const decoded = jwt.decode(credentials.token);
+    const userInfo = await this.userById({ avatar: true }, decoded.user.id);
+    return {
+      key: '',
+      email: '',
+      is_premium: decoded.user.membership_roles.includes('premium'),
+      is_supporter: decoded.user.membership_roles.includes('supporter'),
+      name: decoded.user.username,
+      profile_url: userInfo.avatar,
+      user_id: decoded.user.id,
+    };
   }
 
   /**
@@ -644,9 +673,6 @@ class Nexus {
   public async getFileInfo(modId: number,
                            fileId: number,
                            gameId?: string): Promise<types.IFileInfo> {
-    if (this.mBaseData?.headers?.['APIKEY'] === undefined) {
-      throw new Error('no api key set');
-    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}', this.args({
       path: this.filter({ modId, fileId, gameId }),
@@ -706,6 +732,19 @@ class Nexus {
   //#endregion
 
   //#region GraphQL convenience
+
+  public async userById(query: graphQL.IUserQuery, userId: number): Promise<types.IGraphUser> {
+    await this.mQuota.wait();  
+
+    const res = await this.requestGraph<types.IGraphUser>(
+      'user',
+      {
+        id: { type: 'Int', optional: false },
+      }, query,  { id: userId },
+      this.args({ path: this.filter({}) }));
+
+    return res;
+  }
 
   /**
    * retrieve mod information about a list of mods by their uid
@@ -1426,28 +1465,31 @@ class Nexus {
 
   private set oAuthCredentials(credentials: types.IOAuthCredentials) {
     this.mOAuthCredentials = credentials;
-    this.mBaseData.headers['Authorization'] = `Bearer ${credentials.token}`;
-    this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
+    // this.mBaseData.headers['Authorization'] = `Bearer ${credentials.token}`;
+    // this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
     this.mValidationResult = transformJwtToValidationResult(this.mOAuthCredentials);
   }
 
   private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
+    const data = {
+      client_id: this.mOAuthConfig.id,
+      refresh_token: this.mOAuthCredentials.refreshToken,
+      grant_type: 'refresh_token',
+    };
+    if (this.mOAuthConfig.secret !== undefined) {
+      data['client_secret'] = this.mOAuthConfig.secret;
+    }
     const refreshResult = await this.request(`${param.USER_SERVICE_API_URL}/oauth/token`, this.args({
-      data: {
-        client_id: this.mOAuthConfig.id,
-        client_secret: this.mOAuthConfig.secret,
-        refresh_token: this.mOAuthCredentials.refreshToken,
-        grant_type: 'refresh_token',
-      }
+      data
     }));
 
-    const newOAuthCredentials = {
+    const newOAuthCredentials: types.IOAuthCredentials = {
       token: refreshResult.access_token,
       refreshToken: refreshResult.refresh_token,
       fingerprint: refreshResult.jwt_fingerprint,
     };
 
-    this.events.emit('oauth-credentials-updated', newOAuthCredentials);
+    this.mJWTRefreshCallback?.(newOAuthCredentials);
 
     return newOAuthCredentials;
   }
@@ -1464,6 +1506,8 @@ class Nexus {
 
   private args(customArgs: IRequestArgs) {
     const result: IRequestArgs = { ...this.mBaseData };
+    result.headers['Authorization'] = `Bearer: ${this.mOAuthCredentials.token}`;
+    // result.cookies['jwt_fingerprint'] = this.mOAuthCredentials.fingerprint;
     for (const key of Object.keys(customArgs)) {
       result[key] = {
         ...result[key],
