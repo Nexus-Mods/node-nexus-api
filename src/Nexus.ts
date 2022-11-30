@@ -59,6 +59,12 @@ function handleRestResult(resolve, reject, url: string, error: any,
       const data = JSON.parse(body);
       const message = data.message ?? data.error;
       if (message) {
+        if (response.statusCode === 401 && (message === 'Token has expired')) {
+          // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
+          // https://tools.ietf.org/html/rfc6750
+          return reject(new JwtExpiredError());
+        }
+
         return reject(new NexusError(translateMessage(message), response.statusCode, url, message));
       }
     } catch (_e) {
@@ -104,12 +110,6 @@ function handleRestResult(resolve, reject, url: string, error: any,
     }
 
     const data = JSON.parse(body || '{}');
-
-    if (response.statusCode === 401 && data.message == 'Token has expired') {
-      // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
-      // https://tools.ietf.org/html/rfc6750
-      return reject(new JwtExpiredError());
-    }
 
     if ((response.statusCode < 200) || (response.statusCode >= 300)) {
       const message = data.message || data.error || response.statusMessage;
