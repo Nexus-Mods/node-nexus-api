@@ -663,6 +663,10 @@ export interface ICollection extends ITimestamped {
   description: string;
   summary: string;
   commentLink: string;
+  overallRating: string;
+  overallRatingCount: number;
+  recentRating: string;
+  recentRatingCount: number;
 }
 
 export interface IExternalResource {
