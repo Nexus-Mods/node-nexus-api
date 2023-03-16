@@ -14,8 +14,11 @@ export const DEFAULT_TIMEOUT_MS: number = 30000;
 // applies only when the request limit for the hour hasn't been exceeded yet
 export const DELAY_AFTER_429_MS: number = 1000;
 
-const API_SUBDOMAIN = process.env['API_SUBDOMAIN'] || 'api';
 const NEXUS_DOMAIN = process.env['NEXUS_DOMAIN'] || 'nexusmods.com';
+
+const API_SUBDOMAIN = process.env['API_SUBDOMAIN'] || 'api';
+const USERS_SUBDOMAIN = process.env['USERS_SUBDOMAIN'] || 'users';
+
 export const BASE_URL: string = `https://${API_SUBDOMAIN}.${NEXUS_DOMAIN}`;
 export const API_URL: string = `${BASE_URL}/v1`;
 export const GRAPHQL_URL: string = `${BASE_URL}/v2/graphql`;
@@ -25,7 +28,7 @@ export const GRAPHQL_URL: string = `${BASE_URL}/v2/graphql`;
 export const API_DEV_URL: string = '';
 export const APIKEY_DEV: string = '';
 
-export const USER_SERVICE_API_URL: string = 'https://users.nexusmods.com';
+export const USER_SERVICE_API_URL: string = `https://${USERS_SUBDOMAIN}.${NEXUS_DOMAIN}`;
 
 // used so the server can provide compatibility behaviour with older protocols.
 // Please don't mess with this unless you're in contact with NexusMods
