@@ -15,6 +15,12 @@ class Quota {
   private mLastCheck: number = Date.now();
   private mBlockHour: number;
   private mLimit: number = 1000;
+  // to avoid making multiple requests with an expired jwt token during
+  // application startup, we only allow a single request, all others are
+  // blocked until that first one has succeeded, refreshing the token in
+  // the process if necessary
+  private mInitBlock: Promise<void>;
+  private mOnInitDone: () => void;
 
   constructor(init: number, max: number, msPerIncrement: number) {
     this.mCount = init;
@@ -24,6 +30,11 @@ class Quota {
 
   public updateLimit(limit: number) {
     this.mLimit = limit;
+  }
+
+  public finishInit() {
+    this.mOnInitDone?.();
+    this.mOnInitDone = undefined;
   }
 
   /**
@@ -44,8 +55,15 @@ class Quota {
     return false;
   }
 
-  public wait(): Promise<void> {
+  public async wait(): Promise<void> {
     const now = new Date();
+
+    if (this.mInitBlock === undefined) {
+      this.mInitBlock = new Promise(resolve => { this.mOnInitDone = resolve });
+    } else {
+      await this.mInitBlock;
+    }
+
     if ((this.mBlockHour !== undefined)
         && (now.getHours() === this.mBlockHour)) {
       // if the hourly and daily limit was exceeded, don't make any new requests

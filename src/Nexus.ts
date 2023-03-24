@@ -51,6 +51,12 @@ function chunkify<T>(input: T[], maxSize: number): T[][] {
   return res;
 }
 
+// status messages that should trigger a token refresh
+const REFRESH_TOKEN_ERRORS = [
+  'Token has expired',
+  'Signature verification raised',
+];
+
 function handleRestResult(resolve, reject, url: string, error: any,
                           response: http.IncomingMessage, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
@@ -59,7 +65,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
       const data = JSON.parse(body);
       const message = data.message ?? data.error;
       if (message) {
-        if (response.statusCode === 401 && (message === 'Token has expired')) {
+        if ((response.statusCode === 401) && REFRESH_TOKEN_ERRORS.includes(message)) {
           // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
           // https://tools.ietf.org/html/rfc6750
           return reject(new JwtExpiredError());
@@ -157,8 +163,12 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
       headers,
       timeout: args.requestConfig.timeout,
     }, (res: http.IncomingMessage) => {
-      const { statusCode } = res;
+      const { statusCode, statusMessage } = res;
       const contentType = res.headers['content-type'];
+
+      if ((statusCode === 401) && REFRESH_TOKEN_ERRORS.includes(statusMessage)) {
+        return reject(new JwtExpiredError());
+      }
 
       let err: string;
       if (statusCode >= 300) {
@@ -1315,6 +1325,8 @@ class Nexus {
       }
       this.mJwtRefreshTries = 0;
       throw err;
+    } finally {
+      this.mQuota.finishInit();
     }
   }
 
