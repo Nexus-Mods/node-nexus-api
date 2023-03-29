@@ -591,10 +591,8 @@ export interface ICollectionImage extends ITimestamped {
   id: string;
   position: number;
   revision?: IRevision;
-  title: string;
   url: string;
   user: IGraphUser;
-  verified: boolean;
 }
 
 export interface ICollectionVideo extends ITimestamped {
@@ -607,7 +605,6 @@ export interface ICollectionVideo extends ITimestamped {
   title: string;
   url: string;
   user: IGraphUser;
-  verified: boolean;
 }
 
 export type ICollectionMedia = ICollectionImage & ICollectionVideo;

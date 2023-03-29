@@ -233,10 +233,8 @@ export interface ICollectionImage extends ITimestamped {
     id: string;
     position: number;
     revision?: IRevision;
-    title: string;
     url: string;
     user: IGraphUser;
-    verified: boolean;
 }
 export interface ICollectionVideo extends ITimestamped {
     collection: ICollection;
@@ -248,7 +246,6 @@ export interface ICollectionVideo extends ITimestamped {
     title: string;
     url: string;
     user: IGraphUser;
-    verified: boolean;
 }
 export declare type ICollectionMedia = ICollectionImage & ICollectionVideo;
 export interface IForumPost {
