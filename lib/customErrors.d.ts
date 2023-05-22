@@ -21,10 +21,12 @@ export declare class NexusError extends Error {
     private mStatusCode;
     private mRequest;
     private mCode;
-    constructor(message: string, statusCode: number, url: string, code: string);
+    private mDescription;
+    constructor(message: string, statusCode: number, url: string, code: string, description?: string);
     get statusCode(): number;
     get request(): string;
     get code(): string;
+    get description(): string;
 }
 export interface IGraphErrorDetail {
     attribute: GraphErrorAttribute;

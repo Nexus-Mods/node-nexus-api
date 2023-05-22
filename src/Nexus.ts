@@ -71,7 +71,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
           return reject(new JwtExpiredError());
         }
 
-        return reject(new NexusError(translateMessage(message), response.statusCode, url, message));
+        return reject(new NexusError(translateMessage(message), response.statusCode, url, message, data.error_description));
       }
     } catch (_e) {
       // nop, just allow other error handling code to run
@@ -372,8 +372,8 @@ class Nexus {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
     res.oAuthCredentials = credentials;
     res.mOAuthConfig = config;
-    res.oAuthCredentials = await res.handleJwtRefresh();
     res.mJWTRefreshCallback = onJWTRefresh;
+    res.oAuthCredentials = await res.handleJwtRefresh();
     return res;
   }
 

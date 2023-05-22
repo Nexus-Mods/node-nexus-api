@@ -64,11 +64,13 @@ export class NexusError extends Error {
   private mStatusCode: number;
   private mRequest: string;
   private mCode: string;
-  constructor(message: string, statusCode: number, url: string, code: string) {
+  private mDescription: string
+  constructor(message: string, statusCode: number, url: string, code: string, description?: string) {
     super(message);
     this.mStatusCode = statusCode;
     this.mRequest = url;
     this.mCode = code;
+    this.mDescription = description;
   }
 
   public get statusCode() {
@@ -81,6 +83,10 @@ export class NexusError extends Error {
 
   public get code() {
     return this.mCode;
+  }
+
+  public get description() {
+    return this.mDescription;
   }
 }
 
