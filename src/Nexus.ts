@@ -1240,6 +1240,8 @@ class Nexus {
 
         if (anonymous) {
           delete headers['APIKEY'];
+        } else if (this.mOAuthCredentials !== undefined) {
+          headers['Authorization'] = `Bearer: ${this.mOAuthCredentials.token}`;
         }
 
         const inputUrl = anonymous
@@ -1267,6 +1269,8 @@ class Nexus {
               }
             });
         });
+
+        req.on('error', err => reject(err));
 
         form.pipe(req);
         // req.end();
