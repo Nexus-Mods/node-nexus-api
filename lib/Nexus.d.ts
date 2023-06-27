@@ -91,6 +91,7 @@ declare class Nexus {
     private mutateGraph;
     private set oAuthCredentials(value);
     private handleJwtRefresh;
+    forceJwtRefresh(): Promise<types.IOAuthCredentials>;
     private filter;
     private args;
 }

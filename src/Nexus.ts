@@ -1510,6 +1510,30 @@ class Nexus {
     return newOAuthCredentials;
   }
 
+  public async forceJwtRefresh(): Promise<types.IOAuthCredentials> {
+    const data = {
+      client_id: this.mOAuthConfig.id,
+      refresh_token: this.mOAuthCredentials.refreshToken,
+      grant_type: 'refresh_token',
+    };
+    if (this.mOAuthConfig.secret !== undefined) {
+      data['client_secret'] = this.mOAuthConfig.secret;
+    }
+    const refreshResult = await this.request(`${param.USER_SERVICE_API_URL}/oauth/token`, this.args({
+      data
+    }));
+
+    const newOAuthCredentials: types.IOAuthCredentials = {
+      token: refreshResult.access_token,
+      refreshToken: refreshResult.refresh_token,
+      fingerprint: refreshResult.jwt_fingerprint,
+    };
+
+    this.mJWTRefreshCallback?.(newOAuthCredentials);
+
+    return newOAuthCredentials;
+  }
+
   private filter(obj: any): any {
     const result = {};
     Object.keys(obj).forEach((key) => {
