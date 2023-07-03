@@ -475,8 +475,15 @@ class Nexus {
   /**
  * Get user info from an oauth token
  */
-  public async getUserInfo(): Promise<types.IUserInfo> {
-    return await this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, this.args({}));
+  public async getUserInfo(oauthToken?:string): Promise<types.IUserInfo> {
+
+    if(oauthToken === undefined)
+      return await this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, this.args({}));
+    else  {
+      const result: IRequestArgs = { ...this.mBaseData };
+      result.headers['Authorization'] = `Bearer: ${oauthToken}`; 
+      return await this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, result);
+    }
   }
 
   /**
