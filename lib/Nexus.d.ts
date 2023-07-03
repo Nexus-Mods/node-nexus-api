@@ -28,6 +28,7 @@ declare class Nexus {
         hourly: number;
     };
     validateKey(key?: string): Promise<types.IValidateKeyResponse>;
+    getUserInfo(): Promise<types.IUserInfo>;
     getTrackedMods(): Promise<types.ITrackedMod[]>;
     trackMod(modId: string, gameId?: string): Promise<types.ITrackResponse>;
     untrackMod(modId: string, gameId?: string): Promise<types.ITrackResponse>;

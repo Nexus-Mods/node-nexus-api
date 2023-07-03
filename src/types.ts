@@ -39,6 +39,17 @@ export interface IUser {
   avatar?: string;
 }
 
+export interface IUserInfo {
+  sub: string;
+  name: string;
+  email: string;
+  avatar: string;
+  group_id: number;
+  membership_roles: string[];
+  premium_expiry: number;
+}
+
+
 export type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
 
 /**

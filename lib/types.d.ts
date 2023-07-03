@@ -13,6 +13,15 @@ export interface IUser {
     name: string;
     avatar?: string;
 }
+export interface IUserInfo {
+    sub: string;
+    name: string;
+    email: string;
+    avatar: string;
+    group_id: number;
+    membership_roles: string[];
+    premium_expiry: number;
+}
 export declare type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
 export declare type ModStatus = 'under_moderation' | 'published' | 'not_published' | 'publish_with_game' | 'removed' | 'wastebinned' | 'hidden';
 export interface IModInfo {
