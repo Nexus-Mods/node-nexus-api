@@ -473,6 +473,13 @@ class Nexus {
   }
 
   /**
+ * Get user info from an oauth token
+ */
+  public async getUserInfo(): Promise<types.IUserInfo> {
+    return await this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, this.args({}));
+  }
+
+  /**
    * Get list of all mods being tracked by the user
    */
   public async getTrackedMods(): Promise<types.ITrackedMod[]> {
@@ -1485,6 +1492,8 @@ class Nexus {
     // this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
     this.mValidationResult = transformJwtToValidationResult(this.mOAuthCredentials);
   }
+
+
 
   private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
     const data = {
