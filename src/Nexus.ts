@@ -292,6 +292,7 @@ function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredential
 class Nexus {
   private mBaseData: IRequestArgs;
   private mBaseURL = param.API_URL;
+  private mUserServiceBaseURL = param.USER_SERVICE_API_URL;
   private mGraphBaseURL = param.GRAPHQL_URL;
   private mQuota: Quota;
   private mValidationResult: types.IValidateKeyResponse;
@@ -472,10 +473,12 @@ class Nexus {
                 this.args({ headers: this.filter({ APIKEY: key }) }));
   }
 
-  /**
- * Get user info from an oauth token
- */
-  public async getUserInfo(oauthToken?:string): Promise<types.IUserInfo> {
+
+  /*public async getUserInfo(): Promise<types.IUserInfo> {
+
+    await this.mQuota.wait();
+    return this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, this.args({}));
+    //return this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, result);
 
     let response;
     
@@ -491,6 +494,15 @@ class Nexus {
     
     console.log('response', {response} );
     return response;
+  }*/
+
+  /**
+ * Get user info from an oauth token
+ */
+  public async getUserInfo(): Promise<types.IUserInfo> {
+
+    await this.mQuota.wait();
+    return this.request(`${this.mUserServiceBaseURL}/oauth/userinfo`, this.args({}));
   }
 
   /**
@@ -1533,6 +1545,7 @@ class Nexus {
     return newOAuthCredentials;
   }
 
+  /*
   public async forceJwtRefresh(): Promise<types.IOAuthCredentials> {
     const data = {
       client_id: this.mOAuthConfig.id,
@@ -1556,6 +1569,7 @@ class Nexus {
 
     return newOAuthCredentials;
   }
+*/
 
   private filter(obj: any): any {
     const result = {};
