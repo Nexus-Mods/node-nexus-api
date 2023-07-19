@@ -5,6 +5,7 @@ import { RatingOptions } from '.';
 declare class Nexus {
     private mBaseData;
     private mBaseURL;
+    private mUserServiceBaseURL;
     private mGraphBaseURL;
     private mQuota;
     private mValidationResult;
@@ -28,7 +29,7 @@ declare class Nexus {
         hourly: number;
     };
     validateKey(key?: string): Promise<types.IValidateKeyResponse>;
-    getUserInfo(oauthToken?: string): Promise<types.IUserInfo>;
+    getUserInfo(): Promise<types.IUserInfo>;
     getTrackedMods(): Promise<types.ITrackedMod[]>;
     trackMod(modId: string, gameId?: string): Promise<types.ITrackResponse>;
     untrackMod(modId: string, gameId?: string): Promise<types.ITrackResponse>;
@@ -92,7 +93,6 @@ declare class Nexus {
     private mutateGraph;
     private set oAuthCredentials(value);
     private handleJwtRefresh;
-    forceJwtRefresh(): Promise<types.IOAuthCredentials>;
     private filter;
     private args;
 }
