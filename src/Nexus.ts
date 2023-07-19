@@ -1584,7 +1584,7 @@ class Nexus {
   private args(customArgs: IRequestArgs) {
     const result: IRequestArgs = { ...this.mBaseData };
     if (this.mOAuthCredentials !== undefined) {
-      result.headers['Authorization'] = `Bearer: ${this.mOAuthCredentials.token}`;
+      result.headers['Authorization'] = `Bearer ${this.mOAuthCredentials.token}`;
       // result.cookies['jwt_fingerprint'] = this.mOAuthCredentials.fingerprint;
     }
     for (const key of Object.keys(customArgs)) {
