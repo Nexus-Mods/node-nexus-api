@@ -68,11 +68,11 @@ function handleRestResult(resolve, reject, url: string, error: any,
       if (message) {
 
         // assume a 401 is a token expiry issue
-        if ((response.statusCode === 401)) {
+        /*if ((response.statusCode === 401)) {
           // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
           // https://tools.ietf.org/html/rfc6750
           return reject(new JwtExpiredError());
-        }
+        }*/
 
         return reject(new NexusError(translateMessage(message), response.statusCode, url, message, data.error_description));
       }
@@ -1364,6 +1364,7 @@ class Nexus {
         }
       }
       if (this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+        console.log('caught error. trying to refresh token');
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();
         return this.request(url, args, method);
@@ -1529,7 +1530,10 @@ class Nexus {
 
 
 
-  private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
+  public async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
+    
+    console.log('handleJwtRefresh()');
+
     const data = {
       client_id: this.mOAuthConfig.id,
       refresh_token: this.mOAuthCredentials.refreshToken,
@@ -1552,32 +1556,6 @@ class Nexus {
 
     return newOAuthCredentials;
   }
-
-  /*
-  public async forceJwtRefresh(): Promise<types.IOAuthCredentials> {
-    const data = {
-      client_id: this.mOAuthConfig.id,
-      refresh_token: this.mOAuthCredentials.refreshToken,
-      grant_type: 'refresh_token',
-    };
-    if (this.mOAuthConfig.secret !== undefined) {
-      data['client_secret'] = this.mOAuthConfig.secret;
-    }
-    const refreshResult = await this.request(`${param.USER_SERVICE_API_URL}/oauth/token`, this.args({
-      data
-    }));
-
-    const newOAuthCredentials: types.IOAuthCredentials = {
-      token: refreshResult.access_token,
-      refreshToken: refreshResult.refresh_token,
-      fingerprint: refreshResult.jwt_fingerprint,
-    };
-
-    this.mJWTRefreshCallback?.(newOAuthCredentials);
-
-    return newOAuthCredentials;
-  }
-*/
 
   private filter(obj: any): any {
     const result = {};
