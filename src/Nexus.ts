@@ -68,11 +68,11 @@ function handleRestResult(resolve, reject, url: string, error: any,
       if (message) {
 
         // assume a 401 is a token expiry issue
-        /*if ((response.statusCode === 401)) {
+        if ((response.statusCode === 401)) {
           // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
           // https://tools.ietf.org/html/rfc6750
           return reject(new JwtExpiredError());
-        }*/
+        }
 
         return reject(new NexusError(translateMessage(message), response.statusCode, url, message, data.error_description));
       }
@@ -171,12 +171,12 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
 
       let err: string;
 
-      console.log(res);
+      //(res);
 
       if ((statusCode === 401)) { 
         // assume a 401 is a token expiry error
-        //return reject(new JwtExpiredError());
-        return reject(new HTTPError(statusCode, err, '', finalURL));
+        return reject(new JwtExpiredError());
+        //return reject(new HTTPError(statusCode, err, '', finalURL));
       }
 
       if (statusCode >= 300) {
@@ -1356,19 +1356,24 @@ class Nexus {
         this.mQuota.updateLimit(Math.max(daily, hourly));
         this.mJwtRefreshTries = 0;
       }, method);
-    } catch (err) {
+    } catch (err) {      
+      
+      console.log(`node-nexus-api: request catch error`, JSON.stringify(err));
+
       if (err instanceof RateLimitError) {
         if (!this.mQuota.block()) {
           await this.mQuota.wait();
           return this.request(url, args, method);
         }
       }
+
       if (this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
-        console.log('caught error. trying to refresh token');
+        //console.log('caught error. trying to refresh token');
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();
         return this.request(url, args, method);
       }
+
       this.mJwtRefreshTries = 0;
       throw err;
     } finally {
@@ -1532,7 +1537,7 @@ class Nexus {
 
   public async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
     
-    console.log('handleJwtRefresh()');
+    console.log(`node-nexus-api: handleJwtRefresh() ${param.USER_SERVICE_API_URL}`);
 
     const data = {
       client_id: this.mOAuthConfig.id,
@@ -1551,6 +1556,8 @@ class Nexus {
       refreshToken: refreshResult.refresh_token,
       fingerprint: refreshResult.jwt_fingerprint,
     };
+
+    console.log(`node-nexus-api: handleJwtRefresh()`, JSON.stringify(newOAuthCredentials));
 
     this.mJWTRefreshCallback?.(newOAuthCredentials);
 
