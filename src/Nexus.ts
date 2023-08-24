@@ -481,36 +481,13 @@ class Nexus {
                 this.args({ headers: this.filter({ APIKEY: key }) }));
   }
 
-
-  /*public async getUserInfo(): Promise<types.IUserInfo> {
-
-    await this.mQuota.wait();
-    return this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, this.args({}));
-    //return this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, result);
-
-    let response;
-    
-    if(oauthToken === undefined) {
-      response = await this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, this.args({}));
-    }
-    else  
-    {
-      const result: IRequestArgs = { ...this.mBaseData };
-      result.headers['Authorization'] = `Bearer: ${oauthToken}`; 
-      response = await this.request(`${param.USER_SERVICE_API_URL}/oauth/userinfo`, result);
-    }      
-    
-    console.log('response', {response} );
-    return response;
-  }*/
-
   /**
  * Get user info from an oauth token
  */
   public async getUserInfo(): Promise<types.IUserInfo> {
 
     await this.mQuota.wait();
-    return this.request(`${this.mUserServiceBaseURL}/oauth/userinfo`, this.args({}));
+    return await this.request(`${this.mUserServiceBaseURL}/oauth/userinfo`, this.args({}));
   }
 
   /**
