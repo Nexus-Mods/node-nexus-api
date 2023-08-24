@@ -1337,8 +1337,9 @@ class Nexus {
       
       console.log(`node-nexus-api: request catch error`, {
         url: url,
-        args: JSON.stringify(args),
-        error: JSON.stringify(err)
+        args: args,
+        error: err,
+        method: method
       });
 
       if (err instanceof RateLimitError) {
