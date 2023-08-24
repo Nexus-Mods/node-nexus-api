@@ -66,7 +66,9 @@ function handleRestResult(resolve, reject, url: string, error: any,
       const data = JSON.parse(body);
       const message = data.message ?? data.error;
       if (message) {
-        if ((response.statusCode === 401) && REFRESH_TOKEN_ERRORS.includes(response.headers['www-authenticate'])) {
+
+        // assume a 401 is a token expiry issue
+        if ((response.statusCode === 401)) {
           // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
           // https://tools.ietf.org/html/rfc6750
           return reject(new JwtExpiredError());
@@ -167,7 +169,8 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
       const { statusCode, statusMessage } = res;
       const contentType = res.headers['content-type'];
 
-      if ((statusCode === 401) && REFRESH_TOKEN_ERRORS.includes(statusMessage)) {
+      if ((statusCode === 401)) { 
+        // assume a 401 is a token expiry error
         return reject(new JwtExpiredError());
       }
 
