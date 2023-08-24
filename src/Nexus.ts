@@ -55,6 +55,7 @@ function chunkify<T>(input: T[], maxSize: number): T[][] {
 const REFRESH_TOKEN_ERRORS = [
   'Token has expired',
   'Signature verification raised',
+  'invalid_token'
 ];
 
 function handleRestResult(resolve, reject, url: string, error: any,
@@ -65,7 +66,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
       const data = JSON.parse(body);
       const message = data.message ?? data.error;
       if (message) {
-        if ((response.statusCode === 401) && REFRESH_TOKEN_ERRORS.includes(message)) {
+        if ((response.statusCode === 401) && REFRESH_TOKEN_ERRORS.includes(response.headers['www-authenticate'])) {
           // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
           // https://tools.ietf.org/html/rfc6750
           return reject(new JwtExpiredError());
