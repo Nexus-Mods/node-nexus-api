@@ -1335,12 +1335,16 @@ class Nexus {
       }, method);
     } catch (err) {      
       
-      console.log(`node-nexus-api: request catch error`, JSON.stringify(err));
+      console.log(`node-nexus-api: request catch error`, {
+        url: url,
+        args: JSON.stringify(args),
+        error: JSON.stringify(err)
+      });
 
       if (err instanceof RateLimitError) {
         if (!this.mQuota.block()) {
           await this.mQuota.wait();
-          return this.request(url, args, method);
+          return await this.request(url, args, method);
         }
       }
 
@@ -1348,7 +1352,7 @@ class Nexus {
         //console.log('caught error. trying to refresh token');
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();
-        return this.request(url, args, method);
+        return await this.request(url, args, method);
       }
 
       this.mJwtRefreshTries = 0;
