@@ -169,12 +169,16 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
       const { statusCode, statusMessage } = res;
       const contentType = res.headers['content-type'];
 
+      let err: string;
+
+      console.log(res);
+
       if ((statusCode === 401)) { 
         // assume a 401 is a token expiry error
-        return reject(new JwtExpiredError());
+        //return reject(new JwtExpiredError());
+        return reject(new HTTPError(statusCode, err, '', finalURL));
       }
 
-      let err: string;
       if (statusCode >= 300) {
         err = 'Request Failed';
       } else if (!/^application\/json/.test(contentType)) {
@@ -1359,7 +1363,7 @@ class Nexus {
           return this.request(url, args, method);
         }
       }
-      if (err instanceof JwtExpiredError && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+      if (this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();
         return this.request(url, args, method);
