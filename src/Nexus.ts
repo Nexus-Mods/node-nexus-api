@@ -1352,8 +1352,9 @@ class Nexus {
       if (err instanceof JwtExpiredError && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
         //console.log('caught error. trying to refresh token');
         this.mJwtRefreshTries++;
-        this.oAuthCredentials = await this.handleJwtRefresh();
-        return await this.request(url, args, method);
+        this.oAuthCredentials = await this.handleJwtRefresh();        
+        console.log(`node-nexus-api: trying request again`);        
+        return await this.request(url, args, method); 
       }
 
       this.mJwtRefreshTries = 0;
