@@ -1519,7 +1519,7 @@ class Nexus {
 
 
 
-  public async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
+  private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
     
     //console.log(`node-nexus-api: handleJwtRefresh() ${param.USER_SERVICE_API_URL}`);
 

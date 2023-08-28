@@ -92,7 +92,7 @@ declare class Nexus {
     private convertErrDetail;
     private mutateGraph;
     private set oAuthCredentials(value);
-    handleJwtRefresh(): Promise<types.IOAuthCredentials>;
+    private handleJwtRefresh;
     private filter;
     private args;
 }
