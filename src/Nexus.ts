@@ -1354,7 +1354,8 @@ class Nexus {
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();        
         console.log(`node-nexus-api: trying request again`);        
-        return await this.request(url, args, method); 
+        // do we need to update the args (in the header?) now that we've got new oauth credentials
+        return await this.request(url, this.args(args), method); 
       }
 
       this.mJwtRefreshTries = 0;
