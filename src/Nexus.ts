@@ -1335,12 +1335,12 @@ class Nexus {
       }, method);
     } catch (err) {      
       
-      console.log(`node-nexus-api: request catch error`, {
+      /*console.log(`node-nexus-api: request catch error`, {
         url: url,
         args: args,
         error: err,
         method: method
-      });
+      });*/
 
       if (err instanceof RateLimitError) {
         if (!this.mQuota.block()) {
@@ -1353,7 +1353,7 @@ class Nexus {
         //console.log('caught error. trying to refresh token');
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();        
-        console.log(`node-nexus-api: trying request again`);        
+        //console.log(`node-nexus-api: trying request again`);        
         // do we need to update the args (in the header?) now that we've got new oauth credentials
         return await this.request(url, this.args(args), method); 
       }
@@ -1521,7 +1521,7 @@ class Nexus {
 
   public async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
     
-    console.log(`node-nexus-api: handleJwtRefresh() ${param.USER_SERVICE_API_URL}`);
+    //console.log(`node-nexus-api: handleJwtRefresh() ${param.USER_SERVICE_API_URL}`);
 
     const data = {
       client_id: this.mOAuthConfig.id,
@@ -1541,7 +1541,7 @@ class Nexus {
       fingerprint: refreshResult.jwt_fingerprint,
     };
 
-    console.log(`node-nexus-api: handleJwtRefresh()`, JSON.stringify(newOAuthCredentials));
+    //console.log(`node-nexus-api: handleJwtRefresh()`, JSON.stringify(newOAuthCredentials));
 
     this.mJWTRefreshCallback?.(newOAuthCredentials);
 
