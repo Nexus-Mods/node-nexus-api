@@ -71,7 +71,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
         if ((response.statusCode === 401)) {
           // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
           // https://tools.ietf.org/html/rfc6750
-          return reject(new JwtExpiredError());
+          //return reject(new JwtExpiredError());
         }
 
         return reject(new NexusError(translateMessage(message), response.statusCode, url, message, data.error_description));
@@ -175,7 +175,7 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
 
       if ((statusCode === 401)) { 
         // assume a 401 is a token expiry error
-        return reject(new JwtExpiredError());
+        //return reject(new JwtExpiredError());
         //return reject(new HTTPError(statusCode, err, '', finalURL));
       }
 
@@ -1335,12 +1335,12 @@ class Nexus {
       }, method);
     } catch (err) {      
       
-      /*console.log(`node-nexus-api: request catch error`, {
+      console.log(`node-nexus-api: request catch error`, {
         url: url,
         args: args,
         error: err,
         method: method
-      });*/
+      });
 
       if (err instanceof RateLimitError) {
         if (!this.mQuota.block()) {
@@ -1349,11 +1349,11 @@ class Nexus {
         }
       }
 
-      if (err instanceof JwtExpiredError && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
-        //console.log('caught error. trying to refresh token');
+      if (err.statusCode === 401 && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+        console.log('caught 401 error. trying to refresh token');
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();        
-        //console.log(`node-nexus-api: trying request again`);        
+        console.log(`node-nexus-api: trying request again`);        
         // do we need to update the args (in the header?) now that we've got new oauth credentials
         return await this.request(url, this.args(args), method); 
       }
