@@ -1335,12 +1335,12 @@ class Nexus {
       }, method);
     } catch (err) {      
       
-      console.log(`node-nexus-api: request catch error`, {
+      /*console.log(`node-nexus-api: request catch error`, {
         url: url,
         args: args,
         error: err,
         method: method
-      });
+      });*/
 
       if (err instanceof RateLimitError) {
         if (!this.mQuota.block()) {
@@ -1350,10 +1350,10 @@ class Nexus {
       }
 
       if (err.statusCode === 401 && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
-        console.log('caught 401 error. trying to refresh token');
+        //console.log('caught 401 error. trying to refresh token');
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();        
-        console.log(`node-nexus-api: trying request again`);        
+        //console.log(`node-nexus-api: trying request again`);        
         // do we need to update the args (in the header?) now that we've got new oauth credentials
         return await this.request(url, this.args(args), method); 
       }
