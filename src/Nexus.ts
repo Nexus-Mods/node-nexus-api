@@ -3,8 +3,6 @@ import * as types from './types';
 import * as graphQL from './typesGraphQL';
 import Quota from './Quota';
 
-import open from 'open';
-
 import * as FormData from 'form-data';
 import * as fs from 'fs';
 import * as http from 'http';
@@ -1247,7 +1245,8 @@ class Nexus {
     const encodedMessage = encodeURIComponent(message);
     const encodedTitle = encodeURIComponent(title);
     const ghURL = `https://github.com/Nexus-Mods/Vortex/issues/new?title=${encodedTitle}&body=${encodedMessage}`;
-    open(ghURL);
+    const { shell } = require('electron')
+    shell.openExternal(ghURL);
     return Promise.resolve(undefined);
 
     // return this.checkFileSize(fileBundle)

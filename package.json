@@ -1,6 +1,6 @@
 {
   "name": "@nexusmods/nexus-api",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "main": "./lib/index.js",
   "typings": "lib/index",
   "homepage": "https://www.nexusmods.com/",
@@ -30,7 +30,6 @@
   "dependencies": {
     "form-data": "^4.0.0",
     "jsonwebtoken": "^9.0.0",
-    "open": "^10.1.0",
     "request": "^2.85.0",
     "set-cookie-parser": "^2.4.6",
     "string-template": "^1.0.0",
