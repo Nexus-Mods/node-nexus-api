@@ -1239,60 +1239,70 @@ class Nexus {
     if (message.length === 0) {
       return Promise.reject(new Error('Feedback message can\'t be empty'));
     }
-    return this.checkFileSize(fileBundle)
-      .then(() => new Promise<types.IFeedbackResponse>((resolve, reject) => {
-        const form = new FormData();
-        form.append("feedback_text", message);
-        form.append("feedback_title", title.substr(0, 255));
+    if (groupingKey) {
+      message = message.concat(`\n\nhash: ${groupingKey}`);
+    }
+    const encodedMessage = encodeURIComponent(message);
+    const encodedTitle = encodeURIComponent(title);
+    const ghURL = `https://github.com/Nexus-Mods/Vortex/issues/new?title=${encodedTitle}&body=${encodedMessage}`;
+    const { shell } = require('electron')
+    shell.openExternal(ghURL);
+    return Promise.resolve(undefined);
 
-        if (fileBundle !== undefined) {
-          form.append('feedback_file', fs.createReadStream(fileBundle));
-        }
-        if (groupingKey !== undefined) {
-          form.append('grouping_key', groupingKey);
-        }
-        if (id !== undefined) {
-          form.append('reference', id);
-        }
-        const headers = { ...this.mBaseData.headers, ...form.getHeaders() };
+    // return this.checkFileSize(fileBundle)
+    //   .then(() => new Promise<types.IFeedbackResponse>((resolve, reject) => {
+    //     const form = new FormData();
+    //     form.append("feedback_text", message);
+    //     form.append("feedback_title", title.substr(0, 255));
 
-        if (anonymous) {
-          delete headers['APIKEY'];
-        } else if (this.mOAuthCredentials !== undefined) {
-          headers['Authorization'] = `Bearer: ${this.mOAuthCredentials.token}`;
-        }
+    //     if (fileBundle !== undefined) {
+    //       form.append('feedback_file', fs.createReadStream(fileBundle));
+    //     }
+    //     if (groupingKey !== undefined) {
+    //       form.append('grouping_key', groupingKey);
+    //     }
+    //     if (id !== undefined) {
+    //       form.append('reference', id);
+    //     }
+    //     const headers = { ...this.mBaseData.headers, ...form.getHeaders() };
 
-        const inputUrl = anonymous
-          ? `${param.API_URL}/feedbacks/anonymous`
-          : `${param.API_URL}/feedbacks`;
+    //     if (anonymous) {
+    //       delete headers['APIKEY'];
+    //     } else if (this.mOAuthCredentials !== undefined) {
+    //       headers['Authorization'] = `Bearer: ${this.mOAuthCredentials.token}`;
+    //     }
 
-        const req = lib(inputUrl).request({
-          ...url.parse(inputUrl),
-          method: 'POST',
-          headers,
-          timeout: 30000,
-        }, (res: http.IncomingMessage) => {
-          res.setEncoding('utf8');
-          let rawData = '';
-          res
-            .on('data', (chunk) => { rawData += chunk; })
-            .on('error', err => {
-              return reject(err);
-            })
-            .on('end', () => {
-              if (res.statusCode >= 400) {
-                return reject(new HTTPError(res.statusCode, res.statusMessage, rawData, inputUrl));
-              } else {
-                return resolve(JSON.parse(rawData));
-              }
-            });
-        });
+    //     const inputUrl = anonymous
+    //       ? `${param.API_URL}/feedbacks/anonymous`
+    //       : `${param.API_URL}/feedbacks`;
 
-        req.on('error', err => reject(err));
+    //     const req = lib(inputUrl).request({
+    //       ...url.parse(inputUrl),
+    //       method: 'POST',
+    //       headers,
+    //       timeout: 30000,
+    //     }, (res: http.IncomingMessage) => {
+    //       res.setEncoding('utf8');
+    //       let rawData = '';
+    //       res
+    //         .on('data', (chunk) => { rawData += chunk; })
+    //         .on('error', err => {
+    //           return reject(err);
+    //         })
+    //         .on('end', () => {
+    //           if (res.statusCode >= 400) {
+    //             return reject(new HTTPError(res.statusCode, res.statusMessage, rawData, inputUrl));
+    //           } else {
+    //             return resolve(JSON.parse(rawData));
+    //           }
+    //         });
+    //     });
 
-        form.pipe(req);
-        // req.end();
-      }));
+    //     req.on('error', err => reject(err));
+
+    //     form.pipe(req);
+    //     // req.end();
+    //   }));
   }
 
   //#endregion
