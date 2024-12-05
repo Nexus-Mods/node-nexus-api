@@ -646,6 +646,9 @@ class Nexus {
     if (['endorse', 'abstain'].indexOf(endorseStatus) === -1) {
       return Promise.reject(new Error('invalid endorse status, should be "endorse" or "abstain"'));
     }
+    if (!this.isValidValue(modId)) {
+      return Promise.reject(new Error("Invalid modId: must be a positive integer."));
+    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/{endorseStatus}', this.args({
       path: this.filter({ gameId, modId, endorseStatus }),
@@ -653,12 +656,25 @@ class Nexus {
     }));
   }
 
+  /*
+   * check if a mod id/file id value is valid - i.e. a positive integer; Vortex allows users to input
+   * mod/file ids through the interface so it's very possible for the modId to be incorrect.
+   * 
+   * additionally, we do not control how extension authors are calling the api functionality,
+   * so it's very possible for community extensions to call the api functions incorrectly.
+   * @param value {number} (nexus) id of the mod/file in numeric format
+  */
+  private isValidValue = (value: number) => !Number.isNaN(value) && Number.isInteger(value) && value > 0;
+
   /**
    * retrieve details about a mod
    * @param modId {number} (nexus) id of the mod
    * @param gameId {string} (nexus) game id
    */
   public async getModInfo(modId: number, gameId?: string): Promise<types.IModInfo> {
+    if (!this.isValidValue(modId)) {
+      return Promise.reject(new Error("Invalid modId: must be a positive integer."));
+    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}', this.args({
       path: this.filter({ modId, gameId }),
@@ -671,6 +687,9 @@ class Nexus {
    * @param gameId {string} (nexus) game id
    */
   public async getChangelogs(modId: number, gameId?: string): Promise<types.IChangelogs> {
+    if (!this.isValidValue(modId)) {
+      return Promise.reject(new Error("Invalid modId: must be a positive integer."));
+    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/changelogs', this.args({
       path: this.filter({ modId, gameId }),
@@ -683,6 +702,9 @@ class Nexus {
    * @param gameId {string} (nexus) game id
    */
   public async getModFiles(modId: number, gameId?: string): Promise<types.IModFiles> {
+    if (!this.isValidValue(modId)) {
+      return Promise.reject(new Error("Invalid modId: must be a positive integer."));
+    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files', this.args({
       path: this.filter({ modId, gameId }),
@@ -701,6 +723,9 @@ class Nexus {
   public async getFileInfo(modId: number,
                            fileId: number,
                            gameId?: string): Promise<types.IFileInfo> {
+    if (!this.isValidValue(modId) || !this.isValidValue(fileId)) {
+      return Promise.reject(new Error("Invalid mod/file id: must be a positive integer."));
+    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}', this.args({
       path: this.filter({ modId, fileId, gameId }),
@@ -722,6 +747,9 @@ class Nexus {
                                key?: string,
                                expires?: number,
                                gameId?: string): Promise<types.IDownloadURL[]> {
+    if (!this.isValidValue(modId) || !this.isValidValue(fileId)) {
+      return Promise.reject(new Error("Invalid mod/file id: must be a positive integer."));
+    }
     await this.mQuota.wait();
     let urlPath = '/games/{gameId}/mods/{modId}/files/{fileId}/download_link';
     if ((key !== undefined) && (expires !== undefined)) {
