@@ -43,6 +43,7 @@ declare class Nexus {
     getGameInfo(gameId?: string): Promise<types.IGameInfo>;
     getRecentlyUpdatedMods(period: types.UpdatePeriod, gameId?: string): Promise<types.IUpdateEntry[]>;
     endorseMod(modId: number, modVersion: string, endorseStatus: 'endorse' | 'abstain', gameId?: string): Promise<types.IEndorseResponse>;
+    private isValidValue;
     getModInfo(modId: number, gameId?: string): Promise<types.IModInfo>;
     getChangelogs(modId: number, gameId?: string): Promise<types.IChangelogs>;
     getModFiles(modId: number, gameId?: string): Promise<types.IModFiles>;
