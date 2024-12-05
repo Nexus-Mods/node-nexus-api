@@ -505,6 +505,9 @@ class Nexus {
    * @param gameId id of the game
    */
   public async trackMod(modId: string, gameId?: string): Promise<types.ITrackResponse> {
+    if (!this.isValidValue(parseInt(modId, 10))) {
+      return Promise.reject(new Error('Invalid modId: must be a positive integer.'));
+    }
     await this.mQuota.wait();
       return this.request(this.mBaseURL + '/user/tracked_mods', this.args({
         data: {
@@ -524,6 +527,9 @@ class Nexus {
    * @param gameId id of the game
    */
   public async untrackMod(modId: string, gameId?: string): Promise<types.ITrackResponse> {
+    if (!this.isValidValue(parseInt(modId, 10))) {
+      return Promise.reject(new Error('Invalid modId: must be a positive integer.'));
+    }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/user/tracked_mods', this.args({
       data: {
@@ -647,7 +653,7 @@ class Nexus {
       return Promise.reject(new Error('invalid endorse status, should be "endorse" or "abstain"'));
     }
     if (!this.isValidValue(modId)) {
-      return Promise.reject(new Error("Invalid modId: must be a positive integer."));
+      return Promise.reject(new Error('Invalid modId: must be a positive integer.'));
     }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/{endorseStatus}', this.args({
@@ -673,7 +679,7 @@ class Nexus {
    */
   public async getModInfo(modId: number, gameId?: string): Promise<types.IModInfo> {
     if (!this.isValidValue(modId)) {
-      return Promise.reject(new Error("Invalid modId: must be a positive integer."));
+      return Promise.reject(new Error('Invalid modId: must be a positive integer.'));
     }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}', this.args({
@@ -688,7 +694,7 @@ class Nexus {
    */
   public async getChangelogs(modId: number, gameId?: string): Promise<types.IChangelogs> {
     if (!this.isValidValue(modId)) {
-      return Promise.reject(new Error("Invalid modId: must be a positive integer."));
+      return Promise.reject(new Error('Invalid modId: must be a positive integer.'));
     }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/changelogs', this.args({
@@ -703,7 +709,7 @@ class Nexus {
    */
   public async getModFiles(modId: number, gameId?: string): Promise<types.IModFiles> {
     if (!this.isValidValue(modId)) {
-      return Promise.reject(new Error("Invalid modId: must be a positive integer."));
+      return Promise.reject(new Error('Invalid modId: must be a positive integer.'));
     }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files', this.args({
@@ -724,7 +730,7 @@ class Nexus {
                            fileId: number,
                            gameId?: string): Promise<types.IFileInfo> {
     if (!this.isValidValue(modId) || !this.isValidValue(fileId)) {
-      return Promise.reject(new Error("Invalid mod/file id: must be a positive integer."));
+      return Promise.reject(new Error('Invalid mod/file id: must be a positive integer.'));
     }
     await this.mQuota.wait();
     return this.request(this.mBaseURL + '/games/{gameId}/mods/{modId}/files/{fileId}', this.args({
@@ -748,7 +754,7 @@ class Nexus {
                                expires?: number,
                                gameId?: string): Promise<types.IDownloadURL[]> {
     if (!this.isValidValue(modId) || !this.isValidValue(fileId)) {
-      return Promise.reject(new Error("Invalid mod/file id: must be a positive integer."));
+      return Promise.reject(new Error('Invalid mod/file id: must be a positive integer.'));
     }
     await this.mQuota.wait();
     let urlPath = '/games/{gameId}/mods/{modId}/files/{fileId}/download_link';
