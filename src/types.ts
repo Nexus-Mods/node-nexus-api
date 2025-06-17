@@ -354,7 +354,7 @@ export interface IGameListEntry {
    */
   downloads: number;
   /**
-   * unix timestamp of when this game was added to nexuis mods
+   * unix timestamp of when this game was added to nexus mods
    */
   approved_date: number;
 }
