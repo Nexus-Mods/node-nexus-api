@@ -3,13 +3,17 @@ import * as types from './types';
 import * as graphQL from './typesGraphQL';
 import Quota from './Quota';
 
-import * as FormData from 'form-data';
+// import * as FormData from 'form-data';
 import * as fs from 'fs';
-import * as http from 'http';
-import * as https from 'https';
+import { basename } from 'path';
+// import * as http from 'http';
+import type { IncomingMessage } from 'http';
+// import * as https from 'https';
 import * as os from 'os';
 import * as process from 'process';
+import type { ReadableStreamReadResult } from 'stream/web';
 import * as url from 'url';
+import { TextDecoder } from 'util';
 import * as setCookieParser from 'set-cookie-parser';
 import * as format from 'string-template';
 import * as jwt from 'jsonwebtoken';
@@ -33,6 +37,47 @@ interface IRequestArgs {
   responseConfig?: {
     timeout: number,
   };
+}
+
+async function getTextFromStream(readableStream, encoding = 'utf8'): Promise<string> {
+    let reader = readableStream.getReader();
+    let utf8Decoder = new TextDecoder(encoding);
+    let nextChunk: ReadableStreamReadResult<any>;
+
+    let resultStr = '';
+
+    while (!(nextChunk = await reader.read()).done) {
+        let partialData = nextChunk.value;
+        resultStr += utf8Decoder.decode(partialData);
+    }
+
+    return resultStr;
+}
+
+async function formatFormData(formData: FormData) {
+  const data = new URLSearchParams();
+  for (const [name, value] of formData) {
+    if (value instanceof File) {
+      data.append(name, await getTextFromStream(value.stream()))
+    } else {
+      data.append(name, value);
+    }
+  }
+  return data;
+}
+
+async function createStreamableFile(path) {
+    const name = basename(path);
+    const handle = await fs.promises.open(path);
+    const { size } = await handle.stat();
+
+    const file = new File([], name);
+    file.stream = () => handle.readableWebStream();
+
+    // Set correct size otherwise, fetch will encounter UND_ERR_REQ_CONTENT_LENGTH_MISMATCH
+    Object.defineProperty(file, 'size', { get: () => size });
+
+    return file;
 }
 
 function translateMessage(message: string): string {
@@ -59,7 +104,7 @@ const REFRESH_TOKEN_ERRORS = [
 ];
 
 function handleRestResult(resolve, reject, url: string, error: any,
-                          response: http.IncomingMessage, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
+                          response: Response, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
     // might be a nexus error with body actually
     try {
@@ -68,13 +113,13 @@ function handleRestResult(resolve, reject, url: string, error: any,
       if (message) {
 
         // assume a 401 is a token expiry issue
-        if ((response.statusCode === 401)) {
+        if ((response.status === 401)) {
           // It's nasty to rely on this string, but 401 doesn't always mean token expiry. And 401 is the recommended token expiry HTTP code:
           // https://tools.ietf.org/html/rfc6750
           //return reject(new JwtExpiredError());
         }
 
-        return reject(new NexusError(translateMessage(message), response.statusCode, url, message, data.error_description));
+        return reject(new NexusError(translateMessage(message), response.status, url, message, data.error_description));
       }
     } catch (_e) {
       // nop, just allow other error handling code to run
@@ -83,7 +128,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
     if ((error.code === 'ETIMEDOUT') || (error.code === 'ESOCKETTIMEOUT')) {
       return reject(new TimeoutError('request timed out: ' + url));
     } else if (error.code === 'EPROTO') {
-      const message = error.message.indexOf('wrong version number') !== -1 
+      const message = error.message.indexOf('wrong version number') !== -1
         ? 'protocol version mismatch between client and server (if using a proxy/vpn, please ensure it supports TLS 1.2 and above)'
         : error.message;
       return reject(new ProtocolError('Security protocol error: ' + message));
@@ -99,18 +144,18 @@ function handleRestResult(resolve, reject, url: string, error: any,
       onUpdateLimit(parseInt(dailyLimit.toString(), 10), parseInt(hourlyLimit.toString(), 10));
     }
 
-    if ((response.statusCode === 521)
+    if ((response.status === 521)
         || (body === 'Bad Gateway')) {
       // in this case the body isn't something the api sent so it probably can't be parsed
-      return reject(new NexusError('API currently offline', response.statusCode, url, body));
+      return reject(new NexusError('API currently offline', response.status, url, body));
     }
 
-    if (response.statusCode === 429) {
+    if (response.status === 429) {
       // server asks us to slow down because rate limit was exceeded or high server load
       return reject(new RateLimitError());
     }
 
-    if (response.statusCode === 202) {
+    if (response.status === 202) {
       // server accepted our request but didn't produce a result in time (for an internal timeout).
       // As a result we simply don't know if the request was processed or not.
       // If it was a simple data query, this is the same as a timeout. If it was a query that
@@ -120,13 +165,13 @@ function handleRestResult(resolve, reject, url: string, error: any,
 
     const data = JSON.parse(body || '{}');
 
-    if ((response.statusCode < 200) || (response.statusCode >= 300)) {
-      const message = data.message || data.error || response.statusMessage;
-      return reject(new NexusError(message, response.statusCode, url, message));
+    if ((response.status < 200) || (response.status >= 300)) {
+      const message = data.message || data.error || response.statusText;
+      return reject(new NexusError(message, response.status, url, message));
     }
 
     // Append response headers to data
-    const cookies = setCookieParser.parse(response, { map: true });
+    const cookies = setCookieParser.parse(response as unknown as IncomingMessage, { map: true });
     if (cookies['jwt_fingerprint'] !== undefined) {
       data['jwt_fingerprint'] = cookies['jwt_fingerprint'].value;
     }
@@ -138,7 +183,7 @@ function handleRestResult(resolve, reject, url: string, error: any,
       // if it is an html page, it has to be coming from a load balancer or firewall or something that apparently doesn't
       // give a shit about the content type we asked for, so the API is apparently not reachable atm.
       return reject(new NexusError('API currently not reachable, please try again later.',
-                                   response.statusCode, url, 'API_UNREACHABLE'));
+                                   response.status, url, 'API_UNREACHABLE'));
     }
     const ecMatch = body.match(/error code: ([0-9]+)/);
     if (ecMatch !== null) {
@@ -148,12 +193,6 @@ function handleRestResult(resolve, reject, url: string, error: any,
   }
 }
 
-function lib(inputUrl: string): typeof http | typeof https {
-  return url.parse(inputUrl).protocol === 'http:'
-    ? http
-    : https;
-}
-
 function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: number, hourly: number) => void): Promise<any> {
   return new Promise<any>((resolve, reject) => {
     const finalURL = format(inputUrl, args.path || {});
@@ -161,47 +200,44 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
     if (headers?.hasOwnProperty?.('APIKEY') && (headers['APIKEY'] === undefined)) {
       delete headers['APIKEY'];
     }
-    const req = lib(inputUrl).get({
-      ...url.parse(finalURL),
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const timeoutId = setTimeout(() => controller.abort(), args.requestConfig.timeout);
+    fetch(
+      url.URL.parse(finalURL), {
       headers,
-      timeout: args.requestConfig.timeout,
-    }, (res: http.IncomingMessage) => {
-      const { statusCode, statusMessage } = res;
+      signal,
+    }).then((res: Response) => {
+      clearTimeout(timeoutId);
+      const { status, statusText } = res;
       const contentType = res.headers['content-type'];
 
       let err: string;
 
       //(res);
 
-      if ((statusCode === 401)) { 
+      if ((status === 401)) {
         // assume a 401 is a token expiry error
         //return reject(new JwtExpiredError());
         //return reject(new HTTPError(statusCode, err, '', finalURL));
       }
 
-      if (statusCode >= 300) {
+      if (status >= 300) {
         err = 'Request Failed';
-      } else if (!/^application\/json/.test(contentType)) {
+      } else if (!contentType || !/^application\/json/.test(contentType)) {
         err = `Invalid content-type ${contentType}`;
       }
 
       if (err !== undefined) {
-        res.resume();
-        return reject(new HTTPError(statusCode, err, '', finalURL));
+        return reject(new HTTPError(status, err, '', finalURL));
       }
 
-      res.setEncoding('utf8');
-      let rawData = '';
-      res
-        .on('data', (chunk) => { rawData += chunk; })
-        .on('error', err => {
-          handleRestResult(resolve, reject, inputUrl, err, res, rawData, onUpdateLimit);
-        })
-        .on('end', () => {
-          handleRestResult(resolve, reject, inputUrl, null, res, rawData, onUpdateLimit);
-        });
-    });
-    req.on('error', err => {
+      getTextFromStream(res.body, 'utf8').then((rawData: string): void => {
+        handleRestResult(resolve, reject, inputUrl, null, res, rawData, onUpdateLimit);
+      }).catch(err => {
+          handleRestResult(resolve, reject, inputUrl, err, res, null, onUpdateLimit);
+      });
+    }).catch(err => {
       reject(err);
     });
   });
@@ -224,41 +260,35 @@ function restPost(method: REST_METHOD, inputUrl: string, args: IRequestArgs, onU
       headers['apikeymaster'] = process.env.APIKEYMASTER;
     }
 
-    const req = lib(inputUrl).request({
-      ...url.parse(finalURL),
-      method,
-      headers,
-      timeout: args.requestConfig.timeout,
-    }, (res: http.IncomingMessage) => {
-      res.setEncoding('utf8');
-      let rawData = '';
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const timeoutId = setTimeout(() => controller.abort(), args.requestConfig.timeout);
+    fetch(
+      url.URL.parse(finalURL), {
+        method,
+        headers,
+        signal,
+        body: body,
+    }).then((res: Response) => {
+      clearTimeout(timeoutId);
+      getTextFromStream(res.body, 'utf8').then((rawData) => {
+        const { status } = res;
+        const contentType = res.headers['content-type'];
 
-      res
-        .on('data', (chunk) => { rawData += chunk; })
-        .on('error', err => {
-          handleRestResult(resolve, reject, inputUrl, err, res, rawData, onUpdateLimit);
-        })
-        .on('end', () => {
-          const { statusCode } = res;
-          const contentType = res.headers['content-type'];
+        let err: Error = null;
+        if (![200, 201].includes(status)) {
+          err = new HTTPError(res.status, res.statusText, rawData, finalURL);
+        } else if (!/^application\/json/.test(contentType)) {
+          err = new Error(`Invalid content-type ${contentType}`);
+        }
 
-          let err: Error = null;
-          if (![200, 201].includes(statusCode)) {
-            err = new HTTPError(res.statusCode, res.statusMessage, rawData, finalURL);
-          } else if (!/^application\/json/.test(contentType)) {
-            err = new Error(`Invalid content-type ${contentType}`);
-          }
-
-          handleRestResult(resolve, reject, inputUrl, err, res, rawData, onUpdateLimit);
-        });
-    });
-
-    req.on('error', err => {
+        handleRestResult(resolve, reject, inputUrl, err, res, rawData, onUpdateLimit);
+      }).catch(err => {
+        handleRestResult(resolve, reject, inputUrl, err, res, undefined, onUpdateLimit);
+      });
+    }).catch(err => {
       reject(err);
     });
-
-    req.write(buffer);
-    req.end();
   });
 }
 
@@ -278,7 +308,7 @@ function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, ho
 }
 
 function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredentials): types.IValidateKeyResponse {
-  const tokenData = jwt.decode(oAuthCredentials.token);
+  const tokenData = jwt.decode(oAuthCredentials.token) as jwt.JwtPayload;
   return {
     user_id: tokenData.user.id,
     key: null,
@@ -287,7 +317,7 @@ function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredential
     is_supporter: tokenData.user.membership_roles.includes('supporter'),
     email: tokenData.user.email,
     profile_url: tokenData.user.avatar,
-  };  
+  };
 }
 
 //#endregion
@@ -349,7 +379,7 @@ class Nexus {
 
   /**
    * create a Nexus instance and immediately verify the API Key
-   * 
+   *
    * @param apiKey {string} the api key to use for connections
    * @param appName {string} name of the client application
    * @param appVersion {string} Version number of the client application (Needs to be semantic format)
@@ -361,7 +391,7 @@ class Nexus {
     res.mValidationResult = await res.setKey(apiKey);
     return res;
   }
-  
+
   public setLogger(logCB: LogFunc): void {
     this.mLogCB = logCB;
   }
@@ -375,7 +405,7 @@ class Nexus {
    * @param defaultGame {string} (nexus) id of the game requests are made for. Can be overridden per request
    * @param timeout {number} Request timeout in milliseconds. Defaults to 5000ms
    * @param onJWTRefresh {callback} callback invoked when a JWT refresh was necessary so that the app can store the updated tokens.
-   * @returns 
+   * @returns
    */
   public static async createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number, onJWTRefresh?: (credentials: types.IOAuthCredentials) => void): Promise<Nexus> {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
@@ -421,7 +451,7 @@ class Nexus {
     this.oAuthCredentials = credentials;
     this.mOAuthConfig = config;
     this.mJWTRefreshCallback = onJWTRefresh;
-    const decoded = jwt.decode(credentials.token);
+    const decoded = jwt.decode(credentials.token) as jwt.JwtPayload;
     const userInfo = await this.userById({ avatar: true }, decoded.user.id);
     return {
       key: '',
@@ -665,7 +695,7 @@ class Nexus {
   /*
    * check if a mod id/file id value is valid - i.e. a positive integer; Vortex allows users to input
    * mod/file ids through the interface so it's very possible for the modId to be incorrect.
-   * 
+   *
    * additionally, we do not control how extension authors are calling the api functionality,
    * so it's very possible for community extensions to call the api functions incorrectly.
    * @param value {number} (nexus) id of the mod/file in numeric format
@@ -796,7 +826,7 @@ class Nexus {
   //#region GraphQL convenience
 
   public async userById(query: graphQL.IUserQuery, userId: number): Promise<types.IGraphUser> {
-    await this.mQuota.wait();  
+    await this.mQuota.wait();
 
     const res = await this.requestGraph<types.IGraphUser>(
       'user',
@@ -817,7 +847,7 @@ class Nexus {
    *       the second 32bit block identifies the mod) clients should use BigInt to do the math and
    *       then pass them in as strings
    */
-  public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> { 
+  public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> {
     const res: Partial<types.IMod>[] = [];
     for (const chunk of chunkify(uids, param.MAX_BATCH_SIZE)) {
       await this.mQuota.wait();
@@ -845,7 +875,7 @@ class Nexus {
    */
   public async modFilesByUid(query: graphQL.IModFileQuery
                              , uids: string[])
-                             : Promise<Partial<types.IModFile>[]> { 
+                             : Promise<Partial<types.IModFile>[]> {
     const res: Partial<types.IModFile>[] = [];
     for (const chunk of chunkify(uids, param.MAX_BATCH_SIZE)) {
       await this.mQuota.wait();
@@ -1275,57 +1305,52 @@ class Nexus {
     }
     return this.checkFileSize(fileBundle)
       .then(() => new Promise<types.IFeedbackResponse>((resolve, reject) => {
-        const form = new FormData();
-        form.append("feedback_text", message);
-        form.append("feedback_title", title.substr(0, 255));
+        (async () => {
+          const form = new FormData();
+          form.append("feedback_text", message);
+          form.append("feedback_title", title.substring(0, 255));
 
-        if (fileBundle !== undefined) {
-          form.append('feedback_file', fs.createReadStream(fileBundle));
-        }
-        if (groupingKey !== undefined) {
-          form.append('grouping_key', groupingKey);
-        }
-        if (id !== undefined) {
-          form.append('reference', id);
-        }
-        const headers = { ...this.mBaseData.headers, ...form.getHeaders() };
+          if (fileBundle !== undefined) {
+            form.append('feedback_file', await createStreamableFile(fileBundle));
+          }
+          if (groupingKey !== undefined) {
+            form.append('grouping_key', groupingKey);
+          }
+          if (id !== undefined) {
+            form.append('reference', id);
+          }
+          const headers = { ...this.mBaseData.headers };
 
-        if (anonymous) {
-          delete headers['APIKEY'];
-        } else if (this.mOAuthCredentials !== undefined) {
-          headers['Authorization'] = `Bearer: ${this.mOAuthCredentials.token}`;
-        }
+          if (anonymous) {
+            delete headers['APIKEY'];
+          } else if (this.mOAuthCredentials !== undefined) {
+            headers['Authorization'] = `Bearer: ${this.mOAuthCredentials.token}`;
+          }
 
-        const inputUrl = anonymous
-          ? `${param.API_URL}/feedbacks/anonymous`
-          : `${param.API_URL}/feedbacks`;
+          const inputUrl = anonymous
+            ? `${param.API_URL}/feedbacks/anonymous`
+            : `${param.API_URL}/feedbacks`;
 
-        const req = lib(inputUrl).request({
-          ...url.parse(inputUrl),
-          method: 'POST',
-          headers,
-          timeout: 30000,
-        }, (res: http.IncomingMessage) => {
-          res.setEncoding('utf8');
-          let rawData = '';
-          res
-            .on('data', (chunk) => { rawData += chunk; })
-            .on('error', err => {
-              return reject(err);
-            })
-            .on('end', () => {
-              if (res.statusCode >= 400) {
-                return reject(new HTTPError(res.statusCode, res.statusMessage, rawData, inputUrl));
+          const controller = new AbortController();
+          const signal = controller.signal;
+          const timeoutId = setTimeout((): void => controller.abort(), 30000);
+          fetch(
+            url.URL.parse(inputUrl), {
+              method: 'POST',
+              headers,
+              signal,
+              body: await formatFormData(form),
+          }).then((res: Response) => {
+            clearTimeout(timeoutId);
+            getTextFromStream(res.body, 'utf8').then((rawData: string): void => {
+              if (res.status >= 400) {
+                return reject(new HTTPError(res.status, res.statusText, rawData, inputUrl));
               } else {
                 return resolve(JSON.parse(rawData));
               }
-            });
-        });
-
-        req.on('error', err => reject(err));
-
-        form.pipe(req);
-        // req.end();
+            }).catch(err => reject(err));
+          }).catch(err => reject(err));
+        })().catch(err => reject(err));
       }));
   }
 
@@ -1367,8 +1392,8 @@ class Nexus {
         this.mQuota.updateLimit(Math.max(daily, hourly));
         this.mJwtRefreshTries = 0;
       }, method);
-    } catch (err) {      
-      
+    } catch (err) {
+
       /*console.log(`node-nexus-api: request catch error`, {
         url: url,
         args: args,
@@ -1386,10 +1411,10 @@ class Nexus {
       if (err.statusCode === 401 && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
         //console.log('caught 401 error. trying to refresh token');
         this.mJwtRefreshTries++;
-        this.oAuthCredentials = await this.handleJwtRefresh();        
-        //console.log(`node-nexus-api: trying request again`);        
+        this.oAuthCredentials = await this.handleJwtRefresh();
+        //console.log(`node-nexus-api: trying request again`);
         // do we need to update the args (in the header?) now that we've got new oauth credentials
-        return await this.request(url, this.args(args), method); 
+        return await this.request(url, this.args(args), method);
       }
 
       this.mJwtRefreshTries = 0;
@@ -1554,7 +1579,7 @@ class Nexus {
 
 
   private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
-    
+
     //console.log(`node-nexus-api: handleJwtRefresh() ${param.USER_SERVICE_API_URL}`);
 
     const data = {

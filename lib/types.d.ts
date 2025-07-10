@@ -22,8 +22,8 @@ export interface IUserInfo {
     membership_roles: string[];
     premium_expiry: number;
 }
-export declare type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
-export declare type ModStatus = 'under_moderation' | 'published' | 'not_published' | 'publish_with_game' | 'removed' | 'wastebinned' | 'hidden';
+export type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
+export type ModStatus = 'under_moderation' | 'published' | 'not_published' | 'publish_with_game' | 'removed' | 'wastebinned' | 'hidden';
 export interface IModInfo {
     mod_id: number;
     game_id: number;
@@ -143,8 +143,8 @@ export interface ICollectionInfo {
     domain_name: string;
     adult_content: boolean;
 }
-export declare type UpdatePolicy = 'exact' | 'latest' | 'prefer';
-export declare type SourceType = 'browse' | 'manual' | 'direct' | 'nexus';
+export type UpdatePolicy = 'exact' | 'latest' | 'prefer';
+export type SourceType = 'browse' | 'manual' | 'direct' | 'nexus';
 export interface IFeedbackResponse {
     id: number;
     status: number;
@@ -184,13 +184,13 @@ export interface IColourScheme {
     secondary_colour: string;
     darker_colour: string;
 }
-export declare type UpdatePeriod = '1d' | '1w' | '1m';
+export type UpdatePeriod = '1d' | '1w' | '1m';
 export interface IUpdateEntry {
     mod_id: number;
     latest_file_update: number;
     latest_mod_activity: number;
 }
-export declare type IDateTime = string;
+export type IDateTime = string;
 export interface ITimestamped {
     updatedAt: IDateTime;
     createdAt: IDateTime;
@@ -256,7 +256,7 @@ export interface ICollectionVideo extends ITimestamped {
     url: string;
     user: IGraphUser;
 }
-export declare type ICollectionMedia = ICollectionImage & ICollectionVideo;
+export type ICollectionMedia = ICollectionImage & ICollectionVideo;
 export interface IForumPost {
     authorId: number;
     authorName: string;
@@ -319,7 +319,7 @@ export interface IExternalResource {
     resourceUrl: string;
     version: string;
 }
-export declare type RevisionStatus = 'is_private' | 'is_public' | 'is_hidden' | 'is_testing' | 'is_nuked';
+export type RevisionStatus = 'is_private' | 'is_public' | 'is_hidden' | 'is_testing' | 'is_nuked';
 export interface ICollectionSchema extends ITimestamped {
     id: number;
     version: string;
@@ -495,12 +495,12 @@ export interface IFileHash {
     modFile: IModFile;
     modFileId: number;
 }
-export declare type RatingOptions = 'positive' | 'negative' | 'abstained';
-export declare type GraphErrorCode = 'REVISION_INVALID';
-export declare type GraphErrorAttribute = 'modId' | 'fileId';
-export declare type GraphErrorItemCode = 'NOT_AVAILABLE' | 'NOT_FOUND' | 'DELETED';
-export declare type GraphErrorEntity = 'Mod' | 'ModFile';
-export declare type GraphErrorType = 'LOCATE_ERROR';
+export type RatingOptions = 'positive' | 'negative' | 'abstained';
+export type GraphErrorCode = 'REVISION_INVALID';
+export type GraphErrorAttribute = 'modId' | 'fileId';
+export type GraphErrorItemCode = 'NOT_AVAILABLE' | 'NOT_FOUND' | 'DELETED';
+export type GraphErrorEntity = 'Mod' | 'ModFile';
+export type GraphErrorType = 'LOCATE_ERROR';
 export interface IGraphQLError {
     message: string;
     extensions?: {
@@ -513,8 +513,8 @@ export interface IGraphQLError {
         parameter?: any;
     };
 }
-export declare type LogLevel = 'info' | 'error';
-export declare type LogFunc = (level: LogLevel, message: string, meta: any) => void;
+export type LogLevel = 'info' | 'error';
+export type LogFunc = (level: LogLevel, message: string, meta: any) => void;
 export interface IOAuthCredentials {
     token: string;
     refreshToken: string;
