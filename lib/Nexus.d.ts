@@ -57,6 +57,7 @@ declare class Nexus {
         data: Partial<types.IFileHash>[];
         errors: IGraphQLError[];
     }>;
+    sendMetric(eventType: string, entityType: string, entityId: string, metadata: Record<string, any>, clientString?: string): Promise<types.ICreateCollectionResult>;
     getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]>;
     createCollection(data: types.ICollectionPayload, assetFileUUID: string, retQuery?: graphQL.ICreateCollectionQuery): Promise<types.ICreateCollectionResult>;
     updateCollection(data: types.ICollectionPayload, assetFileUUID: string, collectionId: number, retQuery?: graphQL.ICreateCollectionQuery): Promise<types.ICreateCollectionResult>;
