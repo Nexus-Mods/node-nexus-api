@@ -871,6 +871,7 @@ class Nexus {
   public async fileHashes(query: graphQL.IFileHashQuery
                           , md5Hashes: string[])
                           : Promise<{ data: Partial<types.IFileHash>[], errors: IGraphQLError[] }> {
+    const startTime = Date.now();
     const results: { data: Partial<types.IFileHash>[], errors: IGraphQLError[] } = {
       data: [], errors: undefined,
     };
@@ -893,7 +894,11 @@ class Nexus {
         results.errors.push(...inner.errors);
       }
     }
-
+    this.mLogCB('info', 'fileHashes', {
+      time: Date.now() - startTime,
+      count: results.data.length,
+      errors: results.errors?.length ?? 0,
+    });
     return results;
   }
 
