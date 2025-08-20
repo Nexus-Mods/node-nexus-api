@@ -897,6 +897,7 @@ class Nexus {
     this.mLogCB('info', 'fileHashes', {
       time: Date.now() - startTime,
       count: results.data.length,
+      hashes: results.data?.map(x => x.md5).join(', '),
       errors: results.errors?.length ?? 0,
     });
     return results;
