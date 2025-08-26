@@ -299,6 +299,7 @@ export interface ICollection extends ITimestamped {
     tileImage?: ICollectionImage;
     user: IGraphUser;
     userId: number;
+    viewerIsBlocked: boolean;
     visible: boolean;
     description: string;
     summary: string;
