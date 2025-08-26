@@ -903,6 +903,24 @@ class Nexus {
     return results;
   }
 
+  public async sendMetric(eventType: string, entityType: string, entityId: string, metadata: Record<string, any>, clientString?: string): Promise<types.ICreateCollectionResult> {
+    await this.mQuota.wait();
+
+    return await this.mutateGraph<{success: boolean}>(
+      'trackAppMetric',
+      {
+        eventType: { type: 'AppMetricEventType', optional: false },
+        entityType: { type: 'AppMetricEntityType', optional: false },
+        entityId: { type: 'String', optional: false },
+        metadata: { type: 'JSON', optional: false },
+        clientString: { type: 'String', optional: true },
+      },
+      { eventType, entityType, entityId, metadata, clientString },
+      this.args({ path: this.filter({}) }),
+      { success: true },
+    );
+  }
+
   //#endregion
 
   //#region Collection
