@@ -2,11 +2,11 @@
 //   them can cause network errors or IP bans
 
 // quota recovers one request per second
-export const QUOTA_RATE_MS: number = 1000;
+export const QUOTA_RATE_MS: number = 50;
 // limit short-term bursts
-export const QUOTA_MAX: number = 50;
+export const QUOTA_MAX: number = 500;
 // limit short-term bursts
-export const QUOTA_MAX_PREMIUM: number = 50;
+export const QUOTA_MAX_PREMIUM: number = 500;
 
 export const DEFAULT_TIMEOUT_MS: number = 30000;
 
