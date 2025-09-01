@@ -37,6 +37,6 @@ export const PROTOCOL_VERSION: string = require('../package.json').version.split
 // server will reject feedback if attachments are > 40mb large
 export const MAX_FILE_SIZE: number = 40 * 1024 * 1024;
 
-export const MAX_JWT_REFRESH_TRIES: number = 3;
+export const MAX_JWT_REFRESH_TRIES: number = 10;
 
 export const MAX_BATCH_SIZE: number = 500;

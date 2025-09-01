@@ -1407,7 +1407,7 @@ class Nexus {
         }
       }
 
-      if (err.statusCode === 401 && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+      if ([401, 403].includes(err.statusCode) && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
         //console.log('caught 401 error. trying to refresh token');
         this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();        
