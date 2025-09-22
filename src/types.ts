@@ -329,6 +329,10 @@ export interface IGameListEntry {
    */
   name: string;
   /**
+   * lower-cased display name
+   */
+  name_lower: string;
+  /**
    * url for the corresponding forum section
    */
   forum_url: string;
@@ -357,6 +361,10 @@ export interface IGameListEntry {
    * unix timestamp of when this game was added to nexus mods
    */
   approved_date: number;
+  /**
+   * number of collections for this game
+   */
+  collections: number;
 }
 
 /**
