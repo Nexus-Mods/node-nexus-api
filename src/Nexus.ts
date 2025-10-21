@@ -1094,6 +1094,84 @@ class Nexus {
   }
 
   /**
+   * Search and browse collections using the collectionsV2 GraphQL query
+   * @param query selects the information to fetch from each collection
+   * @param options search options including gameId, pagination, sorting, filters, and search string
+   * @returns search results with nodes array and totalCount for pagination
+   */
+  public async searchCollectionsGraph(
+    query: graphQL.ICollectionQuery,
+    options: types.ICollectionSearchOptions
+  ): Promise<types.ICollectionSearchResult> {
+    await this.mQuota.wait();
+
+    const {
+      gameId,
+      count = 20,
+      offset = 0,
+      sort = { field: 'endorsements', direction: 'DESC' },
+      search,
+      categoryName,
+      collectionStatuses = ['listed', 'published', 'under_moderation', 'unlisted'],
+    } = options;
+
+    // Build the sort parameter based on the field
+    const sortParam: any = {};
+    sortParam[sort.field] = { direction: sort.direction };
+
+    // Build the filter object
+    const filter: any = {
+      collectionStatus: collectionStatuses.map(status => ({ op: 'EQUALS', value: status })),
+      gameDomain: [{ op: 'EQUALS', value: gameId }],
+      op: 'AND',
+    };
+
+    // Add category filter if provided
+    if (categoryName && categoryName.length > 0) {
+      filter.categoryName = categoryName.map(name => ({ op: 'EQUALS', value: name }));
+    }
+
+    // Add generalSearch if search query is provided
+    if (search && search.trim()) {
+      filter.generalSearch = [{ op: 'WILDCARD', value: search.trim() }];
+    }
+
+    // Build variables for the collectionsV2 query
+    const variables = {
+      count,
+      offset,
+      filter,
+      sort: sortParam,
+    };
+
+    interface ICollectionSearchResponse {
+      totalCount: number;
+      nodes: types.ICollection[];
+    }
+
+    const res = await this.requestGraph<ICollectionSearchResponse>(
+      'collectionsV2',
+      {
+        count: { type: 'Int', optional: true },
+        filter: { type: 'CollectionsSearchFilter', optional: true },
+        offset: { type: 'Int', optional: true },
+        sort: { type: '[CollectionsSearchSort!]', optional: true },
+      },
+      {
+        totalCount: true,
+        nodes: query,
+      },
+      variables,
+      this.args({ path: this.filter({}) })
+    );
+
+    return {
+      nodes: res.nodes || [],
+      totalCount: res.totalCount || 0,
+    };
+  }
+
+  /**
    * get list of own curated collections, optionally paginated and/or filtered for a game
    * @param query selects the information to fetch
    * @param gameId if set, only collections for that game are returned.

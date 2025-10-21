@@ -67,6 +67,7 @@ declare class Nexus {
     attachCollectionsToCategory(categoryId: number, collectionIds: number[]): Promise<boolean>;
     getCollectionGraph(query: graphQL.ICollectionQuery, slug: string, ignoreAdultBlock?: boolean): Promise<Partial<types.ICollection>>;
     getCollectionListGraph(query: graphQL.ICollectionQuery, gameId?: string, count?: number, offset?: number): Promise<Partial<types.ICollection>[]>;
+    searchCollectionsGraph(query: graphQL.ICollectionQuery, options: types.ICollectionSearchOptions): Promise<types.ICollectionSearchResult>;
     getMyCollections(query: graphQL.ICollectionQuery, gameId?: string, count?: number, offset?: number): Promise<Partial<types.ICollection>[]>;
     getCollectionRevisionGraph(query: graphQL.IRevisionQuery, collectionSlug: string, revisionNumber: number, ignoreAdultBlock?: boolean): Promise<Partial<types.IRevision>>;
     getRevisionUploadUrl(): Promise<types.IPreSignedUrl>;

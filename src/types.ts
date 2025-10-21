@@ -556,6 +556,17 @@ export interface IGraphUser {
 
 export interface ICollectionMetadata {
   endorsementValue: number;
+  downloadedAt?: IDateTime;
+}
+
+export interface ICollectionBadge {
+  name: string;
+  description: string;
+}
+
+export interface ICollectionPermissions {
+  global: boolean;
+  key: string;
 }
 
 export interface IGame {
@@ -610,6 +621,7 @@ export interface ICollectionImage extends ITimestamped {
   id: string;
   position: number;
   revision?: IRevision;
+  thumbnailUrl?: string;
   url: string;
   user: IGraphUser;
 }
@@ -656,9 +668,12 @@ export interface IForumTopic {
  */
 export interface ICollection extends ITimestamped {
   category?: ICategory;
+  collectionStatus?: string;
   contentPreviewLink: string;
   currentRevision: IRevision;
+  discardedAt?: IDateTime;
   downloadLink: string;
+  draftRevisionNumber?: number;
   enableDonations: boolean;
   endorsements: number;
   forumTopic?: IForumTopic;
@@ -666,6 +681,7 @@ export interface ICollection extends ITimestamped {
   gameId: number;
   headerImage?: ICollectionImage;
   id: number;
+  latestPublishedRevision?: IRevision;
   slug: string;
   media: ICollectionMedia[];
   metadata?: ICollectionMetadata;
@@ -673,6 +689,7 @@ export interface ICollection extends ITimestamped {
   revisions: IRevision[];
   tags: ITag[];
   tileImage?: ICollectionImage;
+  totalDownloads?: number;
   user: IGraphUser;
   userId: number;
   viewerIsBlocked: boolean;
@@ -684,6 +701,8 @@ export interface ICollection extends ITimestamped {
   overallRatingCount: number;
   recentRating: string;
   recentRatingCount: number;
+  badges?: ICollectionBadge[];
+  permissions?: ICollectionPermissions;
 }
 
 export interface IExternalResource {
@@ -830,11 +849,13 @@ export interface IRevision extends ITimestamped {
   installationInfo?: string;
   latest: boolean;
   metadata: IRevisionMetadata;
+  modCount?: number;
   modFiles: ICollectionRevisionMod[];
   rating: IRating;
   revisionNumber: number;
   revisionStatus: string;
   status: string;
+  totalSize?: number;
 }
 
 export interface ICollectionManifestInfo {
@@ -933,4 +954,38 @@ export interface IOAuthCredentials {
 export interface IOAuthConfig {
   id: string,
   secret?: string
+}
+
+/**
+ * Sort field options for collection search
+ */
+export type CollectionSortField = 'endorsements' | 'totalDownloads' | 'name' | 'recentRating';
+
+/**
+ * Sort direction options
+ */
+export type SortDirection = 'ASC' | 'DESC';
+
+/**
+ * Options for searching collections
+ */
+export interface ICollectionSearchOptions {
+  gameId: string;
+  count?: number;
+  offset?: number;
+  sort?: {
+    field: CollectionSortField;
+    direction: SortDirection;
+  };
+  search?: string;
+  categoryName?: string[];
+  collectionStatuses?: string[];
+}
+
+/**
+ * Result of a collection search
+ */
+export interface ICollectionSearchResult {
+  nodes: Partial<ICollection>[];
+  totalCount: number;
 }
