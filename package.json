@@ -1,6 +1,6 @@
 {
   "name": "@nexusmods/nexus-api",
-  "version": "1.4.30",
+  "version": "1.4.31",
   "main": "./lib/index.js",
   "typings": "lib/index",
   "homepage": "https://www.nexusmods.com/",
