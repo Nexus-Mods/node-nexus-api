@@ -564,7 +564,7 @@ export interface ICollectionBadge {
   description: string;
 }
 
-export interface ICollectionPermissions {
+export interface ICollectionPermission {
   global: boolean;
   key: string;
 }
@@ -702,7 +702,7 @@ export interface ICollection extends ITimestamped {
   recentRating: string;
   recentRatingCount: number;
   badges?: ICollectionBadge[];
-  permissions?: ICollectionPermissions;
+  permissions?: ICollectionPermission[];
 }
 
 export interface IExternalResource {
