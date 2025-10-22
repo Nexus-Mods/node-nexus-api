@@ -210,9 +210,10 @@ export interface ICollectionBadge {
     name: string;
     description: string;
 }
+export declare type CollectionPermission = 'collection:publish' | 'collection:moderate' | 'collection:discard' | 'collection:view_discarded' | 'collection:view_unlisted' | 'collection:view_under_moderation' | 'collection:view_draft_revisions' | 'collection:add_tag' | 'collection:remove_tag' | 'collection:set_status' | 'collection:discard_revisions' | 'collection:edit' | 'collection:close_bug_reports' | 'collection:open_bug_reports';
 export interface ICollectionPermission {
     global: boolean;
-    key: string;
+    key: CollectionPermission | string;
 }
 export interface IGame {
     id: number;
