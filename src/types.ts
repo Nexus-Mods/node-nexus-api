@@ -637,7 +637,7 @@ export interface ICollectionImage extends ITimestamped {
   id: string;
   position: number;
   revision?: IRevision;
-  thumbnailUrl?: string;
+  thumbnailUrl?: string; // Note: requires size parameter in GraphQL query, e.g., thumbnailUrl(size: med)
   url: string;
   user: IGraphUser;
 }

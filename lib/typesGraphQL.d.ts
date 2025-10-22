@@ -5,7 +5,9 @@ export interface IFilter {
     [key: string]: any;
 }
 export declare type ValuesOf<T extends any[]> = T[number];
-export declare type Boolify<T> = T extends PODs ? boolean : T extends any[] ? Querify<ValuesOf<T>> : Querify<T>;
+export declare type Boolify<T> = T extends PODs ? boolean | {
+    $filter?: IFilter;
+} : T extends any[] ? Querify<ValuesOf<T>> : Querify<T>;
 export declare type QuerifyImpl<T> = {
     [P in keyof T]?: Boolify<T[P]>;
 };

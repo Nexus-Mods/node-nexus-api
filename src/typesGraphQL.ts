@@ -16,7 +16,7 @@ export interface IFilter {
 export type ValuesOf<T extends any[]> = T[number];
 
 export type Boolify<T> = T extends PODs
-  ? boolean
+  ? boolean | { $filter?: IFilter }  // <-- Allow either boolean OR filter object
   : T extends any[]
   ? Querify<ValuesOf<T>>
   : Querify<T>;

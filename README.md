@@ -53,6 +53,31 @@ All relevant functionality is accessible through the [Nexus class](https://githu
 
 The API may throw a bunch of [Custom Errors](https://github.com/Nexus-Mods/node-nexus-api/blob/master/docs/modules/_customerrors_.md).
 
+### GraphQL Queries
+
+When making GraphQL queries, some fields require parameters. For example, `thumbnailUrl` in `ICollectionImage` requires a `size` parameter. You can pass parameters using the `$filter` property:
+
+```typescript
+// Example: Querying collection with thumbnail URLs at MED size
+const collection = await nexus.getCollectionGraph({
+  name: true,
+  headerImage: {
+    url: true,
+    thumbnailUrl: {
+      $filter: { size: 'MED' }
+    }
+  },
+  tileImage: {
+    url: true,
+    thumbnailUrl: {
+      $filter: { size: 'MED' }
+    }
+  }
+}, 'collection-slug');
+```
+
+Available thumbnail sizes for `thumbnailUrl` are typically: `SMALL`, `MED`, `LARGE` (refer to the [Nexus Mods GraphQL documentation](https://graphql.nexusmods.com/) for the complete list).
+
 ### Throttling
 
 The library implements request throttling to avoid spamming the API.
