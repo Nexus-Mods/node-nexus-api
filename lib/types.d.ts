@@ -547,7 +547,7 @@ export interface IOAuthConfig {
     id: string;
     secret?: string;
 }
-export declare type CollectionSortField = 'endorsements' | 'totalDownloads' | 'name' | 'recentRating';
+export declare type CollectionSortField = 'endorsements' | 'downloads' | 'createdAt' | 'recentRating';
 export declare type SortDirection = 'ASC' | 'DESC';
 export interface ICollectionSearchOptions {
     gameId: string;
