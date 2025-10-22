@@ -975,7 +975,7 @@ export interface IOAuthConfig {
 /**
  * Sort field options for collection search
  */
-export type CollectionSortField = 'endorsements' | 'totalDownloads' | 'name' | 'recentRating';
+export type CollectionSortField = 'endorsements' | 'downloads' | 'createdAt' | 'recentRating';
 
 /**
  * Sort direction options
