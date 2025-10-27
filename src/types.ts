@@ -983,6 +983,14 @@ export type CollectionSortField = 'endorsements' | 'downloads' | 'createdAt' | '
 export type SortDirection = 'ASC' | 'DESC';
 
 /**
+ * Filter operator for category name filtering
+ */
+export interface ICategoryNameFilter {
+  op: 'EQUALS' | 'NOT_EQUALS';
+  value: string;
+}
+
+/**
  * Options for searching collections
  */
 export interface ICollectionSearchOptions {
@@ -994,7 +1002,7 @@ export interface ICollectionSearchOptions {
     direction: SortDirection;
   };
   search?: string;
-  categoryName?: string[];
+  categoryName?: ICategoryNameFilter[];
   collectionStatuses?: string[];
 }
 

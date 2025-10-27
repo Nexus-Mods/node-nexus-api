@@ -549,6 +549,10 @@ export interface IOAuthConfig {
 }
 export declare type CollectionSortField = 'endorsements' | 'downloads' | 'createdAt' | 'recentRating';
 export declare type SortDirection = 'ASC' | 'DESC';
+export interface ICategoryNameFilter {
+    op: 'EQUALS' | 'NOT_EQUALS';
+    value: string;
+}
 export interface ICollectionSearchOptions {
     gameId: string;
     count?: number;
@@ -558,7 +562,7 @@ export interface ICollectionSearchOptions {
         direction: SortDirection;
     };
     search?: string;
-    categoryName?: string[];
+    categoryName?: ICategoryNameFilter[];
     collectionStatuses?: string[];
 }
 export interface ICollectionSearchResult {

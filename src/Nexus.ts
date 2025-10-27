@@ -1128,7 +1128,7 @@ class Nexus {
 
     // Add category filter if provided
     if (categoryName && categoryName.length > 0) {
-      filter.categoryName = categoryName.map(name => ({ op: 'EQUALS', value: name }));
+      filter.categoryName = categoryName;
     }
 
     // Add generalSearch if search query is provided
