@@ -550,7 +550,7 @@ export declare type FilterComparisonOperatorNumeric = 'EQUALS' | 'NOT_EQUALS' | 
 export declare type FilterLogicalOperator = 'AND' | 'OR';
 export interface IBaseFilterValue {
     op: 'EQUALS' | 'NOT_EQUALS';
-    value: number;
+    value: string;
 }
 export interface IBaseFilterValueEqualsWildcard {
     op: FilterComparisonOperatorEqualsWildcard;
@@ -562,7 +562,7 @@ export interface IBaseFilterValueEqualsMatches {
 }
 export interface IBaseFilterValueNumeric {
     op: FilterComparisonOperatorNumeric;
-    value: number;
+    value: string;
 }
 export interface IModFileContentSearchFilter {
     filter?: IModFileContentSearchFilter[];

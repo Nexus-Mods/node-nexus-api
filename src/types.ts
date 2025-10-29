@@ -1045,7 +1045,7 @@ export type FilterLogicalOperator =
  */
 export interface IBaseFilterValue {
   op: 'EQUALS' | 'NOT_EQUALS';
-  value: number;
+  value: string;
 }
 
 /**
@@ -1069,7 +1069,7 @@ export interface IBaseFilterValueEqualsMatches {
  */
 export interface IBaseFilterValueNumeric {
   op: FilterComparisonOperatorNumeric;
-  value: number;
+  value: string;
 }
 
 /**
