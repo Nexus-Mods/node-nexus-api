@@ -937,6 +937,167 @@ export interface IFileHash {
   modFileId: number;
 }
 
+/**
+ * Metadata about a single facet value for search filtering
+ */
+export interface INodesFacet {
+  /** Number of results available for this facet value */
+  count: number;
+  /** Name matching the graphql facet request */
+  facet: string;
+  /** Value available for this facet */
+  value: string;
+}
+
+/**
+ * Represents a file within a mod archive with its path and metadata
+ */
+export interface IModFileContent {
+  /** The database ID for this mod_file_content */
+  id: string;
+  /** Game ID this file belongs to */
+  gameId: number;
+  /** Mod ID this file belongs to */
+  modId: number;
+  /** File ID this file belongs to */
+  fileId: number;
+  /** Full path of the file within the archive */
+  filePath: string;
+  /** Path components split into array */
+  filePathParts: string[];
+  /** Name of the file */
+  fileName: string;
+  /** File extension */
+  fileExtension: string;
+  /** Size of the file in bytes (BigInt) */
+  fileSize: string;
+}
+
+/**
+ * Paginated response for mod file contents query
+ */
+export interface IModFileContentPage {
+  /** Nodes for pagination */
+  nodes: IModFileContent[];
+  /** Number of nodes returned by this query */
+  nodesCount: number;
+  /** Total number of files found */
+  totalCount: number;
+  /** Facets available for filtering */
+  facets?: INodesFacet[];
+  /** Facets data in object format */
+  facetsData?: any;
+  /** Node-specific facets */
+  nodesFacets?: INodesFacet[];
+  /** String representation of the filter query used */
+  nodesFilter?: string;
+}
+
+/**
+ * Filter comparison operators for elastic search queries
+ */
+export type FilterComparisonOperator =
+  | 'EQUALS'      // Exact match
+  | 'NOT_EQUALS'  // Not equal
+  | 'MATCHES'     // All terms present (any order), no wildcards but stems may match
+  | 'WILDCARD'    // All terms present (any order) with leading/trailing wildcards
+  | 'GT'          // Greater than
+  | 'GTE'         // Greater than or equal to
+  | 'LT'          // Less than
+  | 'LTE';        // Less than or equal to
+
+/**
+ * Filter comparison equals and matches operators for elastic search queries
+ */
+export type FilterComparisonOperatorEqualsMatches =
+  | 'EQUALS'      // Exact match
+  | 'NOT_EQUALS'  // Not equal
+  | 'MATCHES';    // Matches if all terms in the value are present (in any order). No wildcarding, though stems may match
+
+/**
+ * Filter comparison equals and wildcard operators for elastic search queries
+ */
+export type FilterComparisonOperatorEqualsWildcard =
+  | 'EQUALS'      // Exact match
+  | 'NOT_EQUALS'  // Not equal
+  | 'WILDCARD';   // Matches if all terms in the value are present (in any order), with leading/trailing wildcards applied
+
+/**
+ * Filter comparison numeric operators for elastic search queries
+ */
+export type FilterComparisonOperatorNumeric =
+  | 'EQUALS'      // Exact match
+  | 'NOT_EQUALS'  // Not equal
+  | 'GT'          // Greater than
+  | 'GTE'         // Greater than or equal to
+  | 'LT'          // Less than
+  | 'LTE';        // Less than or equal to
+
+/**
+ * Filter logical operators for elastic search queries
+ */
+export type FilterLogicalOperator =
+  | 'AND'  // Logical AND
+  | 'OR';  // Logical OR
+
+/**
+ * Base filter value for numeric comparisons
+ */
+export interface IBaseFilterValue {
+  op: 'EQUALS' | 'NOT_EQUALS';
+  value: number;
+}
+
+/**
+ * Filter value for wildcard string matching
+ */
+export interface IBaseFilterValueEqualsWildcard {
+  op: FilterComparisonOperatorEqualsWildcard;
+  value: string;
+}
+
+/**
+ * Filter value for exact string matching with MATCHES operator
+ */
+export interface IBaseFilterValueEqualsMatches {
+  op: FilterComparisonOperatorEqualsMatches;
+  value: string;
+}
+
+/**
+ * Filter value for numeric comparisons with range operators
+ */
+export interface IBaseFilterValueNumeric {
+  op: FilterComparisonOperatorNumeric;
+  value: number;
+}
+
+/**
+ * Search filter for mod file contents query
+ */
+export interface IModFileContentSearchFilter {
+  /** Nested filters for complex queries */
+  filter?: IModFileContentSearchFilter[];
+  /** Logical operator for combining filter clauses */
+  op?: FilterLogicalOperator;
+  /** Filter by file ID */
+  fileId?: IBaseFilterValue[];
+  /** Filter by mod ID */
+  modId?: IBaseFilterValue[];
+  /** Filter by game ID */
+  gameId?: IBaseFilterValue[];
+  /** Filter by file path using wildcards (e.g., "Data/Meshes/*") */
+  filePathWildcard?: IBaseFilterValueEqualsWildcard[];
+  /** Filter by exact path parts (e.g., ["Data", "Meshes", "armor.nif"]) */
+  filePathPartsExact?: IBaseFilterValueEqualsMatches[];
+  /** Filter by file name using wildcards (e.g., "*.esp") */
+  fileNameWildcard?: IBaseFilterValueEqualsWildcard[];
+  /** Filter by exact file extension (e.g., "esp", "esm") */
+  fileExtensionExact?: IBaseFilterValueEqualsMatches[];
+  /** Filter by file size in bytes */
+  fileSize?: IBaseFilterValueNumeric[];
+}
+
 export type RatingOptions = 'positive' | 'negative' | 'abstained';
 
 export type GraphErrorCode = 'REVISION_INVALID';

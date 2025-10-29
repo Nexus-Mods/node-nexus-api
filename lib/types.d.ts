@@ -518,6 +518,64 @@ export interface IFileHash {
     modFile: IModFile;
     modFileId: number;
 }
+export interface INodesFacet {
+    count: number;
+    facet: string;
+    value: string;
+}
+export interface IModFileContent {
+    id: string;
+    gameId: number;
+    modId: number;
+    fileId: number;
+    filePath: string;
+    filePathParts: string[];
+    fileName: string;
+    fileExtension: string;
+    fileSize: string;
+}
+export interface IModFileContentPage {
+    nodes: IModFileContent[];
+    nodesCount: number;
+    totalCount: number;
+    facets?: INodesFacet[];
+    facetsData?: any;
+    nodesFacets?: INodesFacet[];
+    nodesFilter?: string;
+}
+export declare type FilterComparisonOperator = 'EQUALS' | 'NOT_EQUALS' | 'MATCHES' | 'WILDCARD' | 'GT' | 'GTE' | 'LT' | 'LTE';
+export declare type FilterComparisonOperatorEqualsMatches = 'EQUALS' | 'NOT_EQUALS' | 'MATCHES';
+export declare type FilterComparisonOperatorEqualsWildcard = 'EQUALS' | 'NOT_EQUALS' | 'WILDCARD';
+export declare type FilterComparisonOperatorNumeric = 'EQUALS' | 'NOT_EQUALS' | 'GT' | 'GTE' | 'LT' | 'LTE';
+export declare type FilterLogicalOperator = 'AND' | 'OR';
+export interface IBaseFilterValue {
+    op: 'EQUALS' | 'NOT_EQUALS';
+    value: number;
+}
+export interface IBaseFilterValueEqualsWildcard {
+    op: FilterComparisonOperatorEqualsWildcard;
+    value: string;
+}
+export interface IBaseFilterValueEqualsMatches {
+    op: FilterComparisonOperatorEqualsMatches;
+    value: string;
+}
+export interface IBaseFilterValueNumeric {
+    op: FilterComparisonOperatorNumeric;
+    value: number;
+}
+export interface IModFileContentSearchFilter {
+    filter?: IModFileContentSearchFilter[];
+    op?: FilterLogicalOperator;
+    fileId?: IBaseFilterValue[];
+    modId?: IBaseFilterValue[];
+    gameId?: IBaseFilterValue[];
+    filePathWildcard?: IBaseFilterValueEqualsWildcard[];
+    filePathPartsExact?: IBaseFilterValueEqualsMatches[];
+    fileNameWildcard?: IBaseFilterValueEqualsWildcard[];
+    fileExtensionExact?: IBaseFilterValueEqualsMatches[];
+    fileSize?: IBaseFilterValueNumeric[];
+}
 export declare type RatingOptions = 'positive' | 'negative' | 'abstained';
 export declare type GraphErrorCode = 'REVISION_INVALID';
 export declare type GraphErrorAttribute = 'modId' | 'fileId';

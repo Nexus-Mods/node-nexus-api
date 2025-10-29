@@ -903,6 +903,49 @@ class Nexus {
     return results;
   }
 
+  /**
+   * retrieve mod file contents with pagination and filtering
+   * @param query the information to fetch for the page structure
+   * @param filter optional search and filter criteria
+   * @param offset pagination offset for record positioning
+   * @param count number of records to return per page
+   * @returns paginated mod file content data with facets and metadata
+   */
+  public async modFileContents(
+    query: graphQL.IModFileContentPageQuery,
+    filter?: types.IModFileContentSearchFilter,
+    offset?: number,
+    count?: number
+  ): Promise<Partial<types.IModFileContentPage>> {
+    await this.mQuota.wait();
+
+    const parameters: graphQL.GraphQueryParameters = {};
+    const variables: any = {};
+
+    if (filter !== undefined) {
+      parameters.filter = { type: 'ModFileContentSearchFilter', optional: true };
+      variables.filter = filter;
+    }
+    if (offset !== undefined) {
+      parameters.offset = { type: 'Int', optional: true };
+      variables.offset = offset;
+    }
+    if (count !== undefined) {
+      parameters.count = { type: 'Int', optional: true };
+      variables.count = count;
+    }
+
+    const res = await this.requestGraph<types.IModFileContentPage>(
+      'modFileContents',
+      parameters,
+      query,
+      variables,
+      this.args({ path: this.filter({}) })
+    );
+
+    return res;
+  }
+
   public async sendMetric(eventType: string, entityType: string, entityId: string, metadata: Record<string, any>, clientString?: string): Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 
