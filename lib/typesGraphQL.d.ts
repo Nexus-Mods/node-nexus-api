@@ -1,5 +1,5 @@
 import { ICreateCollectionResult } from '.';
-import { ICollection, IDateTime, IFileHash, IGraphUser, IMod, IModFile, IRevision } from './types';
+import { ICollection, IDateTime, IFileHash, IGraphUser, IMod, IModFile, IModFileContent, IModFileContentPage, INodesFacet, IRevision } from './types';
 export declare type PODs = number | string | boolean | IDateTime;
 export interface IFilter {
     [key: string]: any;
@@ -28,3 +28,6 @@ export declare type IModQuery = Querify<IMod>;
 export declare type IModFileQuery = Querify<IModFile>;
 export declare type IUserQuery = Querify<IGraphUser>;
 export declare type IFileHashQuery = Querify<IFileHash>;
+export declare type IModFileContentQuery = Querify<IModFileContent>;
+export declare type IModFileContentPageQuery = Querify<IModFileContentPage>;
+export declare type INodesFacetQuery = Querify<INodesFacet>;

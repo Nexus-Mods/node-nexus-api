@@ -78,6 +78,207 @@ const collection = await nexus.getCollectionGraph({
 
 Available thumbnail sizes for `thumbnailUrl` are typically: `SMALL`, `MED`, `LARGE` (refer to the [Nexus Mods GraphQL documentation](https://graphql.nexusmods.com/) for the complete list).
 
+### Querying Mod File Contents
+
+The `modFileContents` method allows you to search and retrieve information about individual files within mod archives. This is useful for finding specific file types, paths, or analyzing mod structure.
+
+#### Basic Usage
+
+```typescript
+// Query basic file information
+const results = await nexus.modFileContents({
+  nodes: {
+    id: true,
+    modId: true,
+    fileId: true,
+    filePath: true,
+    fileName: true,
+    fileExtension: true,
+    fileSize: true
+  },
+  totalCount: true,
+  nodesCount: true
+});
+
+console.log(`Found ${results.totalCount} files`);
+console.log(`Returned ${results.nodesCount} files in this page`);
+```
+
+#### Filtering
+
+The `modFileContents` method supports extensive filtering options:
+
+```typescript
+// Find all .esp files in a specific mod
+const espFiles = await nexus.modFileContents(
+  {
+    nodes: {
+      filePath: true,
+      fileName: true,
+      fileSize: true
+    },
+    totalCount: true
+  },
+  {
+    modId: [{ value: '12345', op: 'EQUALS' }],
+    fileExtensionExact: [{ value: 'esp', op: 'EQUALS' }]
+  }
+);
+
+// Find files matching a wildcard pattern
+const meshFiles = await nexus.modFileContents(
+  {
+    nodes: {
+      filePath: true,
+      fileSize: true
+    }
+  },
+  {
+    filePathWildcard: [{ value: 'Data/Meshes/*', op: 'WILDCARD' }]
+  }
+);
+
+// Find files by exact path (using MATCHES - all terms present in any order)
+const specificPath = await nexus.modFileContents(
+  {
+    nodes: {
+      filePath: true,
+      fileName: true
+    }
+  },
+  {
+    filePathPartsExact: [{ value: 'Data Meshes armor.nif', op: 'MATCHES' }]
+  }
+);
+
+// Filter by file size (bytes) - note values are strings
+const largeFiles = await nexus.modFileContents(
+  {
+    nodes: {
+      filePath: true,
+      fileSize: true
+    }
+  },
+  {
+    fileSize: [{ value: '1048576', op: 'GT' }] // Files > 1MB
+  }
+);
+
+// Complex filters using logical operators
+const complexFilter = await nexus.modFileContents(
+  {
+    nodes: {
+      filePath: true,
+      fileName: true
+    }
+  },
+  {
+    op: 'AND',
+    filter: [
+      { fileExtensionExact: [{ value: 'esp', op: 'EQUALS' }] },
+      { fileSize: [{ value: '100000', op: 'LT' }] }
+    ]
+  }
+);
+
+// OR operator example - find .esp OR .esm files
+const pluginFiles = await nexus.modFileContents(
+  {
+    nodes: {
+      filePath: true,
+      fileName: true
+    }
+  },
+  {
+    op: 'OR',
+    filter: [
+      { fileExtensionExact: [{ value: 'esp', op: 'EQUALS' }] },
+      { fileExtensionExact: [{ value: 'esm', op: 'EQUALS' }] }
+    ]
+  }
+);
+```
+
+#### Pagination
+
+For large result sets, use offset and count parameters:
+
+```typescript
+const pageSize = 50;
+let offset = 0;
+let allFiles = [];
+
+while (true) {
+  const results = await nexus.modFileContents(
+    {
+      nodes: {
+        filePath: true,
+        fileName: true
+      },
+      nodesCount: true,
+      totalCount: true
+    },
+    { modId: [{ value: '12345', op: 'EQUALS' }] },
+    offset,  // offset
+    pageSize // count
+  );
+
+  allFiles.push(...results.nodes);
+
+  if (offset + pageSize >= results.totalCount) {
+    break;
+  }
+
+  offset += pageSize;
+}
+
+console.log(`Retrieved all ${allFiles.length} files`);
+```
+
+#### Available Filter Options
+
+- `fileId` - Filter by specific file ID(s) - uses `IBaseFilterValue` (EQUALS, NOT_EQUALS)
+- `modId` - Filter by specific mod ID(s) - uses `IBaseFilterValue` (EQUALS, NOT_EQUALS)
+- `gameId` - Filter by game ID(s) - uses `IBaseFilterValue` (EQUALS, NOT_EQUALS)
+- `filePathWildcard` - Match file paths using wildcards (e.g., `"Data/Meshes/*"`) - uses `IBaseFilterValueEqualsWildcard` (EQUALS, NOT_EQUALS, WILDCARD)
+- `filePathPartsExact` - Match path terms (e.g., `"Data Meshes armor.nif"`) - uses `IBaseFilterValueEqualsMatches` (EQUALS, NOT_EQUALS, MATCHES)
+- `fileNameWildcard` - Match file names using wildcards (e.g., `"*.esp"`) - uses `IBaseFilterValueEqualsWildcard` (EQUALS, NOT_EQUALS, WILDCARD)
+- `fileExtensionExact` - Match specific file extensions (e.g., `"esp"`) - uses `IBaseFilterValueEqualsMatches` (EQUALS, NOT_EQUALS, MATCHES)
+- `fileSize` - Filter by file size in bytes - uses `IBaseFilterValueNumeric` (EQUALS, NOT_EQUALS, GT, GTE, LT, LTE)
+
+#### Filter Operators
+
+**Basic Operators (IBaseFilterValue):**
+- `EQUALS` - Exact match
+- `NOT_EQUALS` - Does not equal
+
+**Wildcard Operators (IBaseFilterValueEqualsWildcard):**
+- `EQUALS` - Exact match
+- `NOT_EQUALS` - Does not equal
+- `WILDCARD` - Matches with leading/trailing wildcards, all terms present in any order
+
+**Match Operators (IBaseFilterValueEqualsMatches):**
+- `EQUALS` - Exact match
+- `NOT_EQUALS` - Does not equal
+- `MATCHES` - All terms present in any order (no wildcards, but stems may match)
+
+**Numeric Operators (IBaseFilterValueNumeric):**
+- `EQUALS` - Exact match
+- `NOT_EQUALS` - Does not equal
+- `GT` - Greater than
+- `GTE` - Greater than or equal to
+- `LT` - Less than
+- `LTE` - Less than or equal to
+
+**Note:** All filter values must be strings, including numeric values like file IDs and sizes.
+
+#### Logical Operators
+
+Combine multiple filters using logical operators in the `op` field:
+
+- `AND` - All nested filters must match
+- `OR` - At least one nested filter must match
+
 ### Throttling
 
 The library implements request throttling to avoid spamming the API.
