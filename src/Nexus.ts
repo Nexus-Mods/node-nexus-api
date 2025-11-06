@@ -911,6 +911,40 @@ class Nexus {
    * @param count number of records to return per page
    * @returns paginated mod file content data with facets and metadata
    */
+  /**
+   * Recursively converts filter values to strings for GraphQL API compatibility
+   */
+  private convertFilterValuesToStrings(filter: types.IModFileContentSearchFilter): types.IModFileContentSearchFilter {
+    const converted: any = {};
+
+    // Handle nested filters recursively
+    if (filter.filter !== undefined) {
+      converted.filter = filter.filter.map(f => this.convertFilterValuesToStrings(f));
+    }
+
+    // Copy operator if present
+    if (filter.op !== undefined) {
+      converted.op = filter.op;
+    }
+
+    // Convert all filter field values to strings
+    const filterFields = [
+      'fileId', 'modId', 'gameId', 'filePathWildcard',
+      'filePathPartsExact', 'fileNameWildcard', 'fileExtensionExact', 'fileSize'
+    ];
+
+    for (const field of filterFields) {
+      if (filter[field] !== undefined) {
+        converted[field] = filter[field].map((filterValue: any) => ({
+          op: filterValue.op,
+          value: String(filterValue.value)
+        }));
+      }
+    }
+
+    return converted;
+  }
+
   public async modFileContents(
     query: graphQL.IModFileContentPageQuery,
     filter?: types.IModFileContentSearchFilter,
@@ -924,7 +958,7 @@ class Nexus {
 
     if (filter !== undefined) {
       parameters.filter = { type: 'ModFileContentSearchFilter', optional: true };
-      variables.filter = filter;
+      variables.filter = this.convertFilterValuesToStrings(filter);
     }
     if (offset !== undefined) {
       parameters.offset = { type: 'Int', optional: true };

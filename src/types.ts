@@ -1042,10 +1042,12 @@ export type FilterLogicalOperator =
 
 /**
  * Base filter value for numeric comparisons
+ *  Note that regardless of the value type (string or number),
+ *  the value will be converted to the appropriate type based on the field being filtered.
  */
 export interface IBaseFilterValue {
   op: 'EQUALS' | 'NOT_EQUALS';
-  value: string;
+  value: string | number;
 }
 
 /**
