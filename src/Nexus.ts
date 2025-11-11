@@ -1190,6 +1190,7 @@ class Nexus {
       search,
       categoryName,
       collectionStatuses = ['listed', 'published', 'under_moderation', 'unlisted'],
+      includeAdultContent = true,
     } = options;
 
     // Build the sort parameter based on the field
@@ -1206,6 +1207,11 @@ class Nexus {
     // Add category filter if provided
     if (categoryName && categoryName.length > 0) {
       filter.categoryName = categoryName;
+    }
+
+    // Add adult content filter if specified
+    if (includeAdultContent === false) {
+      filter.adultContent = [{ op: 'EQUALS', value: false }];
     }
 
     // Add generalSearch if search query is provided
