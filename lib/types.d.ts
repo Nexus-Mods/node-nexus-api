@@ -623,6 +623,7 @@ export interface ICollectionSearchOptions {
     categoryName?: ICategoryNameFilter[];
     collectionStatuses?: string[];
     includeAdultContent?: boolean;
+    userId?: string;
 }
 export interface ICollectionSearchResult {
     nodes: Partial<ICollection>[];
