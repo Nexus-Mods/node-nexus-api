@@ -1167,6 +1167,7 @@ export interface ICollectionSearchOptions {
   search?: string;
   categoryName?: ICategoryNameFilter[];
   collectionStatuses?: string[];
+  userId?: string;
 }
 
 /**

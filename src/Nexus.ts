@@ -1190,6 +1190,7 @@ class Nexus {
       search,
       categoryName,
       collectionStatuses = ['listed', 'published', 'under_moderation', 'unlisted'],
+      userId,
     } = options;
 
     // Build the sort parameter based on the field
@@ -1211,6 +1212,11 @@ class Nexus {
     // Add generalSearch if search query is provided
     if (search && search.trim()) {
       filter.generalSearch = [{ op: 'WILDCARD', value: search.trim() }];
+    }
+
+    // Add userId filter if provided
+    if (userId !== undefined) {
+      filter.userId = [{ op: 'EQUALS', value: userId }];
     }
 
     // Build variables for the collectionsV2 query

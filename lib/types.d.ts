@@ -550,7 +550,7 @@ export declare type FilterComparisonOperatorNumeric = 'EQUALS' | 'NOT_EQUALS' | 
 export declare type FilterLogicalOperator = 'AND' | 'OR';
 export interface IBaseFilterValue {
     op: 'EQUALS' | 'NOT_EQUALS';
-    value: string;
+    value: string | number;
 }
 export interface IBaseFilterValueEqualsWildcard {
     op: FilterComparisonOperatorEqualsWildcard;
@@ -622,6 +622,7 @@ export interface ICollectionSearchOptions {
     search?: string;
     categoryName?: ICategoryNameFilter[];
     collectionStatuses?: string[];
+    userId?: string;
 }
 export interface ICollectionSearchResult {
     nodes: Partial<ICollection>[];
