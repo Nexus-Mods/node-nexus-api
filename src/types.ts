@@ -1168,6 +1168,7 @@ export interface ICollectionSearchOptions {
   categoryName?: ICategoryNameFilter[];
   collectionStatuses?: string[];
   includeAdultContent?: boolean;
+  userId?: string;
 }
 
 /**
