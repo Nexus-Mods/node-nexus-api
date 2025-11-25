@@ -1242,7 +1242,6 @@ class Nexus {
     const filter: any = {
       collectionStatus: collectionStatuses.map(status => ({ op: 'EQUALS', value: status })),
       gameDomain: [{ op: 'EQUALS', value: gameId }],
-      adultContent: [{ op: 'EQUALS', value: adultContent }],
       op: 'AND',
     };
 
@@ -1259,6 +1258,10 @@ class Nexus {
     // Add userId filter if provided
     if (userId !== undefined) {
       filter.userId = [{ op: 'EQUALS', value: userId }];
+    }
+
+    if (adultContent !== undefined) {
+      filter.adultContent = [{ op: 'EQUALS', value: adultContent }];
     }
 
     // Build variables for the collectionsV2 query
