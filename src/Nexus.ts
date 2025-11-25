@@ -310,6 +310,7 @@ class Nexus {
   private mOAuthConfig: types.IOAuthConfig;
   private mJWTRefreshCallback: (credentials: types.IOAuthCredentials) => void;
   private mJwtRefreshTries: number = 0;
+  private mCachedPreferences: Partial<types.IPreference> | undefined;
 
   //#region Constructor and maintenance
 
@@ -818,9 +819,14 @@ class Nexus {
   /**
    * Retrieve user preferences for the authenticated user
    * @param query the preference fields to fetch
+   * @param useCache if true, returns cached preferences if available (default: true)
    * @returns partial preference data based on the query
    */
-  public async getPreferences(query: graphQL.IPreferenceQuery): Promise<Partial<types.IPreference>> {
+  public async getPreferences(query: graphQL.IPreferenceQuery, useCache: boolean = true): Promise<Partial<types.IPreference>> {
+    if (useCache && this.mCachedPreferences !== undefined) {
+      return this.mCachedPreferences;
+    }
+
     await this.mQuota.wait();
 
     const res = await this.requestGraph<types.IPreference>(
@@ -831,7 +837,15 @@ class Nexus {
       this.args({ path: this.filter({}) })
     );
 
+    this.mCachedPreferences = res;
     return res;
+  }
+
+  /**
+   * Clear the cached user preferences
+   */
+  public clearPreferencesCache(): void {
+    this.mCachedPreferences = undefined;
   }
 
   /**

@@ -15,6 +15,7 @@ declare class Nexus {
     private mOAuthConfig;
     private mJWTRefreshCallback;
     private mJwtRefreshTries;
+    private mCachedPreferences;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setLogger(logCB: LogFunc): void;
@@ -51,7 +52,8 @@ declare class Nexus {
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
     userById(query: graphQL.IUserQuery, userId: number): Promise<types.IGraphUser>;
-    getPreferences(query: graphQL.IPreferenceQuery): Promise<Partial<types.IPreference>>;
+    getPreferences(query: graphQL.IPreferenceQuery, useCache?: boolean): Promise<Partial<types.IPreference>>;
+    clearPreferencesCache(): void;
     modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]>;
     modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]>;
     fileHashes(query: graphQL.IFileHashQuery, md5Hashes: string[]): Promise<{
