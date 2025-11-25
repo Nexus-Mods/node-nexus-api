@@ -577,6 +577,48 @@ export interface IModFileContentSearchFilter {
     fileSize?: IBaseFilterValueNumeric[];
 }
 export declare type RatingOptions = 'positive' | 'negative' | 'abstained';
+export declare type PreferencesCommentsEnum = 'COMMENTS_10' | 'COMMENTS_20' | 'COMMENTS_30' | 'COMMENTS_40' | 'COMMENTS_50';
+export declare type PreferencesDefaultMediaTabEnum = 'NEW' | 'TRENDING' | 'POPULAR' | 'RANDOM';
+export declare type PreferencesTimeRangeEnum = 'ALL_TIME' | 'ONE_DAY' | 'ONE_WEEK' | 'TWO_WEEKS' | 'FOUR_WEEKS' | 'ONE_YEAR';
+export declare type PreferencesDefaultModsTabEnum = 'NEW' | 'TRENDING' | 'POPULAR' | 'RANDOM' | 'UPDATED';
+export declare type PreferencesDefaultSortEnum = 'BY_RECENT_FILES' | 'BY_ENDORSEMENTS' | 'BY_DOWNLOADS' | 'BY_UNIQUE_DOWNLOADS' | 'BY_LAST_UPDATED_FILE' | 'BY_AUTHOR_NAME' | 'BY_FILE_NAME' | 'BY_FILE_SIZE' | 'RANDOM_SORTING' | 'LAST_COMMENT';
+export declare type PreferencesSearchTypeEnum = 'ALL_CONTENT' | 'GAMES' | 'MODS' | 'COLLECTIONS' | 'IMAGES' | 'VIDEOS' | 'USERS';
+export declare type PreferencesDefaultSearchViewEnum = 'STANDARD' | 'LIST' | 'COMPACT';
+export declare type PreferencesDlLocationEnum = 'NEXUS_CDN' | 'AMSTERDAM' | 'PRAGUE' | 'CHICAGO' | 'LOS_ANGELES' | 'MIAMI';
+export declare type PreferencesDownloadMethodEnum = 'POP_UP_BOX' | 'SEPARATE_PAGE';
+export declare type PreferencesImageShowcaseEnum = 'NOT_SET' | 'CHOOSE_ON_PER_IMAGE_BASIS' | 'TURN_OFF_IMAGES' | 'TURN_ON_IMAGES';
+export declare type PreferencesReminderEnum = 'NEVER' | 'DAYS_1' | 'DAYS_3' | 'DAYS_7' | 'DAYS_14' | 'DAYS_28';
+export declare type PreferencesResultsEnum = 'RESULTS_20' | 'RESULTS_40' | 'RESULTS_60' | 'RESULTS_80';
+export interface IPreference {
+    id: string;
+    adult: boolean;
+    adultBlurImages: boolean;
+    bubbleReply: boolean;
+    comments: PreferencesCommentsEnum;
+    defaultMediaTab: PreferencesDefaultMediaTabEnum;
+    defaultMediaTabTimeRange: PreferencesTimeRangeEnum;
+    defaultModsTab: PreferencesDefaultModsTabEnum;
+    defaultModsTabTimeRange: PreferencesTimeRangeEnum;
+    defaultOrder: PreferencesDefaultSortEnum;
+    defaultSearchType: PreferencesSearchTypeEnum;
+    defaultSearchView: PreferencesDefaultSearchViewEnum;
+    disableProfileActivity: boolean;
+    displayLastActivity: boolean;
+    dlLocation: PreferencesDlLocationEnum;
+    download: PreferencesDownloadMethodEnum;
+    imageShowcase: PreferencesImageShowcaseEnum;
+    isBlockingContent: boolean;
+    marketingEmails: boolean;
+    notificationsActive: boolean;
+    notificationsGameSpecific: boolean;
+    reminder: PreferencesReminderEnum;
+    results: PreferencesResultsEnum;
+    subfeedsActivityTracked: boolean;
+    subfeedsActivityYour: boolean;
+    subfeedsAuthorTracked: boolean;
+    subfeedsCommentsTracked: boolean;
+    subfeedsCommentsYour: boolean;
+}
 export declare type GraphErrorCode = 'REVISION_INVALID';
 export declare type GraphErrorAttribute = 'modId' | 'fileId';
 export declare type GraphErrorItemCode = 'NOT_AVAILABLE' | 'NOT_FOUND' | 'DELETED';

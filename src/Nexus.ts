@@ -796,7 +796,7 @@ class Nexus {
   //#region GraphQL convenience
 
   public async userById(query: graphQL.IUserQuery, userId: number): Promise<types.IGraphUser> {
-    await this.mQuota.wait();  
+    await this.mQuota.wait();
 
     const res = await this.requestGraph<types.IGraphUser>(
       'user',
@@ -804,6 +804,25 @@ class Nexus {
         id: { type: 'Int', optional: false },
       }, query,  { id: userId },
       this.args({ path: this.filter({}) }));
+
+    return res;
+  }
+
+  /**
+   * Retrieve user preferences for the authenticated user
+   * @param query the preference fields to fetch
+   * @returns partial preference data based on the query
+   */
+  public async getPreferences(query: graphQL.IPreferenceQuery): Promise<Partial<types.IPreference>> {
+    await this.mQuota.wait();
+
+    const res = await this.requestGraph<types.IPreference>(
+      'preference',
+      {},
+      query,
+      {},
+      this.args({ path: this.filter({}) })
+    );
 
     return res;
   }

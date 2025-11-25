@@ -51,6 +51,7 @@ declare class Nexus {
     getDownloadURLs(modId: number, fileId: number, key?: string, expires?: number, gameId?: string): Promise<types.IDownloadURL[]>;
     getFileByMD5(hash: string, gameId?: string): Promise<types.IMD5Result[]>;
     userById(query: graphQL.IUserQuery, userId: number): Promise<types.IGraphUser>;
+    getPreferences(query: graphQL.IPreferenceQuery): Promise<Partial<types.IPreference>>;
     modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]>;
     modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]>;
     fileHashes(query: graphQL.IFileHashQuery, md5Hashes: string[]): Promise<{
