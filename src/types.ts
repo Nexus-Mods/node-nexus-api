@@ -1245,6 +1245,13 @@ export interface ICollectionSearchOptions {
   categoryName?: ICategoryNameFilter[];
   collectionStatuses?: string[];
   userId?: string;
+  /**
+   * Filter collections by adult content
+   * - true: Only return collections with adult content
+   * - false: Exclude collections with adult content
+   * - undefined: Include both (default, respects user preferences server-side)
+   */
+  adultContent?: boolean;
 }
 
 /**

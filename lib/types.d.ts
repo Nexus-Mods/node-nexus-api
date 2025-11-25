@@ -666,6 +666,7 @@ export interface ICollectionSearchOptions {
     categoryName?: ICategoryNameFilter[];
     collectionStatuses?: string[];
     userId?: string;
+    adultContent?: boolean;
 }
 export interface ICollectionSearchResult {
     nodes: Partial<ICollection>[];
