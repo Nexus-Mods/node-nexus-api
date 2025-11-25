@@ -47,6 +47,7 @@ export interface IUserInfo {
   group_id: number;
   membership_roles: string[];
   premium_expiry: number;
+  preferences: IPreference;
 }
 
 
@@ -1102,6 +1103,82 @@ export interface IModFileContentSearchFilter {
 
 export type RatingOptions = 'positive' | 'negative' | 'abstained';
 
+// Preference enum types
+export type PreferencesCommentsEnum = 'COMMENTS_10' | 'COMMENTS_20' | 'COMMENTS_30' | 'COMMENTS_40' | 'COMMENTS_50';
+export type PreferencesDefaultMediaTabEnum = 'NEW' | 'TRENDING' | 'POPULAR' | 'RANDOM';
+export type PreferencesTimeRangeEnum = 'ALL_TIME' | 'ONE_DAY' | 'ONE_WEEK' | 'TWO_WEEKS' | 'FOUR_WEEKS' | 'ONE_YEAR';
+export type PreferencesDefaultModsTabEnum = 'NEW' | 'TRENDING' | 'POPULAR' | 'RANDOM' | 'UPDATED';
+export type PreferencesDefaultSortEnum = 'BY_RECENT_FILES' | 'BY_ENDORSEMENTS' | 'BY_DOWNLOADS' | 'BY_UNIQUE_DOWNLOADS' | 'BY_LAST_UPDATED_FILE' | 'BY_AUTHOR_NAME' | 'BY_FILE_NAME' | 'BY_FILE_SIZE' | 'RANDOM_SORTING' | 'LAST_COMMENT';
+export type PreferencesSearchTypeEnum = 'ALL_CONTENT' | 'GAMES' | 'MODS' | 'COLLECTIONS' | 'IMAGES' | 'VIDEOS' | 'USERS';
+export type PreferencesDefaultSearchViewEnum = 'STANDARD' | 'LIST' | 'COMPACT';
+export type PreferencesDlLocationEnum = 'NEXUS_CDN' | 'AMSTERDAM' | 'PRAGUE' | 'CHICAGO' | 'LOS_ANGELES' | 'MIAMI';
+export type PreferencesDownloadMethodEnum = 'POP_UP_BOX' | 'SEPARATE_PAGE';
+export type PreferencesImageShowcaseEnum = 'NOT_SET' | 'CHOOSE_ON_PER_IMAGE_BASIS' | 'TURN_OFF_IMAGES' | 'TURN_ON_IMAGES';
+export type PreferencesReminderEnum = 'NEVER' | 'DAYS_1' | 'DAYS_3' | 'DAYS_7' | 'DAYS_14' | 'DAYS_28';
+export type PreferencesResultsEnum = 'RESULTS_20' | 'RESULTS_40' | 'RESULTS_60' | 'RESULTS_80';
+
+/**
+ * User preference settings
+ */
+export interface IPreference {
+  /** ID of the object */
+  id: string;
+  /** Show adult content */
+  adult: boolean;
+  /** Blur adult images */
+  adultBlurImages: boolean;
+  /** Replies to posts bump original post */
+  bubbleReply: boolean;
+  /** Amount of comments per page */
+  comments: PreferencesCommentsEnum;
+  /** Default media tab */
+  defaultMediaTab: PreferencesDefaultMediaTabEnum;
+  /** Time range for default media tab */
+  defaultMediaTabTimeRange: PreferencesTimeRangeEnum;
+  /** Default mods tab */
+  defaultModsTab: PreferencesDefaultModsTabEnum;
+  /** Time range for default mods tab */
+  defaultModsTabTimeRange: PreferencesTimeRangeEnum;
+  /** Default sorting option */
+  defaultOrder: PreferencesDefaultSortEnum;
+  /** Default search type */
+  defaultSearchType: PreferencesSearchTypeEnum;
+  /** Default search view */
+  defaultSearchView: PreferencesDefaultSearchViewEnum;
+  /** Display user activity */
+  disableProfileActivity: boolean;
+  /** Display when user was last active */
+  displayLastActivity: boolean;
+  /** Download location */
+  dlLocation: PreferencesDlLocationEnum;
+  /** Preferred download method */
+  download: PreferencesDownloadMethodEnum;
+  /** Image showcase setting */
+  imageShowcase: PreferencesImageShowcaseEnum;
+  /** If true, this user is blocking content */
+  isBlockingContent: boolean;
+  /** Whether the user has opted in to marketing emails */
+  marketingEmails: boolean;
+  /** Display notifications */
+  notificationsActive: boolean;
+  /** Game specific notifications when visiting game pages */
+  notificationsGameSpecific: boolean;
+  /** Endorsement reminder */
+  reminder: PreferencesReminderEnum;
+  /** Amount of results per page */
+  results: PreferencesResultsEnum;
+  /** Activity about tracked files, images and videos */
+  subfeedsActivityTracked: boolean;
+  /** Activity about a users files, images and videos */
+  subfeedsActivityYour: boolean;
+  /** Author tracked files, images and videos */
+  subfeedsAuthorTracked: boolean;
+  /** Comments about tracked files, images and videos */
+  subfeedsCommentsTracked: boolean;
+  /** Comments about a users files, images and videos */
+  subfeedsCommentsYour: boolean;
+}
+
 export type GraphErrorCode = 'REVISION_INVALID';
 export type GraphErrorAttribute = 'modId' | 'fileId';
 export type GraphErrorItemCode = 'NOT_AVAILABLE' | 'NOT_FOUND' | 'DELETED';
@@ -1168,6 +1245,13 @@ export interface ICollectionSearchOptions {
   categoryName?: ICategoryNameFilter[];
   collectionStatuses?: string[];
   userId?: string;
+  /**
+   * Filter collections by adult content
+   * - true: Only return collections with adult content
+   * - false: Exclude collections with adult content
+   * - undefined: Include both (default, respects user preferences server-side)
+   */
+  adultContent?: boolean;
 }
 
 /**

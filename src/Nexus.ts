@@ -310,6 +310,7 @@ class Nexus {
   private mOAuthConfig: types.IOAuthConfig;
   private mJWTRefreshCallback: (credentials: types.IOAuthCredentials) => void;
   private mJwtRefreshTries: number = 0;
+  private mCachedPreferences: Partial<types.IPreference> | undefined;
 
   //#region Constructor and maintenance
 
@@ -485,9 +486,16 @@ class Nexus {
  * Get user info from an oauth token
  */
   public async getUserInfo(): Promise<types.IUserInfo> {
-
     await this.mQuota.wait();
-    return await this.request(`${this.mUserServiceBaseURL}/oauth/userinfo`, this.args({}));
+    const oAuthUserInfoPromise = this.request(`${this.mUserServiceBaseURL}/oauth/userinfo`, this.args({}));
+    const preferencePromise = this.getPreferences({
+      adult: true,
+    });
+    const [oAuthUserInfo, preferences] = await Promise.all([oAuthUserInfoPromise, preferencePromise]);
+    return {
+      ...oAuthUserInfo,
+      preferences,
+    };
   }
 
   /**
@@ -796,7 +804,7 @@ class Nexus {
   //#region GraphQL convenience
 
   public async userById(query: graphQL.IUserQuery, userId: number): Promise<types.IGraphUser> {
-    await this.mQuota.wait();  
+    await this.mQuota.wait();
 
     const res = await this.requestGraph<types.IGraphUser>(
       'user',
@@ -806,6 +814,38 @@ class Nexus {
       this.args({ path: this.filter({}) }));
 
     return res;
+  }
+
+  /**
+   * Retrieve user preferences for the authenticated user
+   * @param query the preference fields to fetch
+   * @param useCache if true, returns cached preferences if available (default: true)
+   * @returns partial preference data based on the query
+   */
+  public async getPreferences(query: graphQL.IPreferenceQuery, useCache: boolean = true): Promise<Partial<types.IPreference>> {
+    if (useCache && this.mCachedPreferences !== undefined) {
+      return this.mCachedPreferences;
+    }
+
+    await this.mQuota.wait();
+
+    const res = await this.requestGraph<types.IPreference>(
+      'preferences',
+      {},
+      query,
+      {},
+      this.args({ path: this.filter({}) })
+    );
+
+    this.mCachedPreferences = res;
+    return res;
+  }
+
+  /**
+   * Clear the cached user preferences
+   */
+  public clearPreferencesCache(): void {
+    this.mCachedPreferences = undefined;
   }
 
   /**
@@ -1191,6 +1231,7 @@ class Nexus {
       categoryName,
       collectionStatuses = ['listed', 'published', 'under_moderation', 'unlisted'],
       userId,
+      adultContent,
     } = options;
 
     // Build the sort parameter based on the field
@@ -1217,6 +1258,10 @@ class Nexus {
     // Add userId filter if provided
     if (userId !== undefined) {
       filter.userId = [{ op: 'EQUALS', value: userId }];
+    }
+
+    if (adultContent !== undefined) {
+      filter.adultContent = [{ op: 'EQUALS', value: adultContent }];
     }
 
     // Build variables for the collectionsV2 query
