@@ -47,6 +47,7 @@ export interface IUserInfo {
   group_id: number;
   membership_roles: string[];
   premium_expiry: number;
+  preferences: IPreference;
 }
 
 

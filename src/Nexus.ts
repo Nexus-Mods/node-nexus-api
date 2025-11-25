@@ -485,9 +485,16 @@ class Nexus {
  * Get user info from an oauth token
  */
   public async getUserInfo(): Promise<types.IUserInfo> {
-
     await this.mQuota.wait();
-    return await this.request(`${this.mUserServiceBaseURL}/oauth/userinfo`, this.args({}));
+    const oAuthUserInfoPromise = this.request(`${this.mUserServiceBaseURL}/oauth/userinfo`, this.args({}));
+    const preferencePromise = this.getPreferences({
+      adult: true,
+    });
+    const [oAuthUserInfo, preferences] = await Promise.all([oAuthUserInfoPromise, preferencePromise]);
+    return {
+      ...oAuthUserInfo,
+      preferences,
+    };
   }
 
   /**

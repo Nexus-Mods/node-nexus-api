@@ -21,6 +21,7 @@ export interface IUserInfo {
     group_id: number;
     membership_roles: string[];
     premium_expiry: number;
+    preferences: IPreference;
 }
 export declare type EndorsedStatus = 'Undecided' | 'Abstained' | 'Endorsed';
 export declare type ModStatus = 'under_moderation' | 'published' | 'not_published' | 'publish_with_game' | 'removed' | 'wastebinned' | 'hidden';
