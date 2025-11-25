@@ -1231,6 +1231,7 @@ class Nexus {
       categoryName,
       collectionStatuses = ['listed', 'published', 'under_moderation', 'unlisted'],
       userId,
+      adultContent,
     } = options;
 
     // Build the sort parameter based on the field
@@ -1241,6 +1242,7 @@ class Nexus {
     const filter: any = {
       collectionStatus: collectionStatuses.map(status => ({ op: 'EQUALS', value: status })),
       gameDomain: [{ op: 'EQUALS', value: gameId }],
+      adultContent: [{ op: 'EQUALS', value: adultContent }],
       op: 'AND',
     };
 
