@@ -298,6 +298,7 @@ function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredential
  * @class Nexus
  */
 class Nexus {
+  private static readonly CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
   private mBaseData: IRequestArgs;
   private mBaseURL = param.API_URL;
   private mUserServiceBaseURL = param.USER_SERVICE_API_URL;
@@ -310,7 +311,7 @@ class Nexus {
   private mOAuthConfig: types.IOAuthConfig;
   private mJWTRefreshCallback: (credentials: types.IOAuthCredentials) => void;
   private mJwtRefreshTries: number = 0;
-  private mCachedPreferences: Partial<types.IPreference> | undefined;
+  private mCachedPreferences: { value: Partial<types.IPreference> | undefined; timestamp: number } | undefined;
 
   //#region Constructor and maintenance
 
@@ -823,8 +824,8 @@ class Nexus {
    * @returns partial preference data based on the query
    */
   public async getPreferences(query: graphQL.IPreferenceQuery, useCache: boolean = true): Promise<Partial<types.IPreference>> {
-    if (useCache && this.mCachedPreferences !== undefined) {
-      return this.mCachedPreferences;
+    if (useCache && this.mCachedPreferences !== undefined && (Date.now() - this.mCachedPreferences.timestamp) < Nexus.CACHE_TTL_MS) {
+      return this.mCachedPreferences.value;
     }
 
     await this.mQuota.wait();
@@ -837,7 +838,7 @@ class Nexus {
       this.args({ path: this.filter({}) })
     );
 
-    this.mCachedPreferences = res;
+    this.mCachedPreferences = { value: res, timestamp: Date.now() };
     return res;
   }
 

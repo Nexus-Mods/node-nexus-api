@@ -3,6 +3,7 @@ import * as graphQL from './typesGraphQL';
 import { IGraphQLError, LogFunc } from './types';
 import { RatingOptions } from '.';
 declare class Nexus {
+    private static readonly CACHE_TTL_MS;
     private mBaseData;
     private mBaseURL;
     private mUserServiceBaseURL;
