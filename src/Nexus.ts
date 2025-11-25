@@ -830,7 +830,7 @@ class Nexus {
     await this.mQuota.wait();
 
     const res = await this.requestGraph<types.IPreference>(
-      'preference',
+      'preferences',
       {},
       query,
       {},
@@ -1231,7 +1231,6 @@ class Nexus {
       categoryName,
       collectionStatuses = ['listed', 'published', 'under_moderation', 'unlisted'],
       userId,
-      adultContent,
     } = options;
 
     // Build the sort parameter based on the field
@@ -1258,11 +1257,6 @@ class Nexus {
     // Add userId filter if provided
     if (userId !== undefined) {
       filter.userId = [{ op: 'EQUALS', value: userId }];
-    }
-
-    // Add adultContent filter if provided (uses BooleanFilterValue)
-    if (adultContent !== undefined) {
-      filter.adultContent = [{ value: adultContent }];
     }
 
     // Build variables for the collectionsV2 query
