@@ -298,7 +298,7 @@ function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredential
  * @class Nexus
  */
 class Nexus {
-  private static readonly CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+  private static readonly CACHE_TTL_MS = 30 * 1000; // 30 seconds
   private mBaseData: IRequestArgs;
   private mBaseURL = param.API_URL;
   private mUserServiceBaseURL = param.USER_SERVICE_API_URL;
