@@ -170,6 +170,10 @@ export interface IModInfo {
     timestamp: number,
     version: number,
   };
+  /**
+   * whether direct downloads are enabled for this mod
+   */
+  direct_download_enabled?: boolean;
 }
 
 /**
@@ -766,6 +770,7 @@ export interface IMod {
   author?: string;
   category: string;
   description: string;
+  directDownloadEnabled?: boolean;
   game: IGame;
   gameId: number;
   id: number;
