@@ -62,6 +62,7 @@ declare class Nexus {
     }>;
     private convertFilterValuesToStrings;
     modFileContents(query: graphQL.IModFileContentPageQuery, filter?: types.IModFileContentSearchFilter, offset?: number, count?: number): Promise<Partial<types.IModFileContentPage>>;
+    modRequirements(query: graphQL.IModRequirementsQuery, modId: number, gameId: string): Promise<Partial<types.IModRequirements>>;
     sendMetric(eventType: string, entityType: string, entityId: string, metadata: Record<string, any>, clientString?: string): Promise<types.ICreateCollectionResult>;
     getCollectionDownloadLink(downloadLink: string): Promise<types.IDownloadURL[]>;
     createCollection(data: types.ICollectionPayload, assetFileUUID: string, retQuery?: graphQL.ICreateCollectionQuery): Promise<types.ICreateCollectionResult>;

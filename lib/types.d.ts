@@ -221,6 +221,11 @@ export interface IGame {
     domainName: string;
     name: string;
 }
+export interface IGameExpansion {
+    gameId: string;
+    id: string;
+    name: string;
+}
 export interface ICategory {
     approved: boolean;
     approvedBy?: number;
@@ -383,6 +388,51 @@ export interface IMod {
     uid: string;
     uploader: IGraphUser;
     version: string;
+}
+export interface IModRequirement {
+    externalRequirement: boolean;
+    gameId: string;
+    id: string;
+    modId: string;
+    modName: string;
+    notes?: string;
+    url: string;
+}
+export interface IModRequirementsDlc {
+    gameExpansion: IGameExpansion;
+    notes?: string;
+}
+export interface IModRequiring {
+    externalRequirement: boolean;
+    gameId: string;
+    id: string;
+    modId: string;
+    modName: string;
+    notes?: string;
+    url: string;
+}
+export interface IModRequirementPage {
+    facets?: INodesFacet[];
+    facetsData?: any;
+    nodes: IModRequirement[];
+    nodesCount: number;
+    nodesFacets?: INodesFacet[];
+    nodesFilter?: string;
+    totalCount: number;
+}
+export interface IModRequiringPage {
+    facets?: INodesFacet[];
+    facetsData?: any;
+    nodes: IModRequiring[];
+    nodesCount: number;
+    nodesFacets?: INodesFacet[];
+    nodesFilter?: string;
+    totalCount: number;
+}
+export interface IModRequirements {
+    dlcRequirements: IModRequirementsDlc[];
+    modsRequiringThisMod: IModRequiringPage;
+    nexusRequirements: IModRequirementPage;
 }
 export interface IModFile {
     categoryId: number;
