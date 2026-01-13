@@ -465,13 +465,18 @@ export interface IModRequirements {
     modsRequiringThisMod: IModRequiringPage;
     nexusRequirements: IModRequirementPage;
 }
+export declare type ModFileCategory = 'MAIN' | 'UPDATE' | 'OPTIONAL' | 'OLD_VERSION' | 'MISCELLANEOUS' | 'REMOVED' | 'ARCHIVED';
+export declare type VirusScanStatus = 'NOT_SCANNED' | 'QUEUED' | 'WAITING_REPORT' | 'VERIFIED' | 'INTERNALLY_VERIFIED' | 'QUARANTINED' | 'MANUALLY_VERIFIED' | 'MOD_DOES_NOT_EXIST' | 'FILE_NOT_FOUND' | 'REPORT_ERROR' | 'TOO_LARGE';
 export interface IModFile {
+    category?: ModFileCategory;
     categoryId: number;
+    changelogText?: string[];
     count: number;
     date: number;
     description: string;
     fileId: number;
     game: IGame;
+    id?: string;
     manager: number;
     mod: IMod;
     modId: number;
@@ -481,10 +486,13 @@ export interface IModFile {
     reportLink: string;
     requirementsAlert: number;
     scanned: number;
+    scannedV2?: VirusScanStatus;
     size: number;
     sizeInBytes?: string;
+    totalDownloads?: number;
     uCount: number;
     uid: string;
+    uniqueDownloads?: number;
     uri: string;
     version: string;
 }
