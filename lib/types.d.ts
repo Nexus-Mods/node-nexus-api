@@ -371,24 +371,54 @@ export interface IModCategory {
 export interface ITrackingState {
     test?: number;
 }
+export interface IModMirror {
+    count?: number;
+    gameId: number;
+    id: string;
+    modId: number;
+    name: string;
+    totalDownloads?: number;
+    uri?: string;
+}
 export interface IMod {
+    adult?: boolean;
+    adultContent?: boolean;
     author?: string;
     category: string;
+    createdAt?: IDateTime;
     description: string;
+    directDownloadEnabled?: boolean;
+    downloads?: number;
+    endorsements?: number;
+    fileSize?: number;
     game: IGame;
     gameId: number;
     id: number;
     ipAddress: string;
+    isBlockedFromEarningDp?: boolean;
+    mirrors?: IModMirror[];
     modCategory: IModCategory;
     modId: number;
+    modRequirements?: IModRequirements;
     name: string;
     pictureUrl?: string;
     status: string;
     summary: string;
+    thumbnailBlurredUrl?: string;
+    thumbnailLargeBlurredUrl?: string;
+    thumbnailLargeUrl?: string;
+    thumbnailUrl?: string;
     trackingData: ITrackingState;
     uid: string;
+    updatedAt?: IDateTime;
     uploader: IGraphUser;
     version: string;
+    viewerBlocked?: boolean;
+    viewerDownloaded?: IDateTime;
+    viewerEndorsed?: boolean;
+    viewerIsBlocked?: boolean;
+    viewerTracked?: boolean;
+    viewerUpdateAvailable?: boolean;
 }
 export interface IModRequirement {
     externalRequirement: boolean;
