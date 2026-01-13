@@ -55,6 +55,7 @@ export interface IModInfo {
         timestamp: number;
         version: number;
     };
+    requirements?: IModRequirements;
 }
 export interface IFileInfo {
     file_id: number;

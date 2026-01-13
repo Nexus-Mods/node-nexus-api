@@ -170,6 +170,12 @@ export interface IModInfo {
     timestamp: number,
     version: number,
   };
+  /**
+   * detailed requirements info
+   * may be missing if there are no requirements
+   * NOTE: this will need to be a file info object in the future.
+   * */
+  requirements?: IModRequirements;
 }
 
 /**
