@@ -1020,6 +1020,41 @@ class Nexus {
     return res;
   }
 
+  /**
+   * retrieve mod requirements including DLC requirements, mods requiring this mod, and nexus requirements
+   * @param query the information to fetch
+   * @param modId the mod ID to get requirements for
+   * @param gameId the game domain name
+   * @returns mod requirements data including DLC, dependent mods, and nexus requirements
+   */
+  public async modRequirements(
+    query: graphQL.IModRequirementsQuery,
+    modId: number,
+    gameId: string
+  ): Promise<Partial<types.IModRequirements>> {
+    await this.mQuota.wait();
+
+    const parameters: graphQL.GraphQueryParameters = {
+      modId: { type: 'Int', optional: false },
+      gameDomainName: { type: 'String', optional: false },
+    };
+
+    const variables = {
+      modId,
+      gameDomainName: gameId,
+    };
+
+    const res = await this.requestGraph<types.IModRequirements>(
+      'modRequirements',
+      parameters,
+      query,
+      variables,
+      this.args({ path: this.filter({}) })
+    );
+
+    return res;
+  }
+
   public async sendMetric(eventType: string, entityType: string, entityId: string, metadata: Record<string, any>, clientString?: string): Promise<types.ICreateCollectionResult> {
     await this.mQuota.wait();
 

@@ -1,5 +1,5 @@
 import { ICreateCollectionResult } from '.';
-import { ICollection, IDateTime, IFileHash, IGraphUser, IMod, IModFile, IModFileContent, IModFileContentPage, INodesFacet, IPreference, IRevision, IUser } from './types';
+import { ICollection, IDateTime, IFileHash, IGraphUser, IMod, IModFile, IModFileContent, IModFileContentPage, IModRequirements, INodesFacet, IPreference, IRevision, IUser } from './types';
 
 // some helper types that convert an interface (with the proper data types)
 // into one that can be used to declare a graphql query.
@@ -51,3 +51,5 @@ export type IModFileContentPageQuery = Querify<IModFileContentPage>;
 export type INodesFacetQuery = Querify<INodesFacet>;
 
 export type IPreferenceQuery = Querify<IPreference>;
+
+export type IModRequirementsQuery = Querify<IModRequirements>;

@@ -56,6 +56,7 @@ export interface IModInfo {
         version: number;
     };
     direct_download_enabled?: boolean;
+    requirements?: IModRequirements;
 }
 export interface IFileInfo {
     file_id: number;
@@ -222,6 +223,11 @@ export interface IGame {
     domainName: string;
     name: string;
 }
+export interface IGameExpansion {
+    gameId: string;
+    id: string;
+    name: string;
+}
 export interface ICategory {
     approved: boolean;
     approvedBy?: number;
@@ -366,33 +372,112 @@ export interface IModCategory {
 export interface ITrackingState {
     test?: number;
 }
+export interface IModMirror {
+    count?: number;
+    gameId: number;
+    id: string;
+    modId: number;
+    name: string;
+    totalDownloads?: number;
+    uri?: string;
+}
 export interface IMod {
+    adult?: boolean;
+    adultContent?: boolean;
     author?: string;
     category: string;
+    createdAt?: IDateTime;
     description: string;
     directDownloadEnabled?: boolean;
+    downloads?: number;
+    endorsements?: number;
+    fileSize?: number;
     game: IGame;
     gameId: number;
     id: number;
     ipAddress: string;
+    isBlockedFromEarningDp?: boolean;
+    mirrors?: IModMirror[];
     modCategory: IModCategory;
     modId: number;
+    modRequirements?: IModRequirements;
     name: string;
     pictureUrl?: string;
     status: string;
     summary: string;
+    thumbnailBlurredUrl?: string;
+    thumbnailLargeBlurredUrl?: string;
+    thumbnailLargeUrl?: string;
+    thumbnailUrl?: string;
     trackingData: ITrackingState;
     uid: string;
+    updatedAt?: IDateTime;
     uploader: IGraphUser;
     version: string;
+    viewerBlocked?: boolean;
+    viewerDownloaded?: IDateTime;
+    viewerEndorsed?: boolean;
+    viewerIsBlocked?: boolean;
+    viewerTracked?: boolean;
+    viewerUpdateAvailable?: boolean;
 }
+export interface IModRequirement {
+    externalRequirement: boolean;
+    gameId: string;
+    id: string;
+    modId: string;
+    modName: string;
+    notes?: string;
+    url: string;
+}
+export interface IModRequirementsDlc {
+    gameExpansion: IGameExpansion;
+    notes?: string;
+}
+export interface IModRequiring {
+    externalRequirement: boolean;
+    gameId: string;
+    id: string;
+    modId: string;
+    modName: string;
+    notes?: string;
+    url: string;
+}
+export interface IModRequirementPage {
+    facets?: INodesFacet[];
+    facetsData?: any;
+    nodes: IModRequirement[];
+    nodesCount: number;
+    nodesFacets?: INodesFacet[];
+    nodesFilter?: string;
+    totalCount: number;
+}
+export interface IModRequiringPage {
+    facets?: INodesFacet[];
+    facetsData?: any;
+    nodes: IModRequiring[];
+    nodesCount: number;
+    nodesFacets?: INodesFacet[];
+    nodesFilter?: string;
+    totalCount: number;
+}
+export interface IModRequirements {
+    dlcRequirements: IModRequirementsDlc[];
+    modsRequiringThisMod: IModRequiringPage;
+    nexusRequirements: IModRequirementPage;
+}
+export declare type ModFileCategory = 'MAIN' | 'UPDATE' | 'OPTIONAL' | 'OLD_VERSION' | 'MISCELLANEOUS' | 'REMOVED' | 'ARCHIVED';
+export declare type VirusScanStatus = 'NOT_SCANNED' | 'QUEUED' | 'WAITING_REPORT' | 'VERIFIED' | 'INTERNALLY_VERIFIED' | 'QUARANTINED' | 'MANUALLY_VERIFIED' | 'MOD_DOES_NOT_EXIST' | 'FILE_NOT_FOUND' | 'REPORT_ERROR' | 'TOO_LARGE';
 export interface IModFile {
+    category?: ModFileCategory;
     categoryId: number;
+    changelogText?: string[];
     count: number;
     date: number;
     description: string;
     fileId: number;
     game: IGame;
+    id?: string;
     manager: number;
     mod: IMod;
     modId: number;
@@ -402,10 +487,13 @@ export interface IModFile {
     reportLink: string;
     requirementsAlert: number;
     scanned: number;
+    scannedV2?: VirusScanStatus;
     size: number;
     sizeInBytes?: string;
+    totalDownloads?: number;
     uCount: number;
     uid: string;
+    uniqueDownloads?: number;
     uri: string;
     version: string;
 }
