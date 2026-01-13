@@ -170,6 +170,12 @@ export interface IModInfo {
     timestamp: number,
     version: number,
   };
+  /**
+   * detailed requirements info
+   * may be missing if there are no requirements
+   * NOTE: this will need to be a file info object in the future.
+   * */
+  requirements?: IModRequirements;
 }
 
 /**
@@ -592,6 +598,12 @@ export interface IGame {
   name: string;
 }
 
+export interface IGameExpansion {
+  gameId: string; // domainName!
+  id: string;
+  name: string;
+}
+
 export interface ICategory {
   approved: boolean;
   approvedBy?: number;
@@ -762,47 +774,244 @@ export interface ITrackingState {
   test?: number;
 }
 
-export interface IMod {
-  author?: string;
-  category: string;
-  description: string;
-  game: IGame;
+/**
+ * A download mirror for a mod
+ */
+export interface IModMirror {
+  /** Download count for this mirror */
+  count?: number;
+  /** The database ID for this game */
   gameId: number;
-  id: number;
-  ipAddress: string;
-  modCategory: IModCategory;
+  /** The database ID for this mod mirror */
+  id: string;
+  /** The database ID for this mod */
   modId: number;
+  /** Name of this mirror */
   name: string;
-  pictureUrl?: string;
-  status: string;
-  summary: string;
-  trackingData: ITrackingState;
-  uid: string;
-  uploader: IGraphUser;
-  version: string;
+  /** Download count for this mirror */
+  totalDownloads?: number;
+  /** URI for this mirror */
+  uri?: string;
 }
 
-export interface IModFile {
-  categoryId: number;
-  count: number;
-  date: number;
+/**
+ * GraphQL Mod information
+ */
+export interface IMod {
+  /** If true, this mod contains adult content (deprecated in favour of adultContent) */
+  adult?: boolean;
+  /** If true, this mod contains adult content */
+  adultContent?: boolean;
+  /** Author of this mod */
+  author?: string;
+  /** Category name of this mod */
+  category: string;
+  /** Time of when this mod was first created */
+  createdAt?: IDateTime;
+  /** A detailed description of this mod */
   description: string;
-  fileId: number;
+  /** If true, this mod can be downloaded without first visiting the Nexus site */
+  directDownloadEnabled?: boolean;
+  /** Download count of this mod */
+  downloads?: number;
+  /** Endorsement count of this mod */
+  endorsements?: number;
+  /** Size of the primary mod file in kilobytes */
+  fileSize?: number;
+  /** Game changed by this mod */
   game: IGame;
-  manager: number;
-  mod: IMod;
+  /** The database ID for this game */
+  gameId: number;
+  /** The database ID for this mod */
+  id: number;
+  /** IP address (internal use) */
+  ipAddress: string;
+  /** If true, this mod is blocked from earning DP */
+  isBlockedFromEarningDp?: boolean;
+  /** Mirrors for this mod */
+  mirrors?: IModMirror[];
+  /** A mod category */
+  modCategory: IModCategory;
+  /** The database ID for this mod */
   modId: number;
+  /** Requirements of this mod */
+  modRequirements?: IModRequirements;
+  /** Name of this mod */
   name: string;
-  owner: IGraphUser;
-  primary: number;
-  reportLink: string;
-  requirementsAlert: number;
-  scanned: number;
-  size: number;
-  sizeInBytes?: string;
-  uCount: number;
+  /** URL for the main mod image */
+  pictureUrl?: string;
+  /** Status of this mod */
+  status: string;
+  /** A brief summary of this mod */
+  summary: string;
+  /** URL for the blurred thumbnail mod image */
+  thumbnailBlurredUrl?: string;
+  /** URL for the large blurred thumbnail mod image */
+  thumbnailLargeBlurredUrl?: string;
+  /** URL for the large thumbnail mod image */
+  thumbnailLargeUrl?: string;
+  /** URL for the thumbnail mod image */
+  thumbnailUrl?: string;
+  /** Tracking data (internal use) */
+  trackingData: ITrackingState;
+  /** The database ID for this mod */
   uid: string;
+  /** Time of when this mod was last updated */
+  updatedAt?: IDateTime;
+  /** Uploader of this mod */
+  uploader: IGraphUser;
+  /** Version of this mod */
+  version: string;
+  /** True if the viewer (current user) has blocked this mod */
+  viewerBlocked?: boolean;
+  /** A timestamp indicating the last time the user downloaded this mod */
+  viewerDownloaded?: IDateTime;
+  /** True indicates endorsement, false for abstention. Will be null if the user has not endorsed the mod */
+  viewerEndorsed?: boolean;
+  /** True if the viewer (current user) is blocked from interacting with this mod */
+  viewerIsBlocked?: boolean;
+  /** If true, the viewer (current user) is tracking this mod */
+  viewerTracked?: boolean;
+  /** True if the mod has been updated since the viewer (current user) downloaded it */
+  viewerUpdateAvailable?: boolean;
+}
+
+export interface IModRequirement {
+  externalRequirement: boolean;
+  gameId: string; // domainName!
+  id: string;
+  modId: string;
+  modName: string;
+  notes?: string;
+  url: string;
+}
+
+export interface IModRequirementsDlc {
+  gameExpansion: IGameExpansion;
+  notes?: string;
+}
+
+export interface IModRequiring {
+  externalRequirement: boolean;
+  gameId: string; // domainName!
+  id: string;
+  modId: string;
+  modName: string;
+  notes?: string;
+  url: string;
+}
+
+export interface IModRequirementPage {
+  facets?: INodesFacet[];
+  facetsData?: any;
+  nodes: IModRequirement[];
+  nodesCount: number;
+  nodesFacets?: INodesFacet[];
+  nodesFilter?: string;
+  totalCount: number;
+}
+
+export interface IModRequiringPage {
+  facets?: INodesFacet[];
+  facetsData?: any;
+  nodes: IModRequiring[];
+  nodesCount: number;
+  nodesFacets?: INodesFacet[];
+  nodesFilter?: string;
+  totalCount: number;
+}
+
+export interface IModRequirements {
+  dlcRequirements: IModRequirementsDlc[];
+  modsRequiringThisMod: IModRequiringPage;
+  nexusRequirements: IModRequirementPage;
+}
+
+/**
+ * Used to flag a mod file as a main, old or archived file
+ */
+export type ModFileCategory =
+  | 'MAIN'
+  | 'UPDATE'
+  | 'OPTIONAL'
+  | 'OLD_VERSION'
+  | 'MISCELLANEOUS'
+  | 'REMOVED'
+  | 'ARCHIVED';
+
+/**
+ * Records the outcome of the virus scan for a mod file
+ */
+export type VirusScanStatus =
+  | 'NOT_SCANNED'
+  | 'QUEUED'
+  | 'WAITING_REPORT'
+  | 'VERIFIED'
+  | 'INTERNALLY_VERIFIED'
+  | 'QUARANTINED'
+  | 'MANUALLY_VERIFIED'
+  | 'MOD_DOES_NOT_EXIST'
+  | 'FILE_NOT_FOUND'
+  | 'REPORT_ERROR'
+  | 'TOO_LARGE';
+
+/**
+ * Files belonging to a mod
+ */
+export interface IModFile {
+  /** The file category */
+  category?: ModFileCategory;
+  /** The database ID for this file category */
+  categoryId: number;
+  /** Patch notes for this mod file version */
+  changelogText?: string[];
+  /** Number of downloads for this file */
+  count: number;
+  /** Unix Timestamp for when this file was uploaded */
+  date: number;
+  /** Description for this file */
+  description: string;
+  /** Forms a composite key with the game_id */
+  fileId: number;
+  /** Game that this file relates to */
+  game: IGame;
+  /** ID of the object */
+  id?: string;
+  /** If true, this file can be downloaded by a mod manager */
+  manager: number;
+  /** Mod that this file belongs to */
+  mod: IMod;
+  /** The database ID for this mod */
+  modId: number;
+  /** File name */
+  name: string;
+  /** User that uploaded this file */
+  owner: IGraphUser;
+  /** If true, this file is the primary file for the mod */
+  primary: number;
+  /** URL for reporting this file */
+  reportLink: string;
+  /** TODO: what is this field for? */
+  requirementsAlert: number;
+  /** If true, this file has been virus scanned */
+  scanned: number;
+  /** Status of virus scanning on this file */
+  scannedV2?: VirusScanStatus;
+  /** Size of this file */
+  size: number;
+  /** Size of this file, in bytes */
+  sizeInBytes?: string;
+  /** Number of downloads for this file */
+  totalDownloads?: number;
+  /** Number of unique downloads for this file? */
+  uCount: number;
+  /** Unique ID for this file */
+  uid: string;
+  /** Number of unique downloads for this file */
+  uniqueDownloads?: number;
+  /** URL to download this file */
   uri: string;
+  /** Version this file relates to */
   version: string;
 }
 
