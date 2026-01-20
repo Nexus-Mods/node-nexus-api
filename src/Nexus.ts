@@ -378,7 +378,7 @@ class Nexus {
    * @param onJWTRefresh {callback} callback invoked when a JWT refresh was necessary so that the app can store the updated tokens.
    * @returns 
    */
-  public static async createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number, onJWTRefresh?: (credentials: types.IOAuthCredentials) => void): Promise<Nexus> {
+  public static async createWithOAuth(credentials: types.IOAuthCredentials | undefined, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number, onJWTRefresh?: (credentials: types.IOAuthCredentials) => void): Promise<Nexus> {
     const res = new Nexus(appName, appVersion, defaultGame, timeout);
     res.oAuthCredentials = credentials;
     res.mOAuthConfig = config;

@@ -19,7 +19,7 @@ declare class Nexus {
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setLogger(logCB: LogFunc): void;
-    static createWithOAuth(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number, onJWTRefresh?: (credentials: types.IOAuthCredentials) => void): Promise<Nexus>;
+    static createWithOAuth(credentials: types.IOAuthCredentials | undefined, config: types.IOAuthConfig, appName: string, appVersion: string, defaultGame: string, timeout?: number, onJWTRefresh?: (credentials: types.IOAuthCredentials) => void): Promise<Nexus>;
     setGame(gameId: string): void;
     revalidate(): Promise<types.IValidateKeyResponse>;
     getValidationResult(): types.IValidateKeyResponse;
