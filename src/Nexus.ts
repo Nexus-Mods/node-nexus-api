@@ -857,7 +857,7 @@ class Nexus {
    *       the second 32bit block identifies the mod) clients should use BigInt to do the math and
    *       then pass them in as strings
    */
-  public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> { 
+  public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> {
     const res: Partial<types.IMod>[] = [];
     for (const chunk of chunkify(uids, param.MAX_BATCH_SIZE)) {
       await this.mQuota.wait();
@@ -867,7 +867,7 @@ class Nexus {
         {
           uids: { type: '[ID!]', optional: false },
         },
-        { nodes: chunk }, { uids },
+        { nodes: query }, { uids: chunk },
         this.args({ path: this.filter({}) }))).nodes);
     }
 
