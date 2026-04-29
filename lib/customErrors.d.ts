@@ -1,4 +1,4 @@
-import { GraphErrorAttribute, GraphErrorCode, GraphErrorEntity, GraphErrorItemCode, GraphErrorType } from "./types";
+import { GraphErrorAttribute, GraphErrorCode, GraphErrorEntity, GraphErrorItemCode, GraphErrorType, IGraphQLLocation } from "./types";
 export declare class TimeoutError extends Error {
     constructor(message: any);
 }
@@ -36,12 +36,23 @@ export interface IGraphErrorDetail {
     type: GraphErrorType;
     value: any;
 }
+export interface IGraphErrorEntry {
+    message: string;
+    path?: ReadonlyArray<string | number>;
+    locations?: ReadonlyArray<IGraphQLLocation>;
+    code?: string;
+}
 export declare class GraphError extends Error {
     private mCode;
     private mDetails;
-    constructor(message: string, code: GraphErrorCode, details: IGraphErrorDetail[]);
-    get code(): GraphErrorCode;
+    private mEntries;
+    private mQuery;
+    constructor(message: string, code: GraphErrorCode | undefined, details: IGraphErrorDetail[], entries?: ReadonlyArray<IGraphErrorEntry>, query?: string);
+    get code(): GraphErrorCode | undefined;
     get details(): IGraphErrorDetail[];
+    get entries(): ReadonlyArray<IGraphErrorEntry>;
+    get query(): string | undefined;
+    get call(): string | undefined;
 }
 export declare class ParameterInvalid extends Error {
     constructor(message: any);

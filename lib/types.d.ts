@@ -709,13 +709,19 @@ export interface IPreference {
     subfeedsCommentsTracked: boolean;
     subfeedsCommentsYour: boolean;
 }
-export declare type GraphErrorCode = 'REVISION_INVALID';
+export declare type GraphErrorCode = string;
 export declare type GraphErrorAttribute = 'modId' | 'fileId';
 export declare type GraphErrorItemCode = 'NOT_AVAILABLE' | 'NOT_FOUND' | 'DELETED';
 export declare type GraphErrorEntity = 'Mod' | 'ModFile';
 export declare type GraphErrorType = 'LOCATE_ERROR';
+export interface IGraphQLLocation {
+    line: number;
+    column: number;
+}
 export interface IGraphQLError {
     message: string;
+    path?: ReadonlyArray<string | number>;
+    locations?: ReadonlyArray<IGraphQLLocation>;
     extensions?: {
         attribute?: GraphErrorAttribute;
         code?: GraphErrorItemCode;
@@ -724,6 +730,7 @@ export interface IGraphQLError {
         type?: GraphErrorType;
         value?: any;
         parameter?: any;
+        detail?: any[];
     };
 }
 export declare type LogLevel = 'info' | 'error';
