@@ -13,7 +13,7 @@ import * as url from 'url';
 import * as setCookieParser from 'set-cookie-parser';
 import * as format from 'string-template';
 import * as jwt from 'jsonwebtoken';
-import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError, GraphError, IGraphErrorDetail } from './customErrors';
+import { HTTPError, NexusError, RateLimitError, TimeoutError, ParameterInvalid, ProtocolError, JwtExpiredError, GraphError, IGraphErrorDetail, IGraphErrorEntry } from './customErrors';
 import { IGraphQLError, LogFunc } from './types';
 import { RatingOptions } from '.';
 
@@ -1729,31 +1729,31 @@ class Nexus {
       + '}';
   }
 
-  private genError(input: any[]): Error {
-    const ex = new Error(input.map(err => err.message).join(', '));
-    const callPath = input.find(iter => iter.path !== undefined);
-    if (callPath !== undefined) {
-      ex['call'] = callPath.path.join(', ');
-    }
-    const codeEx = input.find(iter => iter.extensions?.code !== undefined);
-    if (codeEx !== undefined) {
-      ex['code'] = codeEx.extensions.code;
-    }
-    return ex;
+  private genError(input: IGraphQLError[], query?: string): GraphError {
+    const message = input.map(err => err.message).join(', ');
+    const codeEntry = input.find(iter => iter.extensions?.code !== undefined);
+    const code = codeEntry?.extensions?.code;
+    const details: IGraphErrorDetail[] =
+      (codeEntry?.extensions?.detail ?? []).map(this.convertErrDetail);
+    const entries: IGraphErrorEntry[] = input.map(err => ({
+      message: err.message,
+      path: err.path,
+      locations: err.locations,
+      code: err.extensions?.code,
+    }));
+    return new GraphError(message, code, details, entries, query);
   }
 
   private async requestGraph<T>(root: string, parameters: graphQL.GraphQueryParameters, query: any,
                                 variables: any, args: IRequestArgs): Promise<T> {
-    args.data = {
-      query: this.makeQuery<T>(root, parameters, query, variables),
-      variables,
-    };
+    const queryStr = this.makeQuery<T>(root, parameters, query, variables);
+    args.data = { query: queryStr, variables };
 
     const res = await this.request(this.mGraphBaseURL, args, 'POST');
     if (res.data) {
       return res.data[root];
     } else {
-      throw this.genError(res.errors);
+      throw this.genError(res.errors, queryStr);
     }
   }
 
@@ -1763,16 +1763,14 @@ class Nexus {
                                           , variables: any
                                           , args: IRequestArgs)
                                           : Promise<{ data: T, errors: IGraphQLError[] }> {
-    args.data = {
-      query: this.makeQuery<T>(root, parameters, query, variables),
-      variables,
-    };
+    const queryStr = this.makeQuery<T>(root, parameters, query, variables);
+    args.data = { query: queryStr, variables };
 
     const res = await this.request(this.mGraphBaseURL, args, 'POST');
     if (res.data) {
       return { data: res.data[root], errors: res.errors };
     } else {
-      throw this.genError(res.errors);
+      throw this.genError(res.errors, queryStr);
     }
   }
 
@@ -1790,22 +1788,13 @@ class Nexus {
   private async mutateGraph<T>(name: string, parameters: graphQL.GraphQueryParameters,
                                data: any, args: IRequestArgs,
                                retValues: any): Promise<T> {
-    args.data = {
-      query: this.makeMutation<T>(name, parameters, retValues),
-      variables: data,
-    }
+    const queryStr = this.makeMutation<T>(name, parameters, retValues);
+    args.data = { query: queryStr, variables: data };
     const res = await this.request(this.mGraphBaseURL, args, 'POST');
     if (!!(res.data?.[name])) {
       return res.data[name];
     } else {
-      const ext = res.errors?.[0]?.extensions;
-      if (ext?.code === undefined) {
-        throw new Error(res.errors.map(err => err.message).join(', '));
-      } else {
-        throw new GraphError(res.errors[0].message,
-                             ext.code,
-                             (ext.detail ?? []).map(this.convertErrDetail));
-      }
+      throw this.genError(res.errors, queryStr);
     }
   }
 

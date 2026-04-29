@@ -1,4 +1,4 @@
-import { GraphErrorAttribute, GraphErrorCode, GraphErrorEntity, GraphErrorItemCode, GraphErrorType } from "./types";
+import { GraphErrorAttribute, GraphErrorCode, GraphErrorEntity, GraphErrorItemCode, GraphErrorType, IGraphQLLocation } from "./types";
 
 /**
  * Error thrown if a request timed out
@@ -99,21 +99,63 @@ export interface IGraphErrorDetail {
   value: any;
 }
 
+export interface IGraphErrorEntry {
+  message: string;
+  path?: ReadonlyArray<string | number>;
+  locations?: ReadonlyArray<IGraphQLLocation>;
+  code?: string;
+}
+
 export class GraphError extends Error {
-  private mCode: GraphErrorCode;
+  private mCode: GraphErrorCode | undefined;
   private mDetails: IGraphErrorDetail[];
-  constructor(message: string, code: GraphErrorCode, details: IGraphErrorDetail[]) {
+  private mEntries: ReadonlyArray<IGraphErrorEntry>;
+  private mQuery: string | undefined;
+  constructor(message: string,
+              code: GraphErrorCode | undefined,
+              details: IGraphErrorDetail[],
+              entries: ReadonlyArray<IGraphErrorEntry> = [],
+              query?: string) {
     super(message);
+    this.name = this.constructor.name;
     this.mCode = code;
     this.mDetails = details;
+    this.mEntries = entries;
+    this.mQuery = query;
   }
 
-  public get code(): GraphErrorCode {
+  public get code(): GraphErrorCode | undefined {
     return this.mCode;
   }
 
   public get details(): IGraphErrorDetail[] {
     return this.mDetails;
+  }
+
+  /**
+   * Per-error diagnostic entries from the GraphQL response, including the
+   * field path and source line/column locations of each individual error.
+   */
+  public get entries(): ReadonlyArray<IGraphErrorEntry> {
+    return this.mEntries;
+  }
+
+  /**
+   * The GraphQL query string that was sent. Useful for mapping
+   * locations (line/column) back to a token when debugging.
+   */
+  public get query(): string | undefined {
+    return this.mQuery;
+  }
+
+  /**
+   * Convenience: the first GraphQL field path (if any) joined with `, `.
+   * Preserved for backwards compatibility with consumers that previously
+   * read `call` directly off the thrown error.
+   */
+  public get call(): string | undefined {
+    const first = this.mEntries.find(e => e.path !== undefined);
+    return first?.path?.join(', ');
   }
 }
 

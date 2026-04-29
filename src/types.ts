@@ -1388,14 +1388,26 @@ export interface IPreference {
   subfeedsCommentsYour: boolean;
 }
 
-export type GraphErrorCode = 'REVISION_INVALID';
+/**
+ * Top-level error code returned by the GraphQL gateway. Known values include
+ * `REVISION_INVALID` (mutation validation), `MODEL_NOT_FOUND`, and gateway-
+ * level codes; the gateway can introduce more, so this is widened to string.
+ */
+export type GraphErrorCode = string;
 export type GraphErrorAttribute = 'modId' | 'fileId';
 export type GraphErrorItemCode = 'NOT_AVAILABLE' | 'NOT_FOUND' | 'DELETED';
 export type GraphErrorEntity = 'Mod' | 'ModFile';
 export type GraphErrorType = 'LOCATE_ERROR';
 
+export interface IGraphQLLocation {
+  line: number;
+  column: number;
+}
+
 export interface IGraphQLError {
   message: string;
+  path?: ReadonlyArray<string | number>;
+  locations?: ReadonlyArray<IGraphQLLocation>;
   extensions?: {
     attribute?: GraphErrorAttribute;
     code?: GraphErrorItemCode;
@@ -1404,6 +1416,7 @@ export interface IGraphQLError {
     type?: GraphErrorType;
     value?: any;
     parameter?: any;
+    detail?: any[];
   }
 }
 
