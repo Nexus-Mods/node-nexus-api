@@ -39,4 +39,8 @@ export const MAX_FILE_SIZE: number = 40 * 1024 * 1024;
 
 export const MAX_JWT_REFRESH_TRIES: number = 3;
 
+// Refresh the OAuth access token proactively when its remaining lifetime drops below this.
+// Keeps a small buffer for clock skew and request latency so callers don't race a 401.
+export const JWT_REFRESH_LEEWAY_MS: number = 30 * 1000;
+
 export const MAX_BATCH_SIZE: number = 500;

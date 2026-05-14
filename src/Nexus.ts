@@ -310,6 +310,7 @@ class Nexus {
   private mOAuthConfig: types.IOAuthConfig;
   private mJWTRefreshCallback: (credentials: types.IOAuthCredentials) => void;
   private mJwtRefreshTries: number = 0;
+  private mJwtRefreshPromise: Promise<types.IOAuthCredentials> | undefined;
   private mCachedPreferences: Partial<types.IPreference> | undefined;
 
   //#region Constructor and maintenance
@@ -1626,13 +1627,21 @@ class Nexus {
   }
 
   private async request(url: string, args: IRequestArgs, method?: REST_METHOD): Promise<any> {
+    // Refresh the access token ahead of expiry so we don't pay the cost of a 401 round-trip.
+    // Skip on the refresh endpoint itself to avoid recursion (handleJwtRefresh calls request()).
+    if (!this.isRefreshTokenUrl(url)) {
+      await this.ensureFreshToken();
+      if (this.mOAuthCredentials !== undefined && args.headers !== undefined) {
+        args.headers['Authorization'] = `Bearer ${this.mOAuthCredentials.token}`;
+      }
+    }
     try {
       return await rest(url, args, (daily: number, hourly: number) => {
         this.mRateLimit = { daily, hourly };
         this.mQuota.updateLimit(Math.max(daily, hourly));
         this.mJwtRefreshTries = 0;
       }, method);
-    } catch (err) {      
+    } catch (err) {
       
       /*console.log(`node-nexus-api: request catch error`, {
         url: url,
@@ -1807,10 +1816,55 @@ class Nexus {
 
 
 
-  private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
-    
-    //console.log(`node-nexus-api: handleJwtRefresh() ${param.USER_SERVICE_API_URL}`);
+  private isRefreshTokenUrl(targetUrl: string): boolean {
+    return targetUrl.startsWith(`${param.USER_SERVICE_API_URL}/oauth/token`);
+  }
 
+  private isTokenExpiringSoon(leewayMs: number = param.JWT_REFRESH_LEEWAY_MS): boolean {
+    if (this.mOAuthCredentials?.token === undefined) {
+      return false;
+    }
+    try {
+      const decoded: any = jwt.decode(this.mOAuthCredentials.token);
+      if (typeof decoded?.exp !== 'number') {
+        return false;
+      }
+      return decoded.exp * 1000 - Date.now() <= leewayMs;
+    } catch {
+      return false;
+    }
+  }
+
+  private async ensureFreshToken(): Promise<void> {
+    // Nothing to refresh if we never received OAuth credentials/config.
+    if (this.mOAuthCredentials === undefined || this.mOAuthConfig === undefined) {
+      return;
+    }
+    if (!this.isTokenExpiringSoon()) {
+      return;
+    }
+    try {
+      this.oAuthCredentials = await this.handleJwtRefresh();
+    } catch (err) {
+      // Swallow: the upcoming request will hit 401 and the reactive path can try again.
+      this.mLogCB('info', 'proactive JWT refresh failed', { message: err?.message });
+    }
+  }
+
+  private async handleJwtRefresh(): Promise<types.IOAuthCredentials> {
+    // Coalesce concurrent refresh attempts (proactive + reactive) into a single token request.
+    if (this.mJwtRefreshPromise !== undefined) {
+      return this.mJwtRefreshPromise;
+    }
+    const clear = () => { this.mJwtRefreshPromise = undefined; };
+    this.mJwtRefreshPromise = this.doJwtRefresh().then(
+      (creds) => { clear(); return creds; },
+      (err) => { clear(); throw err; },
+    );
+    return this.mJwtRefreshPromise;
+  }
+
+  private async doJwtRefresh(): Promise<types.IOAuthCredentials> {
     const data = {
       client_id: this.mOAuthConfig.id,
       refresh_token: this.mOAuthCredentials.refreshToken,
@@ -1828,8 +1882,6 @@ class Nexus {
       refreshToken: refreshResult.refresh_token,
       fingerprint: refreshResult.jwt_fingerprint,
     };
-
-    //console.log(`node-nexus-api: handleJwtRefresh()`, JSON.stringify(newOAuthCredentials));
 
     this.mJWTRefreshCallback?.(newOAuthCredentials);
 

@@ -15,6 +15,7 @@ declare class Nexus {
     private mOAuthConfig;
     private mJWTRefreshCallback;
     private mJwtRefreshTries;
+    private mJwtRefreshPromise;
     private mCachedPreferences;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
@@ -101,7 +102,11 @@ declare class Nexus {
     private convertErrDetail;
     private mutateGraph;
     private set oAuthCredentials(value);
+    private isRefreshTokenUrl;
+    private isTokenExpiringSoon;
+    private ensureFreshToken;
     private handleJwtRefresh;
+    private doJwtRefresh;
     private filter;
     private args;
 }
