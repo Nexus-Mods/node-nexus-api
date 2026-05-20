@@ -1658,12 +1658,19 @@ class Nexus {
       }
 
       if (err.statusCode === 401 && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+        // Can't refresh without an OAuth config and existing credentials to
+        // refresh against. Surface the original 401 to the caller instead of
+        // dereferencing undefined inside doJwtRefresh.
+        if (this.mOAuthConfig === undefined || this.mOAuthCredentials === undefined) {
+          this.mJwtRefreshTries = 0;
+          throw err;
+        }
         //console.log('caught 401 error. trying to refresh token');
         this.mJwtRefreshTries++;
-        this.oAuthCredentials = await this.handleJwtRefresh();        
-        //console.log(`node-nexus-api: trying request again`);        
+        this.oAuthCredentials = await this.handleJwtRefresh();
+        //console.log(`node-nexus-api: trying request again`);
         // do we need to update the args (in the header?) now that we've got new oauth credentials
-        return await this.request(url, this.args(args), method); 
+        return await this.request(url, this.args(args), method);
       }
 
       this.mJwtRefreshTries = 0;
