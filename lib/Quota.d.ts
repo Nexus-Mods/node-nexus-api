@@ -7,10 +7,12 @@ declare class Quota {
     private mLimit;
     private mInitBlock;
     private mOnInitDone;
-    constructor(init: number, max: number, msPerIncrement: number);
+    private mMaxWaitMS;
+    constructor(init: number, max: number, msPerIncrement: number, maxWaitMS?: number);
     updateLimit(limit: number): void;
     finishInit(): void;
     block(): boolean;
-    wait(): Promise<void>;
+    wait(budgetMs?: number | undefined): Promise<void>;
+    private exceedsBudget;
 }
 export default Quota;

@@ -13,19 +13,26 @@ class Quota {
   private mMaximum: number;
   private mMSPerIncrement: number;
   private mLastCheck: number = Date.now();
-  private mBlockHour: number;
+  private mBlockHour: number | undefined;
   private mLimit: number = 1000;
   // to avoid making multiple requests with an expired jwt token during
   // application startup, we only allow a single request, all others are
   // blocked until that first one has succeeded, refreshing the token in
   // the process if necessary
-  private mInitBlock: Promise<void>;
-  private mOnInitDone: () => void;
+  private mInitBlock: Promise<void> | undefined;
+  private mOnInitDone: (() => void) | undefined;
+  // upper bound on how long wait() may block before sending a request. Waiting
+  // longer than the request itself is allowed to take is pointless: the caller's
+  // request timeout would fire anyway and surface as a generic TimeoutError. When
+  // a required wait exceeds this budget we fail fast with a typed RateLimitError
+  // instead, so callers can back off to the hour boundary rather than hang.
+  private mMaxWaitMS: number | undefined;
 
-  constructor(init: number, max: number, msPerIncrement: number) {
+  constructor(init: number, max: number, msPerIncrement: number, maxWaitMS?: number) {
     this.mCount = init;
     this.mMaximum = max;
     this.mMSPerIncrement = msPerIncrement;
+    this.mMaxWaitMS = maxWaitMS;
   }
 
   public updateLimit(limit: number) {
@@ -55,7 +62,15 @@ class Quota {
     return false;
   }
 
-  public async wait(): Promise<void> {
+  /**
+   * wait until a request ticket is available.
+   * @param budgetMs the caller's remaining time budget in milliseconds. If a
+   *   required wait would exceed it, reject with a RateLimitError instead of
+   *   blocking past the point where the caller would time out anyway. Defaults
+   *   to the configured request timeout (mMaxWaitMS). Pass nothing to use the
+   *   default; pass undefined explicitly only to wait unconditionally.
+   */
+  public async wait(budgetMs: number | undefined = this.mMaxWaitMS): Promise<void> {
     const now = new Date();
 
     if (this.mInitBlock === undefined) {
@@ -64,13 +79,19 @@ class Quota {
       await this.mInitBlock;
     }
 
-    if ((this.mBlockHour !== undefined)
-        && (now.getHours() === this.mBlockHour)) {
+    if ((this.mBlockHour !== undefined) && (now.getHours() === this.mBlockHour)) {
       // if the hourly and daily limit was exceeded, don't make any new requests
-      // until the next full hour. If the time is almost up, wait, otherwise report
-      // an error
+      // until the next full hour. If the time is almost up, ride it out (the
+      // window resets in <=60s, turning a guaranteed-imminent success into an
+      // actual success) - but only when the wait fits the caller's budget.
+      // Otherwise fail fast: a wait we know will outlast the request timeout
+      // gains nothing and just hangs the resolve.
       if (now.getMinutes() === 59) {
-        return delay((60 - now.getSeconds()) * 1000);
+        const waitMs = (60 - now.getSeconds()) * 1000;
+        if (this.exceedsBudget(waitMs, budgetMs)) {
+          return Promise.reject(new RateLimitError());
+        }
+        return delay(waitMs);
       } else {
         return Promise.reject(new RateLimitError());
       }
@@ -83,8 +104,18 @@ class Quota {
     if (this.mCount >= 0) {
       return Promise.resolve();
     } else {
-      return delay(this.mCount * this.mMSPerIncrement * -1);
+      // token bucket went negative: under heavy fan-out the proportional wait
+      // can exceed the request timeout. Same bounded-wait rule as above.
+      const waitMs = this.mCount * this.mMSPerIncrement * -1;
+      if (this.exceedsBudget(waitMs, budgetMs)) {
+        return Promise.reject(new RateLimitError());
+      }
+      return delay(waitMs);
     }
+  }
+
+  private exceedsBudget(waitMs: number, budgetMs: number | undefined): boolean {
+    return (budgetMs !== undefined) && (waitMs > budgetMs);
   }
 }
 

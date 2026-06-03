@@ -346,7 +346,7 @@ class Nexus {
       },
     };
 
-    this.mQuota = new Quota(param.QUOTA_MAX, param.QUOTA_MAX, param.QUOTA_RATE_MS);
+    this.mQuota = new Quota(param.QUOTA_MAX, param.QUOTA_MAX, param.QUOTA_RATE_MS, this.mBaseData.requestConfig!.timeout);
   }
 
   /**
