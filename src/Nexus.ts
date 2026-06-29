@@ -1746,12 +1746,16 @@ class Nexus {
   }
 
   private genError(input: IGraphQLError[], query?: string): GraphError {
-    const message = input.map(err => err.message).join(', ');
-    const codeEntry = input.find(iter => iter.extensions?.code !== undefined);
+    // be defensive: the server doesn't guarantee the shape of an error response, so
+    // an error formatter must never itself throw or it masks the real failure.
+    const errors: IGraphQLError[] = Array.isArray(input) ? input : [];
+    const message = errors.map(err => err.message).join(', ');
+    const codeEntry = errors.find(iter => iter.extensions?.code !== undefined);
     const code = codeEntry?.extensions?.code;
+    const rawDetail = codeEntry?.extensions?.detail;
     const details: IGraphErrorDetail[] =
-      (codeEntry?.extensions?.detail ?? []).map(this.convertErrDetail);
-    const entries: IGraphErrorEntry[] = input.map(err => ({
+      (Array.isArray(rawDetail) ? rawDetail : []).map(this.convertErrDetail);
+    const entries: IGraphErrorEntry[] = errors.map(err => ({
       message: err.message,
       path: err.path,
       locations: err.locations,
