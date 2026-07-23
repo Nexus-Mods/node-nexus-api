@@ -44,3 +44,7 @@ export const MAX_JWT_REFRESH_TRIES: number = 3;
 export const JWT_REFRESH_LEEWAY_MS: number = 30 * 1000;
 
 export const MAX_BATCH_SIZE: number = 500;
+
+// modsByUid ModPage node cap: server default 20, max 80.
+export const MODS_BY_UID_DEFAULT_COUNT: number = 20;
+export const MODS_BY_UID_MAX_COUNT: number = 80;

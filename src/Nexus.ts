@@ -860,15 +860,22 @@ class Nexus {
    */
   public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> {
     const res: Partial<types.IMod>[] = [];
-    for (const chunk of chunkify(uids, param.MAX_BATCH_SIZE)) {
+
+    const parameters: graphQL.GraphQueryParameters = {
+      uids: { type: '[ID!]', optional: false },
+      count: { type: 'Int', optional: true },
+    };
+
+    // A ModPage returns at most MODS_BY_UID_MAX_COUNT nodes, so chunk the input at that size
+    // and request a count matching each chunk (floored at MODS_BY_UID_DEFAULT_COUNT).
+    for (const chunk of chunkify(uids, param.MODS_BY_UID_MAX_COUNT)) {
       await this.mQuota.wait();
 
+      const count = Math.max(chunk.length, param.MODS_BY_UID_DEFAULT_COUNT);
       res.push(...(await this.requestGraph<{ nodes: types.IMod[] }>(
         'modsByUid',
-        {
-          uids: { type: '[ID!]', optional: false },
-        },
-        { nodes: query }, { uids: chunk },
+        parameters,
+        { nodes: query }, { uids: chunk, count },
         this.args({ path: this.filter({}) }))).nodes);
     }
 
@@ -896,7 +903,7 @@ class Nexus {
         {
           uids: { type: '[ID!]', optional: false },
         },
-        { nodes: query }, { uids },
+        { nodes: query }, { uids: chunk },
         this.args({ path: this.filter({}) }))).nodes);
     }
 
