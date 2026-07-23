@@ -55,7 +55,7 @@ declare class Nexus {
     userById(query: graphQL.IUserQuery, userId: number): Promise<types.IGraphUser>;
     getPreferences(query: graphQL.IPreferenceQuery, useCache?: boolean): Promise<Partial<types.IPreference>>;
     clearPreferencesCache(): void;
-    modsByUid(query: graphQL.IModQuery, uids: string[], count?: number): Promise<Partial<types.IMod>[]>;
+    modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]>;
     modFilesByUid(query: graphQL.IModFileQuery, uids: string[]): Promise<Partial<types.IModFile>[]>;
     fileHashes(query: graphQL.IFileHashQuery, md5Hashes: string[]): Promise<{
         data: Partial<types.IFileHash>[];

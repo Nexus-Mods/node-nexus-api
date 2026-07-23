@@ -14,3 +14,5 @@ export declare const MAX_FILE_SIZE: number;
 export declare const MAX_JWT_REFRESH_TRIES: number;
 export declare const JWT_REFRESH_LEEWAY_MS: number;
 export declare const MAX_BATCH_SIZE: number;
+export declare const MODS_BY_UID_DEFAULT_COUNT: number;
+export declare const MODS_BY_UID_MAX_COUNT: number;
