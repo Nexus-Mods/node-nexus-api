@@ -858,17 +858,24 @@ class Nexus {
    *       the second 32bit block identifies the mod) clients should use BigInt to do the math and
    *       then pass them in as strings
    */
-  public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> {
+  public async modsByUid(query: graphQL.IModQuery, uids: string[], count: number = 20): Promise<Partial<types.IMod>[]> {
     const res: Partial<types.IMod>[] = [];
-    for (const chunk of chunkify(uids, param.MAX_BATCH_SIZE)) {
+
+    const parameters: graphQL.GraphQueryParameters = {
+      uids: { type: '[ID!]', optional: false },
+      count: { type: 'Int', optional: true },
+    };
+
+    // A ModPage response caps its nodes at the requested count (server default 20, max 80),
+    // so chunk the input uids at that count: a chunk can never exceed what one response
+    // returns, which sidesteps paging (no offset walk over a single large query needed).
+    for (const chunk of chunkify(uids, count)) {
       await this.mQuota.wait();
 
       res.push(...(await this.requestGraph<{ nodes: types.IMod[] }>(
         'modsByUid',
-        {
-          uids: { type: '[ID!]', optional: false },
-        },
-        { nodes: query }, { uids: chunk },
+        parameters,
+        { nodes: query }, { uids: chunk, count },
         this.args({ path: this.filter({}) }))).nodes);
     }
 
@@ -896,7 +903,7 @@ class Nexus {
         {
           uids: { type: '[ID!]', optional: false },
         },
-        { nodes: query }, { uids },
+        { nodes: query }, { uids: chunk },
         this.args({ path: this.filter({}) }))).nodes);
     }
 
