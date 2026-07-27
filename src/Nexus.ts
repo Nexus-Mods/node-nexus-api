@@ -853,12 +853,16 @@ class Nexus {
    * retrieve mod information about a list of mods by their uid
    * @param query the information to fetch
    * @param uids list of uids to fetch
+   * @param count how many uids to request per page. Clamped to [1, MODS_BY_UID_MAX_COUNT],
+   *              defaults to MODS_BY_UID_MAX_COUNT
    * @returns partial mod information
    * @note uids are numericals but since they are 64bit values (first 32bit identify the game,
    *       the second 32bit block identifies the mod) clients should use BigInt to do the math and
    *       then pass them in as strings
    */
-  public async modsByUid(query: graphQL.IModQuery, uids: string[]): Promise<Partial<types.IMod>[]> {
+  public async modsByUid(query: graphQL.IModQuery,
+                         uids: string[],
+                         count?: number): Promise<Partial<types.IMod>[]> {
     const res: Partial<types.IMod>[] = [];
 
     const parameters: graphQL.GraphQueryParameters = {
@@ -866,16 +870,20 @@ class Nexus {
       count: { type: 'Int', optional: true },
     };
 
-    // A ModPage returns at most MODS_BY_UID_MAX_COUNT nodes, so chunk the input at that size
-    // and request a count matching each chunk (floored at MODS_BY_UID_DEFAULT_COUNT).
-    for (const chunk of chunkify(uids, param.MODS_BY_UID_MAX_COUNT)) {
+    // A ModPage returns at most MODS_BY_UID_MAX_COUNT nodes, so never chunk larger than that.
+    const chunkSize = count !== undefined
+      ? Math.min(Math.max(Math.floor(count), 1), param.MODS_BY_UID_MAX_COUNT)
+      : param.MODS_BY_UID_MAX_COUNT;
+
+    // request a count matching each chunk (floored at MODS_BY_UID_DEFAULT_COUNT).
+    for (const chunk of chunkify(uids, chunkSize)) {
       await this.mQuota.wait();
 
-      const count = Math.max(chunk.length, param.MODS_BY_UID_DEFAULT_COUNT);
+      const chunkCount = Math.max(chunk.length, param.MODS_BY_UID_DEFAULT_COUNT);
       res.push(...(await this.requestGraph<{ nodes: types.IMod[] }>(
         'modsByUid',
         parameters,
-        { nodes: query }, { uids: chunk, count },
+        { nodes: query }, { uids: chunk, count: chunkCount },
         this.args({ path: this.filter({}) }))).nodes);
     }
 
