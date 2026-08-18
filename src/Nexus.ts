@@ -491,6 +491,7 @@ class Nexus {
     const oAuthUserInfoPromise = this.request(`${this.mUserServiceBaseURL}/oauth/userinfo`, this.args({}));
     const preferencePromise = this.getPreferences({
       adult: true,
+      adultBlurImages: true,
     });
     const [oAuthUserInfo, preferences] = await Promise.all([oAuthUserInfoPromise, preferencePromise]);
     return {
