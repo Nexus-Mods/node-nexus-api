@@ -67,6 +67,7 @@ export class NexusError extends Error {
   private mDescription: string
   constructor(message: string, statusCode: number, url: string, code: string, description?: string) {
     super(message);
+    this.name = this.constructor.name;
     this.mStatusCode = statusCode;
     this.mRequest = url;
     this.mCode = code;

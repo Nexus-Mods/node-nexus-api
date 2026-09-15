@@ -51,13 +51,6 @@ function chunkify<T>(input: T[], maxSize: number): T[][] {
   return res;
 }
 
-// status messages that should trigger a token refresh
-const REFRESH_TOKEN_ERRORS = [
-  'Token has expired',
-  'Signature verification raised',
-  'invalid_token'
-];
-
 function handleRestResult(resolve, reject, url: string, error: any,
                           response: http.IncomingMessage, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
   if (error !== null) {
@@ -309,7 +302,6 @@ class Nexus {
   private mOAuthCredentials: types.IOAuthCredentials;
   private mOAuthConfig: types.IOAuthConfig;
   private mJWTRefreshCallback: (credentials: types.IOAuthCredentials) => void;
-  private mJwtRefreshTries: number = 0;
   private mJwtRefreshPromise: Promise<types.IOAuthCredentials> | undefined;
   private mCachedPreferences: Partial<types.IPreference> | undefined;
 
@@ -1642,7 +1634,7 @@ class Nexus {
     });
   }
 
-  private async request(url: string, args: IRequestArgs, method?: REST_METHOD): Promise<any> {
+  private async request(url: string, args: IRequestArgs, method?: REST_METHOD, refreshAttempts: number = 0): Promise<any> {
     // Refresh the access token ahead of expiry so we don't pay the cost of a 401 round-trip.
     // Skip on the refresh endpoint itself to avoid recursion (handleJwtRefresh calls request()).
     if (!this.isRefreshTokenUrl(url)) {
@@ -1655,41 +1647,28 @@ class Nexus {
       return await rest(url, args, (daily: number, hourly: number) => {
         this.mRateLimit = { daily, hourly };
         this.mQuota.updateLimit(Math.max(daily, hourly));
-        this.mJwtRefreshTries = 0;
       }, method);
     } catch (err) {
-      
-      /*console.log(`node-nexus-api: request catch error`, {
-        url: url,
-        args: args,
-        error: err,
-        method: method
-      });*/
-
       if (err instanceof RateLimitError) {
         if (!this.mQuota.block()) {
           await this.mQuota.wait();
-          return await this.request(url, args, method);
+          return await this.request(url, args, method, refreshAttempts);
         }
       }
 
-      if (err.statusCode === 401 && this.mJwtRefreshTries < param.MAX_JWT_REFRESH_TRIES) {
+      // The budget is per request: a shared counter let concurrent 401s waiting on the same
+      // in-flight refresh exhaust it, and the ones over the limit leaked the raw 401.
+      if (err.statusCode === 401 && refreshAttempts < param.MAX_JWT_REFRESH_TRIES) {
         // Can't refresh without an OAuth config and existing credentials to
         // refresh against. Surface the original 401 to the caller instead of
         // dereferencing undefined inside doJwtRefresh.
         if (this.mOAuthConfig === undefined || this.mOAuthCredentials === undefined) {
-          this.mJwtRefreshTries = 0;
           throw err;
         }
-        //console.log('caught 401 error. trying to refresh token');
-        this.mJwtRefreshTries++;
         this.oAuthCredentials = await this.handleJwtRefresh();
-        //console.log(`node-nexus-api: trying request again`);
-        // do we need to update the args (in the header?) now that we've got new oauth credentials
-        return await this.request(url, this.args(args), method);
+        return await this.request(url, this.args(args), method, refreshAttempts + 1);
       }
 
-      this.mJwtRefreshTries = 0;
       throw err;
     } finally {
       this.mQuota.finishInit();

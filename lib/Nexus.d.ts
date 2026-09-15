@@ -14,7 +14,6 @@ declare class Nexus {
     private mOAuthCredentials;
     private mOAuthConfig;
     private mJWTRefreshCallback;
-    private mJwtRefreshTries;
     private mJwtRefreshPromise;
     private mCachedPreferences;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
