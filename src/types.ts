@@ -1435,6 +1435,13 @@ export interface IOAuthConfig {
 }
 
 /**
+ * Supplies the OAuth access token for a request. Called without an argument before each request,
+ * and with the token a 401 came back for to obtain its replacement; rejects when the session
+ * can't be renewed.
+ */
+export type AccessTokenProvider = (rejectedToken?: string) => Promise<string | undefined>;
+
+/**
  * Sort field options for collection search
  */
 export type CollectionSortField = 'endorsements' | 'downloads' | 'createdAt' | 'recentRating';
