@@ -303,6 +303,8 @@ class Nexus {
   private mOAuthConfig: types.IOAuthConfig;
   private mJWTRefreshCallback: (credentials: types.IOAuthCredentials) => void;
   private mJwtRefreshPromise: Promise<types.IOAuthCredentials> | undefined;
+  private mTokenProvider: types.AccessTokenProvider | undefined;
+  private mProvidedToken: string | undefined;
   private mCachedPreferences: Partial<types.IPreference> | undefined;
 
   //#region Constructor and maintenance
@@ -406,6 +408,34 @@ class Nexus {
    */
   public getValidationResult(): types.IValidateKeyResponse {
     return this.mValidationResult;
+  }
+
+  /**
+   * Let the application own the OAuth session. Every request asks `provider` for the token to
+   * send, and asks again with the rejected token after a 401; a rejection from the provider fails
+   * that request. Reads the first token right away, which refreshes an expired one.
+   */
+  public async setTokenProvider(provider: types.AccessTokenProvider): Promise<types.IValidateKeyResponse | undefined> {
+    this.mTokenProvider = provider;
+    this.mOAuthCredentials = undefined;
+    this.mOAuthConfig = undefined;
+    this.mJWTRefreshCallback = undefined;
+    this.applyProvidedToken(await provider());
+    return this.mValidationResult;
+  }
+
+  /**
+   * The OAuth access token for a request made outside this client, refreshed first if it is about
+   * to expire. Pass the token a 401 came back for to force a refresh; if that token has already
+   * been replaced, the current one is returned without another refresh. Rejects when a forced
+   * refresh is refused.
+   * @param rejectedToken {string} the token a 401 came back for, if this is a retry
+   * @returns the token to send, or undefined without OAuth credentials
+   */
+  public getAccessToken(rejectedToken?: string): Promise<string | undefined> {
+    return rejectedToken === undefined
+      ? this.currentAccessToken()
+      : this.renewAccessToken(rejectedToken);
   }
 
   public async setOAuthCredentials(credentials: types.IOAuthCredentials,
@@ -1547,6 +1577,7 @@ class Nexus {
     if (message.length === 0) {
       return Promise.reject(new Error('Feedback message can\'t be empty'));
     }
+    const token = anonymous ? undefined : await this.currentAccessToken();
     return this.checkFileSize(fileBundle)
       .then(() => new Promise<types.IFeedbackResponse>((resolve, reject) => {
         const form = new FormData();
@@ -1566,8 +1597,8 @@ class Nexus {
 
         if (anonymous) {
           delete headers['APIKEY'];
-        } else if (this.mOAuthCredentials !== undefined) {
-          headers['Authorization'] = `Bearer: ${this.mOAuthCredentials.token}`;
+        } else if (token !== undefined) {
+          headers['Authorization'] = `Bearer ${token}`;
         }
 
         const inputUrl = anonymous
@@ -1637,10 +1668,11 @@ class Nexus {
   private async request(url: string, args: IRequestArgs, method?: REST_METHOD, refreshAttempts: number = 0): Promise<any> {
     // Refresh the access token ahead of expiry so we don't pay the cost of a 401 round-trip.
     // Skip on the refresh endpoint itself to avoid recursion (handleJwtRefresh calls request()).
+    let sentToken: string | undefined;
     if (!this.isRefreshTokenUrl(url)) {
-      await this.ensureFreshToken();
-      if (this.mOAuthCredentials !== undefined && args.headers !== undefined) {
-        args.headers['Authorization'] = `Bearer ${this.mOAuthCredentials.token}`;
+      sentToken = await this.currentAccessToken();
+      if (sentToken !== undefined && args.headers !== undefined) {
+        args.headers['Authorization'] = `Bearer ${sentToken}`;
       }
     }
     try {
@@ -1658,14 +1690,12 @@ class Nexus {
 
       // The budget is per request: a shared counter let concurrent 401s waiting on the same
       // in-flight refresh exhaust it, and the ones over the limit leaked the raw 401.
-      if (err.statusCode === 401 && refreshAttempts < param.MAX_JWT_REFRESH_TRIES) {
-        // Can't refresh without an OAuth config and existing credentials to
-        // refresh against. Surface the original 401 to the caller instead of
-        // dereferencing undefined inside doJwtRefresh.
-        if (this.mOAuthConfig === undefined || this.mOAuthCredentials === undefined) {
+      if (err.statusCode === 401 && sentToken !== undefined && refreshAttempts < param.MAX_JWT_REFRESH_TRIES) {
+        // retry only with a different token; otherwise the 401 stands
+        const renewed = await this.renewAccessToken(sentToken);
+        if (renewed === undefined || renewed === sentToken) {
           throw err;
         }
-        this.oAuthCredentials = await this.handleJwtRefresh();
         return await this.request(url, this.args(args), method, refreshAttempts + 1);
       }
 
@@ -1821,6 +1851,57 @@ class Nexus {
   }
 
 
+
+  /** The token to send with a request: the provider's, else our own credentials, refreshed if due. */
+  private async currentAccessToken(): Promise<string | undefined> {
+    if (this.mTokenProvider !== undefined) {
+      const token = await this.mTokenProvider();
+      this.applyProvidedToken(token);
+      return token;
+    }
+    if (this.mOAuthCredentials === undefined) {
+      return undefined;
+    }
+    if (this.mOAuthConfig !== undefined) {
+      await this.ensureFreshToken();
+    }
+    return this.mOAuthCredentials.token;
+  }
+
+  /**
+   * The replacement for a token the site rejected with a 401, or undefined when there is none.
+   * Refreshes our own credentials only while the rejected token is still current, so concurrent
+   * 401s on one stale token share a single refresh. Rejects when the refresh is refused.
+   */
+  private async renewAccessToken(rejectedToken: string): Promise<string | undefined> {
+    if (this.mTokenProvider !== undefined) {
+      const token = await this.mTokenProvider(rejectedToken);
+      this.applyProvidedToken(token);
+      return token;
+    }
+    if (this.mOAuthCredentials === undefined || this.mOAuthConfig === undefined) {
+      return undefined;
+    }
+    if (rejectedToken === this.mOAuthCredentials.token) {
+      this.oAuthCredentials = await this.handleJwtRefresh();
+    }
+    return this.mOAuthCredentials.token;
+  }
+
+  /** Keep the validation result in step with the account the provided token describes. */
+  private applyProvidedToken(token: string | undefined) {
+    if (token === this.mProvidedToken) {
+      return;
+    }
+    this.mProvidedToken = token;
+    try {
+      this.mValidationResult = token !== undefined
+        ? transformJwtToValidationResult({ token, refreshToken: '', fingerprint: '' })
+        : undefined;
+    } catch {
+      this.mValidationResult = undefined;
+    }
+  }
 
   private isRefreshTokenUrl(targetUrl: string): boolean {
     return targetUrl.startsWith(`${param.USER_SERVICE_API_URL}/oauth/token`);

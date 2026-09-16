@@ -744,6 +744,7 @@ export interface IOAuthConfig {
     id: string;
     secret?: string;
 }
+export declare type AccessTokenProvider = (rejectedToken?: string) => Promise<string | undefined>;
 export declare type CollectionSortField = 'endorsements' | 'downloads' | 'createdAt' | 'recentRating';
 export declare type SortDirection = 'ASC' | 'DESC';
 export interface ICategoryNameFilter {

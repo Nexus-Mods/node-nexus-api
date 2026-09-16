@@ -15,6 +15,8 @@ declare class Nexus {
     private mOAuthConfig;
     private mJWTRefreshCallback;
     private mJwtRefreshPromise;
+    private mTokenProvider;
+    private mProvidedToken;
     private mCachedPreferences;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
@@ -23,6 +25,8 @@ declare class Nexus {
     setGame(gameId: string): void;
     revalidate(): Promise<types.IValidateKeyResponse>;
     getValidationResult(): types.IValidateKeyResponse;
+    setTokenProvider(provider: types.AccessTokenProvider): Promise<types.IValidateKeyResponse | undefined>;
+    getAccessToken(rejectedToken?: string): Promise<string | undefined>;
     setOAuthCredentials(credentials: types.IOAuthCredentials, config: types.IOAuthConfig, onJWTRefresh: (credentials: types.IOAuthCredentials) => void): Promise<types.IValidateKeyResponse>;
     setKey(apiKey: string): Promise<types.IValidateKeyResponse>;
     getRateLimits(): {
@@ -101,6 +105,9 @@ declare class Nexus {
     private convertErrDetail;
     private mutateGraph;
     private set oAuthCredentials(value);
+    private currentAccessToken;
+    private renewAccessToken;
+    private applyProvidedToken;
     private isRefreshTokenUrl;
     private isTokenExpiringSoon;
     private ensureFreshToken;
