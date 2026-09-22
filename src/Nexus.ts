@@ -35,6 +35,12 @@ interface IRequestArgs {
   };
 }
 
+/** What a request has already spent on its own retries, carried across them. */
+interface IRetryAttempts {
+  refresh?: number;
+  rateLimit?: number;
+}
+
 function translateMessage(message: string): string {
   return {
     'TOO_SOON_AFTER_DOWNLOAD': 'You have to wait 15 minutes before endorsing a mod.',
@@ -51,8 +57,28 @@ function chunkify<T>(input: T[], maxSize: number): T[][] {
   return res;
 }
 
+/**
+ * Report the budget the server says we have left. Sent on every response, including the ones the
+ * callers below have already turned into an error, so it has to be read before any of them bail
+ * out - otherwise a throttled client never learns the budget is gone.
+ */
+function readRateLimit(response: http.IncomingMessage,
+                       onUpdateLimit: (daily: number, hourly: number) => void) {
+  const hourlyLimit = response?.headers?.['x-rl-hourly-remaining'];
+  const dailyLimit = response?.headers?.['x-rl-daily-remaining'];
+
+  if ((hourlyLimit !== undefined) && (dailyLimit !== undefined)) {
+    onUpdateLimit(parseInt(dailyLimit.toString(), 10), parseInt(hourlyLimit.toString(), 10));
+  }
+}
+
 function handleRestResult(resolve, reject, url: string, error: any,
                           response: http.IncomingMessage, body: string, onUpdateLimit: (daily: number, hourly: number) => void) {
+  readRateLimit(response, onUpdateLimit);
+  if (response?.statusCode === 429) {
+    return reject(new RateLimitError());
+  }
+
   if (error !== null) {
     // might be a nexus error with body actually
     try {
@@ -85,22 +111,10 @@ function handleRestResult(resolve, reject, url: string, error: any,
   }
 
   try {
-    let hourlyLimit = response.headers['x-rl-hourly-remaining'];
-    let dailyLimit = response.headers['x-rl-daily-remaining'];
-
-    if (hourlyLimit !== undefined) {
-      onUpdateLimit(parseInt(dailyLimit.toString(), 10), parseInt(hourlyLimit.toString(), 10));
-    }
-
     if ((response.statusCode === 521)
         || (body === 'Bad Gateway')) {
       // in this case the body isn't something the api sent so it probably can't be parsed
       return reject(new NexusError('API currently offline', response.statusCode, url, body));
-    }
-
-    if (response.statusCode === 429) {
-      // server asks us to slow down because rate limit was exceeded or high server load
-      return reject(new RateLimitError());
     }
 
     if (response.statusCode === 202) {
@@ -166,10 +180,17 @@ function restGet(inputUrl: string, args: IRequestArgs, onUpdateLimit: (daily: nu
 
       //(res);
 
-      if ((statusCode === 401)) { 
+      if ((statusCode === 401)) {
         // assume a 401 is a token expiry error
         //return reject(new JwtExpiredError());
         //return reject(new HTTPError(statusCode, err, '', finalURL));
+      }
+
+      readRateLimit(res, onUpdateLimit);
+
+      if (statusCode === 429) {
+        res.resume();
+        return reject(new RateLimitError());
       }
 
       if (statusCode >= 300) {
@@ -1665,7 +1686,9 @@ class Nexus {
     });
   }
 
-  private async request(url: string, args: IRequestArgs, method?: REST_METHOD, refreshAttempts: number = 0): Promise<any> {
+  private async request(url: string, args: IRequestArgs, method?: REST_METHOD,
+                        attempts: IRetryAttempts = {}): Promise<any> {
+    const { refresh: refreshAttempts = 0, rateLimit: rateLimitAttempts = 0 } = attempts;
     // Refresh the access token ahead of expiry so we don't pay the cost of a 401 round-trip.
     // Skip on the refresh endpoint itself to avoid recursion (handleJwtRefresh calls request()).
     let sentToken: string | undefined;
@@ -1678,13 +1701,15 @@ class Nexus {
     try {
       return await rest(url, args, (daily: number, hourly: number) => {
         this.mRateLimit = { daily, hourly };
-        this.mQuota.updateLimit(Math.max(daily, hourly));
+        this.mQuota.updateLimit(daily > 0 ? daily : hourly);
       }, method);
     } catch (err) {
       if (err instanceof RateLimitError) {
-        if (!this.mQuota.block()) {
+        // block() reports the hour's budget as spent, and waiting doesn't get it back
+        if (!this.mQuota.block() && (rateLimitAttempts < param.MAX_RATE_LIMIT_RETRIES)) {
           await this.mQuota.wait();
-          return await this.request(url, args, method, refreshAttempts);
+          return await this.request(url, args, method,
+                                    { ...attempts, rateLimit: rateLimitAttempts + 1 });
         }
       }
 
@@ -1696,7 +1721,8 @@ class Nexus {
         if (renewed === undefined || renewed === sentToken) {
           throw err;
         }
-        return await this.request(url, this.args(args), method, refreshAttempts + 1);
+        return await this.request(url, this.args(args), method,
+                                  { ...attempts, refresh: refreshAttempts + 1 });
       }
 
       throw err;
