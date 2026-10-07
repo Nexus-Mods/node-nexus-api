@@ -2012,7 +2012,7 @@ class Nexus {
   }
 
   private args(customArgs: IRequestArgs) {
-    const result: IRequestArgs = { ...this.mBaseData };
+    const result: IRequestArgs = { ...this.mBaseData, headers: { ...this.mBaseData.headers } };
     if (this.mOAuthCredentials !== undefined) {
       result.headers['Authorization'] = `Bearer ${this.mOAuthCredentials.token}`;
       // result.cookies['jwt_fingerprint'] = this.mOAuthCredentials.fingerprint;
