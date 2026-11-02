@@ -114,6 +114,10 @@ export interface IDownloadURL {
     name: string;
     short_name: string;
 }
+export interface IDownloadSource {
+    placement?: string;
+    position?: number;
+}
 export interface IModInfoEx extends IModInfo {
     mod_id: number;
     game_id: number;
