@@ -404,6 +404,20 @@ export interface IDownloadURL {
   short_name: string;
 }
 
+/**
+ * where on the website a download started, so it can be attributed
+ */
+export interface IDownloadSource {
+  /**
+   * the part of the page the download started from, e.g. a homepage section
+   */
+  placement?: string;
+  /**
+   * position of the mod within that placement, starting at 1
+   */
+  position?: number;
+}
+
 export interface IModInfoEx extends IModInfo {
   mod_id: number;
   game_id: number;

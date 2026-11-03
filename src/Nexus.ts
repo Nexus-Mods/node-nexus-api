@@ -800,19 +800,31 @@ class Nexus {
    * @param key a download key
    * @param expires expiry time of the key
    * @param gameId id of the game
+   * @param source where on the website the download started, from the nxm link
    */
   public async getDownloadURLs(modId: number,
                                fileId: number,
                                key?: string,
                                expires?: number,
-                               gameId?: string): Promise<types.IDownloadURL[]> {
+                               gameId?: string,
+                               source?: types.IDownloadSource): Promise<types.IDownloadURL[]> {
     if (!this.isValidValue(modId) || !this.isValidValue(fileId)) {
       return Promise.reject(new ParameterInvalid('Invalid mod/file id: must be a positive integer.'));
     }
     await this.mQuota.wait();
     let urlPath = '/games/{gameId}/mods/{modId}/files/{fileId}/download_link';
+    const query: string[] = [];
     if ((key !== undefined) && (expires !== undefined)) {
-      urlPath += '?key={key}&expires={expires}';
+      query.push('key={key}', 'expires={expires}');
+    }
+    if (source?.placement !== undefined) {
+      query.push(`placement=${encodeURIComponent(source.placement)}`);
+    }
+    if (source?.position !== undefined) {
+      query.push(`position=${source.position}`);
+    }
+    if (query.length > 0) {
+      urlPath += `?${query.join('&')}`;
     }
     return this.request(this.mBaseURL + urlPath,
                 this.args({ path: this.filter({ modId, fileId, gameId, key, expires }) }));
