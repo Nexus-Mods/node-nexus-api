@@ -18,6 +18,9 @@ declare class Nexus {
     private mTokenProvider;
     private mProvidedToken;
     private mCachedPreferences;
+    private mPendingPreferences;
+    private mPreferencesGeneration;
+    private mPreferencesAccount;
     constructor(appName: string, appVersion: string, defaultGame: string, timeout?: number);
     static create(apiKey: string, appName: string, appVersion: string, defaultGame: string, timeout?: number): Promise<Nexus>;
     setLogger(logCB: LogFunc): void;
@@ -108,6 +111,8 @@ declare class Nexus {
     private currentAccessToken;
     private renewAccessToken;
     private applyProvidedToken;
+    private forgetPreferencesAccount;
+    private setPreferencesAccount;
     private isRefreshTokenUrl;
     private isTokenExpiringSoon;
     private ensureFreshToken;
