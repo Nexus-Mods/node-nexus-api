@@ -291,6 +291,19 @@ function rest(url: string, args: IRequestArgs, onUpdateLimit: (daily: number, ho
     : restGet(url, args, onUpdateLimit);
 }
 
+/** A query as a string that's the same however its fields, filters or selections are ordered. */
+function stableKey(value: unknown): string {
+  if (Array.isArray(value)) {
+    return `[${value.map(stableKey).join(',')}]`;
+  }
+  if (value !== null && typeof value === 'object') {
+    const record = value as Record<string, unknown>;
+    return `{${Object.keys(record).sort()
+      .map(field => `${JSON.stringify(field)}:${stableKey(record[field])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
 function transformJwtToValidationResult(oAuthCredentials: types.IOAuthCredentials): types.IValidateKeyResponse {
   const tokenData = jwt.decode(oAuthCredentials.token);
   return {
@@ -326,7 +339,14 @@ class Nexus {
   private mJwtRefreshPromise: Promise<types.IOAuthCredentials> | undefined;
   private mTokenProvider: types.AccessTokenProvider | undefined;
   private mProvidedToken: string | undefined;
-  private mCachedPreferences: Partial<types.IPreference> | undefined;
+  /** Each query's answer, by the query, for the account in `mPreferencesAccount`. */
+  private mCachedPreferences = new Map<string, Partial<types.IPreference>>();
+  /** The read under way for each query, which callers asking the same share. */
+  private mPendingPreferences = new Map<string, Promise<Partial<types.IPreference>>>();
+  /** Bumped when the cache is cleared, so a read already under way doesn't refill it. */
+  private mPreferencesGeneration = 0;
+  /** The user the cached preferences belong to; none while logged out. */
+  private mPreferencesAccount: number | undefined;
 
   //#region Constructor and maintenance
 
@@ -437,6 +457,10 @@ class Nexus {
    * that request. Reads the first token right away, which refreshes an expired one.
    */
   public async setTokenProvider(provider: types.AccessTokenProvider): Promise<types.IValidateKeyResponse | undefined> {
+    if (provider !== this.mTokenProvider) {
+      // whose tokens it gives isn't known until the first one comes back
+      this.forgetPreferencesAccount();
+    }
     this.mTokenProvider = provider;
     this.mOAuthCredentials = undefined;
     this.mOAuthConfig = undefined;
@@ -486,6 +510,10 @@ class Nexus {
    */
   public async setKey(apiKey: string): Promise<types.IValidateKeyResponse> {
     this.mLogCB('info', 'assigning api key', { isUndefined: apiKey === undefined });
+    if (apiKey !== this.mBaseData.headers?.APIKEY) {
+      // whose key it is isn't known until it's validated
+      this.forgetPreferencesAccount();
+    }
     if (apiKey === undefined) {
       delete this.mBaseData.headers.APIKEY;
     } else {
@@ -494,14 +522,17 @@ class Nexus {
     if (apiKey !== undefined) {
       try {
         this.mValidationResult = await this.validateKey(apiKey);
+        this.setPreferencesAccount(this.mValidationResult?.user_id);
         return this.mValidationResult;
       }
       catch (err) {
         this.mValidationResult = null;
+        this.setPreferencesAccount(undefined);
         throw err;
       }
     } else {
       this.mValidationResult = null;
+      this.setPreferencesAccount(undefined);
       return null;
     }
   }
@@ -527,7 +558,7 @@ class Nexus {
   }
 
   /**
- * Get user info from an oauth token
+ * Get user info from an oauth token, with the account's preferences as they are now
  */
   public async getUserInfo(): Promise<types.IUserInfo> {
     await this.mQuota.wait();
@@ -535,7 +566,7 @@ class Nexus {
     const preferencePromise = this.getPreferences({
       adult: true,
       adultBlurImages: true,
-    });
+    }, false);
     const [oAuthUserInfo, preferences] = await Promise.all([oAuthUserInfoPromise, preferencePromise]);
     return {
       ...oAuthUserInfo,
@@ -876,33 +907,59 @@ class Nexus {
   /**
    * Retrieve user preferences for the authenticated user
    * @param query the preference fields to fetch
-   * @param useCache if true, returns cached preferences if available (default: true)
-   * @returns partial preference data based on the query
+   * @param useCache if true, returns the answer cached for the same query, or shares a read of it
+   *   already under way (default: true). The cache is cleared whenever the account changes. A read
+   *   that started under the previous account still answers its own caller, but isn't cached.
+   * @returns partial preference data based on the query; a copy, so changing it changes no other
+   *   caller's
    */
   public async getPreferences(query: graphQL.IPreferenceQuery, useCache: boolean = true): Promise<Partial<types.IPreference>> {
-    if (useCache && this.mCachedPreferences !== undefined) {
-      return this.mCachedPreferences;
+    const key = stableKey(query);
+    if (useCache) {
+      const cached = this.mCachedPreferences.get(key);
+      if (cached !== undefined) {
+        return { ...cached };
+      }
+      const pending = this.mPendingPreferences.get(key);
+      if (pending !== undefined) {
+        return { ...(await pending) };
+      }
     }
 
-    await this.mQuota.wait();
+    const generation = this.mPreferencesGeneration;
+    const read = (async () => {
+      await this.mQuota.wait();
+      return this.requestGraph<types.IPreference>(
+        'preferences',
+        {},
+        query,
+        {},
+        this.args({ path: this.filter({}) })
+      );
+    })();
+    this.mPendingPreferences.set(key, read);
 
-    const res = await this.requestGraph<types.IPreference>(
-      'preferences',
-      {},
-      query,
-      {},
-      this.args({ path: this.filter({}) })
-    );
-
-    this.mCachedPreferences = res;
-    return res;
+    try {
+      const res = await read;
+      // an answer for an account that has since changed isn't the current account's
+      if (generation === this.mPreferencesGeneration) {
+        this.mCachedPreferences.set(key, { ...res });
+      }
+      return res;
+    } finally {
+      if (this.mPendingPreferences.get(key) === read) {
+        this.mPendingPreferences.delete(key);
+      }
+    }
   }
 
   /**
-   * Clear the cached user preferences
+   * Clear the cached user preferences, and stop reads under way from being shared or cached
    */
   public clearPreferencesCache(): void {
-    this.mCachedPreferences = undefined;
+    this.mPreferencesGeneration += 1;
+    this.mCachedPreferences.clear();
+    this.mPendingPreferences.clear();
   }
 
   /**
@@ -1886,6 +1943,7 @@ class Nexus {
     // this.mBaseData.headers['Authorization'] = `Bearer ${credentials.token}`;
     // this.mBaseData.cookies['jwt_fingerprint'] = credentials.fingerprint;
     this.mValidationResult = transformJwtToValidationResult(this.mOAuthCredentials);
+    this.setPreferencesAccount(this.mValidationResult?.user_id);
   }
 
 
@@ -1939,6 +1997,25 @@ class Nexus {
     } catch {
       this.mValidationResult = undefined;
     }
+    this.setPreferencesAccount(this.mValidationResult?.user_id);
+  }
+
+  /**
+   * Forgets whose the credentials are, dropping the cached preferences and any read under way even
+   * when that was already unknown, as a read for credentials replaced in the meantime may be.
+   */
+  private forgetPreferencesAccount() {
+    this.mPreferencesAccount = undefined;
+    this.clearPreferencesCache();
+  }
+
+  /** Notes whose the credentials are, dropping the cached preferences when that's someone else. */
+  private setPreferencesAccount(userId: number | undefined) {
+    if (userId === this.mPreferencesAccount) {
+      return;
+    }
+    this.mPreferencesAccount = userId;
+    this.clearPreferencesCache();
   }
 
   private isRefreshTokenUrl(targetUrl: string): boolean {
